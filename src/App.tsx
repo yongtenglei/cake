@@ -1,26 +1,62 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useCallback, useEffect } from 'react'
+import {
+  csv,
+  arc,
+  pie,
+  extent,
+  scaleLinear,
+  timeFormat,
+  max,
+  min,
+  format,
+  scaleTime,
+} from 'd3'
+import { useData } from './hooks/useData'
+import { AxisLeft, AxisBottom } from './components/Axes'
+import { Marks } from './components/Marks'
+import { height, width, innerHeight, innerWidth, margin } from './spacing'
+import { DrawingLayer} from './components/DrawingLayer'
 
-function App() {
+
+export const App = () => {
+  const data = useData()
+
+  if (!data) {
+    return <pre>Loading...</pre>
+  }
+
+  const yValue = (d): number => d.temperature
+  const xValue = (d): Date => d.time
+
+  const xAxisTickFormat = timeFormat('%a')
+
+  const yScale = scaleLinear()
+    .domain(extent(data, yValue))
+    .range([innerHeight, 0])
+    .nice()
+
+  const xScale = scaleTime()
+    .domain(extent(data, xValue))
+    .range([0, innerWidth])
+    .nice()
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+      <svg width={width} height={height}>
+        <g transform={`translate(${margin.left},${margin.top})`}>
+          <AxisBottom xScale={xScale} tickFormat={xAxisTickFormat} />
+          <AxisLeft yScale={yScale} />
+          <Marks
+            data={data}
+            xScale={xScale}
+            yScale={yScale}
+            xValue={xValue}
+            yValue={yValue}
+            tooltipFormat={xAxisTickFormat}
+          />
+          <DrawingLayer />
+        </g>
+      </svg>
+    </>
+  )
 }
-
-export default App;
