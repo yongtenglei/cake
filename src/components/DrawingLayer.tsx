@@ -1,57 +1,76 @@
 import React, { ReactEventHandler, useCallback, useState } from 'react'
 import { line, path, min, max } from 'd3'
 import { useMousePosition } from '../hooks/useMousePosition'
-import { margin, innerHeight, innerWidth } from '../spacing'
+import { margin, innerHeight as bottom, innerWidth } from '../spacing'
+
+// a segment is defined by the upper left and upper right corners
+// [x1, y1, x2, y2]
+type Segment = [number, number, number, number]
 
 /**
  *
  */
 export const DrawingLayer = () => {
-  const [lineCoords, setLineCoords] = useState<[number, number][]>([])
-  const [lastX, lastY] = lineCoords[lineCoords.length - 1] ?? [0, innerHeight]
+  const [segments, setSegments] = useState<Segment[]>([])
+  const [lastX1, lastY1, lastX2, lastY2] = segments[segments.length - 1] ?? [
+    0,
+    bottom,
+    0,
+    bottom,
+  ]
   const { x, y, bind } = useMousePosition()
 
-  const sloped = false
-  const xPos = max([x - margin.left, lastX])
+  const sloped = false // whether lines must be flat or can be angled
+  const xPos = max([x - margin.left, lastX2])
   const yPos = y - margin.top
 
-  // M = move, L = draw line
-  const drawnLine = [
-    `M 0,${innerHeight}`,
-    ...lineCoords.map(([x, y]) => `L ${x},${y}`),
-  ].join(' ')
-
-  const shading =
-    drawnLine +
-    (sloped ? '' : `M ${lastX},${yPos}`) +
-    `L ${xPos},${yPos} L ${xPos},${innerHeight} L ${0},${innerHeight}`
-
   const onClick: React.MouseEventHandler = useCallback(() => {
-    setLineCoords([...lineCoords, [xPos, yPos]])
-  }, [lineCoords, setLineCoords, xPos, yPos])
+    if (sloped) {
+      setSegments([...segments, [lastX2, lastY2, xPos, yPos]])
+    } else {
+      setSegments([...segments, [lastX2, yPos, xPos, yPos]])
+    }
+  }, [segments, setSegments, xPos, yPos, sloped])
 
   return (
     <g>
       <text>{'debug: ' + xPos + ' ' + yPos}</text>
-      {/* currently drawing line segment */}
-      {sloped ? (
-        <line x1={lastX} y1={lastY} x2={xPos} y2={yPos} stroke="black" />
-      ) : (
-        <line x1={lastX} y1={yPos} x2={xPos} y2={yPos} stroke="black" />
-      )}
 
-      {/* drawn line segments */}
-      <path stroke="black" fill="none" d={drawnLine} />
-
-      {/* shading under the lines */}
-      <path fill="#666" fillOpacity={0.5} d={shading} />
+      {segments.map(([x1, y1, x2, y2]) => (
+        <>
+          {/* top line for previous segments */}
+          <line stroke="black" x1={x1} y1={y1} x2={x2} y2={y2} />
+          {/* fill for previous segments */}
+          <path
+            fill="#666"
+            fillOpacity={0.5}
+            d={`M${x1},${y1} L${x2},${y2} L${x2},${bottom} L${x1},${bottom}`}
+          />
+        </>
+      ))}
+      {/* current segment */}
+      <line
+        x1={lastX2}
+        y1={sloped ? lastY2 : yPos}
+        x2={xPos}
+        y2={yPos}
+        stroke="black"
+      />
+      {/* fill for current segment  */}
+      <path
+        fill="#666"
+        fillOpacity={0.5}
+        d={`M ${lastX2},${
+          sloped ? lastY2 : yPos
+        } L${xPos},${yPos} L${xPos},${bottom} L${lastX2},${bottom}`}
+      />
 
       {/* invisible bounding box for mouse x,y coordinate capture */}
       <rect
         fill="transparent"
         {...bind}
         onClick={onClick}
-        height={innerHeight}
+        height={bottom}
         width={innerWidth}
       ></rect>
     </g>
