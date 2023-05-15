@@ -12,34 +12,31 @@ type Segment = [number, number, number, number]
  */
 export const DrawingLayer = () => {
   const [segments, setSegments] = useState<Segment[]>([])
-  const [lastX1, lastY1, lastX2, lastY2] = segments[segments.length - 1] ?? [
-    0,
-    bottom,
-    0,
-    bottom,
-  ]
-  const { x, y, bind } = useMousePosition()
-
+  const lastSegment = segments[segments.length - 1] ?? [0, bottom, 0, bottom]
+  let [_prevX, _prevY, leftX, leftY] = lastSegment
+  
   const sloped = false // whether lines must be flat or can be angled
-  const xPos = max([x - margin.left, lastX2])
-  const yPos = y - margin.top
+  
+  const { x, y, bind } = useMousePosition()
+  // annoyingly, need to compensate for graph margins when calculating mouse coordinates
+  const mouseX = max([x - margin.left, leftX])
+  const mouseY = y - margin.top
+  // set upper left point of shape to be same as mouse Y when drawing rectangles
+  leftY = sloped ? leftY : mouseY 
 
   const onClick: React.MouseEventHandler = useCallback(() => {
-    if (sloped) {
-      setSegments([...segments, [lastX2, lastY2, xPos, yPos]])
-    } else {
-      setSegments([...segments, [lastX2, yPos, xPos, yPos]])
-    }
-  }, [segments, setSegments, xPos, yPos, sloped])
+    setSegments([...segments, [leftX, leftY, mouseX, mouseY]])
+  }, [segments, setSegments, mouseX, mouseY, leftX, leftY])
 
   return (
     <g>
-      <text>{'debug: ' + xPos + ' ' + yPos}</text>
+      <text>{'debug: ' + mouseX + ' ' + mouseY}</text>
 
       {segments.map(([x1, y1, x2, y2]) => (
         <>
           {/* top line for previous segments */}
           <line stroke="black" x1={x1} y1={y1} x2={x2} y2={y2} />
+
           {/* fill for previous segments */}
           <path
             fill="#666"
@@ -48,21 +45,20 @@ export const DrawingLayer = () => {
           />
         </>
       ))}
+
       {/* current segment */}
       <line
-        x1={lastX2}
-        y1={sloped ? lastY2 : yPos}
-        x2={xPos}
-        y2={yPos}
+        x1={leftX}
+        y1={leftY}
+        x2={mouseX}
+        y2={mouseY}
         stroke="black"
       />
       {/* fill for current segment  */}
       <path
         fill="#666"
         fillOpacity={0.5}
-        d={`M ${lastX2},${
-          sloped ? lastY2 : yPos
-        } L${xPos},${yPos} L${xPos},${bottom} L${lastX2},${bottom}`}
+        d={`M ${leftX},${leftY} L${mouseX},${mouseY} L${xPos},${bottom} L${leftX},${bottom}`}
       />
 
       {/* invisible bounding box for mouse x,y coordinate capture */}
