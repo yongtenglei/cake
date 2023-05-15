@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React from 'react'
 import {
   extent,
   scaleLinear,
@@ -7,7 +7,6 @@ import {
 } from 'd3'
 import { useData } from './hooks/useData'
 import { AxisLeft, AxisBottom } from './components/Axes'
-import { Marks } from './components/Marks'
 import { height, width, innerHeight, innerWidth, margin } from './spacing'
 import { DrawingLayer} from './components/DrawingLayer'
 
@@ -19,18 +18,13 @@ export const App = () => {
     return <pre>Loading...</pre>
   }
 
-  const yValue = (d): number => d.temperature
-  const xValue = (d): Date => d.time
-
-  const xAxisTickFormat = timeFormat('%a')
-
   const yScale = scaleLinear()
-    .domain(extent(data, yValue))
+    .domain([0, 10])
     .range([innerHeight, 0])
     .nice()
 
-  const xScale = scaleTime()
-    .domain(extent(data, xValue))
+  const xScale = scaleLinear()
+    .domain([0, 100])
     .range([0, innerWidth])
     .nice()
 
@@ -38,17 +32,17 @@ export const App = () => {
     <>
       <svg width={width} height={height}>
         <g transform={`translate(${margin.left},${margin.top})`}>
-          <AxisBottom xScale={xScale} tickFormat={xAxisTickFormat} />
+          <AxisBottom xScale={xScale} />
           <AxisLeft yScale={yScale} />
-          <Marks
+          {/* <Marks
             data={data}
             xScale={xScale}
             yScale={yScale}
             xValue={xValue}
             yValue={yValue}
             tooltipFormat={xAxisTickFormat}
-          />
-          <DrawingLayer />
+          /> */}
+          <DrawingLayer yScale={yScale} />
         </g>
       </svg>
     </>

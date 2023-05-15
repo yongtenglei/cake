@@ -1,16 +1,20 @@
 import React, { ReactEventHandler, useCallback, useState } from 'react'
-import { line, path, min, max } from 'd3'
+import { ScaleLinear } from 'd3'
 import { useMousePosition } from '../hooks/useMousePosition'
 import { margin, innerHeight as bottom, innerWidth } from '../spacing'
+
 
 // a segment is defined by the upper left and upper right corners
 // [x1, y1, x2, y2]
 type Segment = [number, number, number, number]
 
-/**
- *
- */
-export const DrawingLayer = () => {
+
+
+interface DrawingLayerProps {
+  yScale: ScaleLinear<number, number, never>;
+}
+
+export const DrawingLayer = ({ yScale }: DrawingLayerProps) => {
   const [segments, setSegments] = useState<Segment[]>([])
   const lastSegment = segments[segments.length - 1] ?? [0, bottom, 0, bottom]
   let [_prevX, _prevY, leftX, leftY] = lastSegment
@@ -19,13 +23,18 @@ export const DrawingLayer = () => {
   
   const { x, y, bind } = useMousePosition()
   // annoyingly, need to compensate for graph margins when calculating mouse coordinates
-  const mouseX = max([x - margin.left, leftX])
+  const mouseX = Math.max(x - margin.left, leftX)
   const mouseY = y - margin.top
   // set upper left point of shape to be same as mouse Y when drawing rectangles
   leftY = sloped ? leftY : mouseY 
 
   const onClick: React.MouseEventHandler = useCallback(() => {
-    setSegments([...segments, [leftX, leftY, mouseX, mouseY]])
+    // segment has no width
+    if(leftX === mouseX) {
+      return
+    } else {
+      setSegments([...segments, [leftX, leftY, mouseX, mouseY]])
+    }
   }, [segments, setSegments, mouseX, mouseY, leftX, leftY])
 
   return (
@@ -33,7 +42,7 @@ export const DrawingLayer = () => {
       <text>{'debug: ' + mouseX + ' ' + mouseY}</text>
 
       {segments.map(([x1, y1, x2, y2]) => (
-        <>
+        <React.Fragment key={x1}>
           {/* top line for previous segments */}
           <line stroke="black" x1={x1} y1={y1} x2={x2} y2={y2} />
 
@@ -43,7 +52,7 @@ export const DrawingLayer = () => {
             fillOpacity={0.5}
             d={`M${x1},${y1} L${x2},${y2} L${x2},${bottom} L${x1},${bottom}`}
           />
-        </>
+        </React.Fragment>
       ))}
 
       {/* current segment */}
@@ -61,7 +70,9 @@ export const DrawingLayer = () => {
         d={`M ${leftX},${leftY} L${mouseX},${mouseY} L${mouseX},${bottom} L${leftX},${bottom}`}
       />
 
-      {/* invisible bounding box for mouse x,y coordinate capture */}
+    <text x={mouseX} y={mouseY - 10} textAnchor='middle'>{yScale.invert(mouseY).toFixed(1)}</text>
+
+      {/* invisible bounding box for capturing mouse x and y */}
       <rect
         fill="transparent"
         {...bind}

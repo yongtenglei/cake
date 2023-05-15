@@ -8,7 +8,7 @@ export const AxisLeft = ({ yScale }) => (
       textAnchor="middle"
       transform={`translate(${-yAxisLabelOffset},${innerHeight / 2}) rotate(-90)`}
     >
-      Temperature
+      Value
     </text>
     {yScale.ticks().map((tickValue) => (
       <g
@@ -30,7 +30,7 @@ export const AxisLeft = ({ yScale }) => (
   </>
 )
 
-export const AxisBottom = ({ xScale, tickFormat }) => (
+export const AxisBottom = ({ xScale }) => (
   <>
     <text
       className="axis-label"
@@ -38,7 +38,7 @@ export const AxisBottom = ({ xScale, tickFormat }) => (
       y={innerHeight + xAxisLabelOffset}
       textAnchor="middle"
     >
-      Day
+      Portion
     </text>
     {xScale.ticks().map((tickValue) => (
       <g
@@ -52,7 +52,7 @@ export const AxisBottom = ({ xScale, tickFormat }) => (
           dy=".7em"
           y={innerHeight + tickOffset}
         >
-          {tickFormat(tickValue)}
+          {tickValue}
         </text>
       </g>
     ))}
