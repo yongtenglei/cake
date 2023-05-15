@@ -58,7 +58,7 @@ export const DrawingLayer = () => {
       <path
         fill="#666"
         fillOpacity={0.5}
-        d={`M ${leftX},${leftY} L${mouseX},${mouseY} L${xPos},${bottom} L${leftX},${bottom}`}
+        d={`M ${leftX},${leftY} L${mouseX},${mouseY} L${mouseX},${bottom} L${leftX},${bottom}`}
       />
 
       {/* invisible bounding box for mouse x,y coordinate capture */}
