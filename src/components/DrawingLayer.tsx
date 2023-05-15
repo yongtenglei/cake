@@ -1,5 +1,5 @@
 import React, { ReactEventHandler, useCallback, useState } from 'react'
-import { line, path } from 'd3'
+import { line, path, min, max } from 'd3'
 import { useMousePosition } from '../hooks/useMousePosition'
 import { margin, innerHeight, innerWidth } from '../spacing'
 
@@ -8,19 +8,24 @@ import { margin, innerHeight, innerWidth } from '../spacing'
  */
 export const DrawingLayer = () => {
   const [lineCoords, setLineCoords] = useState<[number, number][]>([])
+  const lastCoords = lineCoords[lineCoords.length-1] ?? [0, innerHeight]
   const { x, y, bind } = useMousePosition()
-  const xPos = x - margin.left
+  
+  const xPos = max([x - margin.left, lastCoords[0]])
   const yPos = y - margin.top
 
-  const onClick: React.MouseEventHandler = useCallback((e) => {
-    setLineCoords([...lineCoords, [e.clientX - margin.left, e.clientY - margin.top]])
-  }, [lineCoords, setLineCoords])
-
-  const lastCoords = lineCoords[lineCoords.length-1] ?? [0, innerHeight]
   // M = move, L = draw line
   const drawnLine = [`M 0,${innerHeight}`, ...lineCoords.map(([x,y]) => `L ${x},${y}`)].join( ' ')
-  const shading = drawnLine + ` L ${lastCoords[0]},${innerHeight}`
+  const shading = drawnLine + `L ${xPos},${yPos} L ${xPos},${innerHeight}`
   
+
+  const onClick: React.MouseEventHandler = useCallback(() => {
+    // const x = max([e.clientX - margin.left, lastCoords[0]])
+    // const y = e.clientY - margin.top
+    console.log(xPos + ' ' + yPos)
+    setLineCoords([...lineCoords, [xPos, yPos]])
+  }, [lineCoords, setLineCoords, xPos, yPos])
+
   return (
     <g>
       <text>{'debug: ' + xPos + ' ' + yPos}</text>

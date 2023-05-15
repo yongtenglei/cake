@@ -1,14 +1,8 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import {
-  csv,
-  arc,
-  pie,
   extent,
   scaleLinear,
   timeFormat,
-  max,
-  min,
-  format,
   scaleTime,
 } from 'd3'
 import { useData } from './hooks/useData'

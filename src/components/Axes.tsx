@@ -1,5 +1,5 @@
 import {tickOffset, innerWidth, innerHeight, xAxisLabelOffset, yAxisLabelOffset} from '../spacing'
-
+import './Axes.css'
 
 export const AxisLeft = ({ yScale }) => (
   <>
