@@ -1,0 +1,61 @@
+:root {
+  --bHeight: 10px; /* height of one curly, which is half the total height */
+  --bRadius: 8px; /* radius of the four curves */
+  --bSecondRadius: 10px; /* Makes the curve slightly nicer */
+  --bBorderWidth: 2px; /* bracket line thickness */
+}
+
+/* 
+  The backet is built using four rectangles with rounded corners and borders.
+  The top left and right ones create the horizontal line and the edge curlies.
+  The bottom left and right create the center curlies.
+  This could be built in SVG but it be harder to resize.
+*/
+.bracketContainer {
+  height: calc(var(--bHeight) * 2);
+  position: relative;
+}
+
+.bracket {
+  height: var(--bHeight);
+  display: inline-block;
+  border: 0px solid transparent;
+}
+
+.topBracket {
+  width: var(--bHeight);
+  position: absolute;
+  top: 0;
+  border-bottom: var(--bBorderWidth) solid black;
+}
+
+.leftBracket {
+  left: 0;
+  border-bottom-left-radius: var(--bRadius) var(--bSecondRadius);
+  border-left: var(--bBorderWidth) solid black;
+}
+
+.rightBracket {
+  right: 0;
+  border-bottom-right-radius: var(--bRadius) var(--bSecondRadius);
+  border-right: var(--bBorderWidth) solid black;
+}
+
+
+.bottomBracket {
+  width: calc(50% - var(--bRadius));
+  margin-top: calc(var(--bHeight) - var(--bBorderWidth));
+  border-top: var(--bBorderWidth) solid black;
+}
+
+.bottomLeftBracket {
+  margin-left: var(--bRadius);
+  border-top-right-radius: var(--bRadius) var(--bSecondRadius);
+  border-right: var(--bBorderWidth) solid black;
+}
+
+.bottomRightBracket {
+  margin-left: calc(-1*var(--bBorderWidth));
+  border-top-left-radius: var(--bRadius) var(--bSecondRadius);
+  border-left: var(--bBorderWidth) solid black;
+}

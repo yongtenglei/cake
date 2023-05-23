@@ -30,7 +30,9 @@ export const AxisLeft = ({ yScale }) => (
   </>
 )
 
-export const AxisBottom = ({ xScale }) => (
+export const AxisBottom = ({ xScale }) => {
+  return null
+  return (
   <>
     <text
       className="axis-label"
@@ -57,4 +59,4 @@ export const AxisBottom = ({ xScale }) => (
       </g>
     ))}
   </>
-)
+)}
