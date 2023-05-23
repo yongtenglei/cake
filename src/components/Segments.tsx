@@ -1,9 +1,9 @@
 import React from 'react'
 import { innerHeight as bottom } from '../spacing'
-import { Segment } from '../types'
+import { DrawnSegment } from '../types'
 
 interface SegmentsProps {
-  segments: Segment[]
+  segments: DrawnSegment[]
 }
 
 export const Segments = ({ segments }: SegmentsProps) => {

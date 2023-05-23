@@ -16,6 +16,13 @@
   position: relative;
 }
 
+.bracketLine {
+  height: 100%;
+  width: var(--bBorderWidth);
+  background-color: black;
+  margin: auto;
+}
+
 .bracket {
   height: var(--bHeight);
   display: inline-block;

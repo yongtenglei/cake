@@ -1,13 +1,14 @@
-import { ScaleLinear } from 'd3'
+import { useContext } from 'react'
+import { GraphContext } from '../GraphContext'
 
 interface ValueBubbleProps {
   x: number
   y: number
   value: number
-  yScale: ScaleLinear<number, number, never>
 }
 
-export const ValueBubble = ({ x, y, value, yScale }: ValueBubbleProps) => {
+export const ValueBubble = ({ x, y, value }: ValueBubbleProps) => {
+  const { yScale } = useContext(GraphContext)
   const formatValue = (val: number) => yScale.invert(val).toFixed(1)
   return (
     <g transform={`translate(${x} ${y - 10})`} key={x}>

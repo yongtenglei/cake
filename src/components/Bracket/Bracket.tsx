@@ -1,8 +1,6 @@
-import { innerHeight as bottom } from '../../spacing'
 import './Bracket.css'
 
 interface BracketProps {
-  start: number
   width: number
 }
 
@@ -10,10 +8,14 @@ interface BracketProps {
  *  The curly brace that brackets a segment.
  *  See the CSS file for details on how the styling works.
  */
-export const Bracket = ({ start, width }: BracketProps) => {
+export const Bracket = ({ width }: BracketProps) => {
   if (width < 40) {
-    // too small to render anything useful, so keep just this to maintain the height.
-    return <div className="bracketContainer" />
+    // too small for a brack so render a line
+    return (
+      <div className="bracketContainer" style={{ width }}>
+        <div className="bracketLine" />
+      </div>
+    )
   }
   return (
     <div className="bracketContainer" style={{ width }}>

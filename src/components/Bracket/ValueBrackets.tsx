@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import { innerHeight as bottom, width } from '../../spacing'
 import { Segment } from '../../types'
+import { GraphContext } from '../../GraphContext'
 import { Bracket } from './Bracket'
 import './ValueBracket.css'
 
@@ -40,35 +41,45 @@ export const ValueBracket = ({
   setSegmentLength,
   segNumber,
 }: ValueBracketProps) => {
+  const { xScale } = useContext(GraphContext)
   const [editing, setEditing] = useState(false)
-  const start = x1
-  const width = x2 - x1
-  const onChange = (e) => {
-    const newWidth = parseInt(e.target.value)
-    if (!isNaN(newWidth)) {
-      setSegmentLength(id, newWidth)
+  const slicesize = x2 - x1
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    if (value === '') {
+      // something
+    }
+    const newSliceSize = parseInt(value)
+    if (!isNaN(newSliceSize)) {
+      setSegmentLength(id, newSliceSize)
+    }
+  }
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' || e.key === 'Escape') {
+      setEditing(false)
     }
   }
   return (
     <>
       <div
         style={{
-          left: start,
-          width: Math.max(width, 100),
+          left: xScale(x1),
+          width: 'min-content', //Math.max(slicesize, 80),
           position: 'absolute',
           zIndex: editing ? 10 : 0,
         }}
       >
-        <Bracket start={start} width={width} />
+        <Bracket width={xScale(slicesize)} />
 
-        <div className={'backetInputContainer'}>
+        <div className='backetInputContainer'>
           {editing ? (
             <TextField
-              label={`Segment ${segNumber}`}
+              label={`Part ${segNumber}`}
               type="number"
               autoFocus
-              value={width}
+              value={slicesize}
               onBlur={() => setEditing(false)}
+              onKeyDown={handleKeyPress}
               onChange={onChange}
               variant="outlined"
               size="small"
@@ -79,9 +90,9 @@ export const ValueBracket = ({
             <Button
               onClick={() => setEditing(true)}
               variant="outlined"
-              aria-label={`Segment ${segNumber} has width ${width}%, click to edit`}
+              aria-label={`Segment ${segNumber} has width ${slicesize}%, click to edit`}
             >
-              {width} %
+              {slicesize} %
             </Button>
           )}
         </div>
