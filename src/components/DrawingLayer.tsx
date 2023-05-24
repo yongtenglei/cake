@@ -1,7 +1,8 @@
-import React, { ReactEventHandler, useCallback, useState } from 'react'
+import React, { useContext, useCallback, useState } from 'react'
 import { useMousePosition } from '../hooks/useMousePosition'
-import { margin, innerHeight as bottom, innerWidth } from '../spacing'
-import { ValueBubble } from './Value'
+import { height, width, margin, innerHeight, innerWidth } from '../spacing'
+import { ValueBubbles } from './Value'
+import { AxisLeft, AxisBottom } from './Axes'
 import { ValueBrackets } from './Bracket/ValueBrackets'
 import { Segment, DrawnSegment } from '../types'
 import { Segments } from './Segments'
@@ -13,9 +14,7 @@ import {
 // ids starting at 0. Increment every time you use one.
 let id = 0
 
-interface DrawingLayerProps {}
-
-export const DrawingLayer = ({}: DrawingLayerProps) => {
+export const DrawingLayer = () => {
   const convertToPixels = useConvertSegToPixels()
   const convertFromPixels = useConvertSegFromPixels()
 
@@ -36,15 +35,13 @@ export const DrawingLayer = ({}: DrawingLayerProps) => {
 
   const sloped = false // whether lines must be flat or can be angled
 
-  // Annoyingly, need to compensate for graph margins when calculating mouse coordinates.
-  const { x, y, bind } = useMousePosition()
+  let { mouseX, mouseY, bind } = useMousePosition()
   // Don't let mouseX go more left than previous line
-  let mouseX = Math.max(x - margin.left, leftX)
+  mouseX = Math.max(mouseX, leftX)
   // Snap to end if mouse within 10 pixels
   if (mouseX + 10 > innerWidth) {
     mouseX = innerWidth
   }
-  const mouseY = y - margin.top
   // set upper left point of shape to be same as mouse Y when drawing rectangles
   leftY = sloped ? leftY : mouseY
 
@@ -78,7 +75,7 @@ export const DrawingLayer = ({}: DrawingLayerProps) => {
           // don't allow endpoint to go over 100
           const endpoint = Math.min(seg.x1 + newWidth, 100)
           delta = endpoint - seg.x2
-          if (newWidth <= 0) {
+          if (newWidth < 0) {
             return null
           }
           // alter width of changed segment
@@ -104,45 +101,53 @@ export const DrawingLayer = ({}: DrawingLayerProps) => {
     [segments, setSegments]
   )
 
-  const pixelSegmentsWithCurrent: DrawnSegment[] = [...segments].map(
+  const segmentsWithCurrent: Segment[] = [...segments]
+  if (isDrawing) {
+    segmentsWithCurrent.push(
+      convertFromPixels({
+        id: id + 1,
+        x1: leftX,
+        y1: leftY,
+        x2: mouseX,
+        y2: mouseY,
+        type: 'drawn',
+      })
+    )
+  }
+  const pixelSegmentsWithCurrent: DrawnSegment[] = [...segmentsWithCurrent].map(
     convertToPixels
   )
 
-  if (isDrawing) {
-    // the segment we are currently drawing
-    pixelSegmentsWithCurrent.push({
-      id: id + 1,
-      x1: leftX,
-      y1: leftY,
-      x2: mouseX,
-      y2: mouseY,
-      type: 'drawn',
-    })
-  }
-
   return (
-    <g>
-      <text>{'debug: ' + mouseX + ' ' + mouseY}</text>
-
-      <Segments segments={pixelSegmentsWithCurrent} />
-
-      {/* bubbles displaying values. Must be after other items to display on top */}
-      {pixelSegmentsWithCurrent.map(({ x2, y2, id }) => (
-        <ValueBubble x={x2} y={y2} value={y2} key={id} />
-      ))}
-      {/* {isDrawing && <ValueBubble x={mouseX} y={mouseY} value={mouseY} />} */}
-
-      <ValueBrackets segments={segments} setSegmentLength={setSegmentLength} />
-
-      {/* invisible bounding box for capturing mouse x and y
-          must be last so it's on top of everything */}
-      <rect
+    <div {...bind} onClick={onClick}>
+      <svg width={width} height={height}>
+        <g transform={`translate(${margin.left},${margin.top})`}>
+          <AxisBottom />
+          <AxisLeft />
+          {/* <text>{'debug: ' + mouseX + ' ' + mouseY}</text> */}
+          {/* <rect
         fill="transparent"
-        {...bind}
-        onClick={onClick}
-        height={bottom}
-        width={innerWidth + 10}
-      ></rect>
-    </g>
+       
+        height={innerHeight}
+        width={innerWidth}
+      ></rect> */}
+
+          <Segments
+            segments={pixelSegmentsWithCurrent}
+            mouseX={mouseX}
+            mouseY={mouseY}
+          />
+
+          {/* bubbles displaying values. Must be after other items to display on top */}
+          {/* <ValueBubbles segments={pixelSegmentsWithCurrent} /> */}
+
+          <ValueBrackets
+            segments={segmentsWithCurrent}
+            setSegmentLength={setSegmentLength}
+          />
+          {/* invisible bounding box for capturing mouse x and y */}
+        </g>
+      </svg>
+    </div>
   )
 }

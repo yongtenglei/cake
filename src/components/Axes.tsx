@@ -47,14 +47,14 @@ export const AxisBottom = () => {
   const { xScale } = useContext(GraphContext)
   return (
     <>
-      {/* <text
+      <text
         className="axis-label"
         x={innerWidth / 2}
         y={innerHeight + xAxisLabelOffset}
         textAnchor="middle"
       >
         Portion
-      </text> */}
+      </text>
       {xScale.ticks().map((tickValue) => (
         <g
           className="tick"
@@ -62,13 +62,13 @@ export const AxisBottom = () => {
           transform={`translate(${xScale(tickValue)},0)`}
         >
           <line y2={innerHeight} />
-          {/* <text
+          <text
             style={{ textAnchor: 'middle' }}
             dy=".7em"
             y={innerHeight + tickOffset}
           >
             {tickValue}
-          </text> */}
+          </text>
         </g>
       ))}
     </>

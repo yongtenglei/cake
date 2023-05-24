@@ -17,7 +17,7 @@ export const ValueBrackets = ({
   setSegmentLength,
 }: ValueBracketsProps) => {
   return (
-    <foreignObject x={0} y={bottom} width={width} height="100">
+    <foreignObject x={0} y={bottom+20} width={width} height="100">
       {segments.map((seg, i) => (
         <ValueBracket
           segment={seg}
@@ -47,7 +47,7 @@ export const ValueBracket = ({
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     if (value === '') {
-      // something
+      setSegmentLength(id, 0)
     }
     const newSliceSize = parseInt(value)
     if (!isNaN(newSliceSize)) {
@@ -56,8 +56,14 @@ export const ValueBracket = ({
   }
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' || e.key === 'Escape') {
-      setEditing(false)
+      exitEditing()
     }
+  }
+  const exitEditing = () => {
+    if(slicesize === 0) {
+      setSegmentLength(id, -1) // remove zero-size segment only on exit
+    }
+    setEditing(false)
   }
   return (
     <>
@@ -78,7 +84,7 @@ export const ValueBracket = ({
               type="number"
               autoFocus
               value={slicesize}
-              onBlur={() => setEditing(false)}
+              onBlur={exitEditing}
               onKeyDown={handleKeyPress}
               onChange={onChange}
               variant="outlined"

@@ -1,8 +1,9 @@
 import { useState, useMemo } from 'react'
+import { margin } from '../spacing'
 
 export const useMousePosition = () => {
-  const [x, setX] = useState(0)
-  const [y, setY] = useState(0)
+  const [mouseX, setMouseX] = useState(0)
+  const [mouseY, setMouseY] = useState(0)
 
   // by binding to a specific DOM element, we scope the x and y relative to that element
   const bind: {
@@ -10,12 +11,14 @@ export const useMousePosition = () => {
   } = useMemo(
     () => ({
       onMouseMove: (event) => {
-        setX(event.nativeEvent.offsetX)
-        setY(event.nativeEvent.offsetY)
+        setMouseX(event.clientX - margin.left)
+        setMouseY(event.clientY - margin.top)
+        // setX(event.nativeEvent.offsetX)
+        // setY(event.nativeEvent.offsetY)
       },
     }),
     []
   )
 
-  return { x, y, bind }
+  return { mouseX, mouseY, bind }
 }
