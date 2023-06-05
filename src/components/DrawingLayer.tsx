@@ -1,6 +1,7 @@
-import React, { useContext, useCallback, useState } from 'react'
+import React, { useContext, useCallback, useState, useMemo } from 'react'
 import { useMousePosition } from '../hooks/useMousePosition'
 import { height, width, margin, innerHeight, innerWidth } from '../spacing'
+import { GraphContext } from '../GraphContext'
 import { ValueBubbles } from './Value'
 import { AxisLeft, AxisBottom } from './Axes'
 import { ValueBrackets } from './Bracket/ValueBrackets'
@@ -9,6 +10,7 @@ import { Segments } from './Segments'
 import {
   useConvertSegToPixels,
   useConvertSegFromPixels,
+  roundValue,
 } from '../utils/graphUtils'
 
 // ids starting at 0. Increment every time you use one.
@@ -17,9 +19,30 @@ let id = 0
 export const DrawingLayer = () => {
   const convertToPixels = useConvertSegToPixels()
   const convertFromPixels = useConvertSegFromPixels()
+  const { yScale } = useContext(GraphContext)
 
   const [segments, setSegments] = useState<Segment[]>([])
   const [isDrawing, setIsDrawing] = useState(true)
+
+  const [movingId, setMovingId] = useState<number | null>(null)
+  const [mouseX, setMouseX] = useState(0)
+  const [mouseY, setMouseY] = useState(0)
+  const onMouseMove = useCallback((event: React.MouseEvent) => {
+    const x = event.clientX - margin.left
+    const y = event.clientY - margin.top
+    setMouseX(x)
+    setMouseY(y)
+    if(movingId) {
+      const newValue = roundValue(yScale.invert(y))
+      const newSegments = segments.map((seg) => {
+        if (seg.id === movingId) {
+          return { ...seg, y1: newValue, y2: newValue }
+        }
+        return seg
+      })
+      setSegments(newSegments)
+    }
+  }, [setMouseX, setMouseY, setSegments, yScale, segments, movingId])
 
   const lastDrawnSegment = convertToPixels(
     segments[segments.length - 1] ?? {
@@ -35,25 +58,24 @@ export const DrawingLayer = () => {
 
   const sloped = false // whether lines must be flat or can be angled
 
-  let { mouseX, mouseY, bind } = useMousePosition()
   // Don't let mouseX go more left than previous line
-  mouseX = Math.max(mouseX, leftX)
+  let constrainedMouseX = Math.max(mouseX, leftX)
   // Snap to end if mouse within 10 pixels
-  if (mouseX + 10 > innerWidth) {
-    mouseX = innerWidth
+  if (constrainedMouseX + 10 > innerWidth) {
+    constrainedMouseX = innerWidth
   }
   // set upper left point of shape to be same as mouse Y when drawing rectangles
   leftY = sloped ? leftY : mouseY
 
   const onClick = useCallback(() => {
     // segment has non-zero width
-    if (leftX !== mouseX) {
+    if (leftX !== constrainedMouseX) {
       setSegments([
         ...segments,
         convertFromPixels({
           x1: leftX,
           y1: leftY,
-          x2: mouseX,
+          x2: constrainedMouseX,
           y2: mouseY,
           id: ++id,
           type: 'drawn',
@@ -61,10 +83,10 @@ export const DrawingLayer = () => {
       ])
     }
     // this is the final segment
-    if (mouseX === innerWidth) {
+    if (constrainedMouseX === innerWidth) {
       setIsDrawing(false)
     }
-  }, [segments, setSegments, mouseX, mouseY, leftX, leftY, convertFromPixels])
+  }, [segments, setSegments, constrainedMouseX, mouseY, leftX, leftY, convertFromPixels])
 
   const setSegmentLength = useCallback(
     (id: number, newWidth: number) => {
@@ -108,7 +130,7 @@ export const DrawingLayer = () => {
         id: id + 1,
         x1: leftX,
         y1: leftY,
-        x2: mouseX,
+        x2: constrainedMouseX,
         y2: mouseY,
         type: 'drawn',
       })
@@ -119,27 +141,22 @@ export const DrawingLayer = () => {
   )
 
   return (
-    <div {...bind} onClick={onClick}>
+    // HTML container listens for events at top level.
+    // This is much harder with pure SVG.
+    <div onMouseMove={onMouseMove} onClick={onClick} onMouseUp={() => setMovingId(null)}>
       <svg width={width} height={height}>
         <g transform={`translate(${margin.left},${margin.top})`}>
           <AxisBottom />
           <AxisLeft />
-          {/* <text>{'debug: ' + mouseX + ' ' + mouseY}</text> */}
-          {/* <rect
-        fill="transparent"
-       
-        height={innerHeight}
-        width={innerWidth}
-      ></rect> */}
 
-          <Segments
-            segments={pixelSegmentsWithCurrent}
-            mouseX={mouseX}
-            mouseY={mouseY}
-          />
+          <Segments segments={pixelSegmentsWithCurrent} />
 
           {/* bubbles displaying values. Must be after other items to display on top */}
-          {/* <ValueBubbles segments={pixelSegmentsWithCurrent} /> */}
+          <ValueBubbles
+            segments={pixelSegmentsWithCurrent}
+            editable={!isDrawing}
+            setMovingId={(id) => setMovingId(id)}
+          />
 
           <ValueBrackets
             segments={segmentsWithCurrent}

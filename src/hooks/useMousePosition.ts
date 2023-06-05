@@ -13,8 +13,6 @@ export const useMousePosition = () => {
       onMouseMove: (event) => {
         setMouseX(event.clientX - margin.left)
         setMouseY(event.clientY - margin.top)
-        // setX(event.nativeEvent.offsetX)
-        // setY(event.nativeEvent.offsetY)
       },
     }),
     []

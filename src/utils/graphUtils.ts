@@ -17,7 +17,7 @@ export const useConvertSegToPixels = () => {
   }
 }
 
-const roundToOneDecimal = (num: number) => Math.round(num * 10) / 10
+export const roundValue = (num: number) => Math.round(num * 10) / 10
 
 export const useConvertSegFromPixels = () => {
   const { xScale, yScale } = useContext(GraphContext)
@@ -25,9 +25,9 @@ export const useConvertSegFromPixels = () => {
     const { x1, y1, x2, y2, id } = seg
     return {
       x1: Math.round(xScale.invert(x1)),
-      y1: roundToOneDecimal(yScale.invert(y1)),
+      y1: roundValue(yScale.invert(y1)),
       x2: Math.round(xScale.invert(x2)),
-      y2: roundToOneDecimal(yScale.invert(y2)),
+      y2: roundValue(yScale.invert(y2)),
       id,
       type: 'value'
     }

@@ -1,0 +1,4 @@
+.vertGrabArea {
+  cursor: ns-resize;
+  user-select: none;
+}
