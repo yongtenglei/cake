@@ -22,7 +22,7 @@ interface DrawingLayerProps {
   setSegments: (segment: Segment[]) => void
 }
 
-export const DrawingLayer = ({segments, setSegments}) => {
+export const DrawingLayer = ({ segments, setSegments }) => {
   const convertToPixels = useConvertSegToPixels()
   const convertFromPixels = useConvertSegFromPixels()
   const { yScale } = useContext(GraphContext)
@@ -31,6 +31,8 @@ export const DrawingLayer = ({segments, setSegments}) => {
   const [mouseY, setMouseY] = useState(0)
   const onMouseMove = useCallback(
     (event: React.MouseEvent) => {
+      // add a check here for out of bounds?
+      // we get weird numbers when mousing down over the buttons
       setMouseX(event.nativeEvent.offsetX - margin.left)
       setMouseY(event.nativeEvent.offsetY - margin.top)
     },
@@ -65,6 +67,7 @@ export const DrawingLayer = ({segments, setSegments}) => {
   const [movingId, setMovingId] = useState<number | null>(null)
   useEffect(() => {
     if (movingId) {
+      console.log(yPos, mouseY)
       const newValue = roundValue(yScale.invert(yPos))
       const newSegments = segments.map((seg) => {
         if (seg.id === movingId) {

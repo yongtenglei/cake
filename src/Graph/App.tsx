@@ -11,8 +11,15 @@ import { isDrawingComplete } from './graphUtils'
 export const App = () => {
   const yScale = scaleLinear().domain([0, 10]).range([innerHeight, 0]).nice()
   const xScale = scaleLinear().domain([0, 100]).range([0, innerWidth]).nice()
-  const [segments, setSegments] = useState<Segment[]>([])
-  const isComplete = isDrawingComplete(segments)
+  const [preferences, setPreferences] = useState<Segment[][]>([])
+  const setCurrentAgentPrefs = (segs: Segment[]) => {
+    const prefs = [...preferences]
+    prefs.pop()
+    prefs.push(segs)
+    setPreferences(prefs)
+  }
+  const currentAgentPrefs = preferences[preferences.length - 1] ?? []
+  const isComplete = isDrawingComplete(currentAgentPrefs)
 
   return (
     <GraphContext.Provider
@@ -21,8 +28,8 @@ export const App = () => {
         xScale,
       }}
     >
-      <GraphHeader isComplete={isComplete} />
-      <DrawingLayer segments={segments} setSegments={setSegments} />
+      <GraphHeader isComplete={isComplete} currentAgent={preferences.length || 1} />
+      <DrawingLayer segments={currentAgentPrefs} setSegments={setCurrentAgentPrefs} />
     </GraphContext.Provider>
   )
 }
