@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react'
 import { GraphContext } from '../GraphContext'
-import { DrawnSegment } from '../types'
-import { roundValue } from '../utils/graphUtils'
+import { DrawnSegment } from '../../types'
+import { roundValue } from '../graphUtils'
 import { innerHeight, innerWidth } from '../spacing'
 import './Value.css'
 

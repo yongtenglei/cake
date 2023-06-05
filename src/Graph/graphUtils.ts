@@ -1,7 +1,6 @@
 import { useContext } from 'react'
-import { GraphContext } from '../GraphContext'
+import { GraphContext } from './GraphContext'
 import { Segment, DrawnSegment } from '../types'
-import { innerWidth } from '../spacing'
 
 export const useConvertSegToPixels = () => {
   const { xScale, yScale } = useContext(GraphContext)

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { innerHeight as bottom } from '../spacing'
-import { DrawnSegment } from '../types'
+import { DrawnSegment } from '../../types'
 
 interface SegmentsProps {
   segments: DrawnSegment[]

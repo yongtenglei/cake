@@ -5,14 +5,14 @@ import { GraphContext } from '../GraphContext'
 import { ValueBubbles } from './Value'
 import { AxisLeft, AxisBottom } from './Axes'
 import { ValueBrackets } from './Bracket/ValueBrackets'
-import { Segment, DrawnSegment } from '../types'
+import { Segment, DrawnSegment } from '../../types'
 import { Segments } from './Segments'
 import {
   useConvertSegToPixels,
   useConvertSegFromPixels,
   roundValue,
   isDrawingComplete,
-} from '../utils/graphUtils'
+} from '../graphUtils'
 
 // ids starting at 0. To make these unique, increment the number each time you use one.
 let id = 0

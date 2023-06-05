@@ -4,8 +4,8 @@ import { innerHeight, innerWidth, margin } from './spacing'
 import { DrawingLayer } from './components/DrawingLayer'
 import { GraphHeader } from './components/GraphHeader'
 import { GraphContext } from './GraphContext'
-import { Segment } from './types'
-import { isDrawingComplete } from './utils/graphUtils'
+import { Segment } from '../types'
+import { isDrawingComplete } from './graphUtils'
 // import CakeRoundedIcon from '@material-ui/icons/CakeRounded';
 
 export const App = () => {
