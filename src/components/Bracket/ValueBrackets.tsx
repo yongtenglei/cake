@@ -70,7 +70,7 @@ export const ValueBracket = ({
       <div
         style={{
           left: xScale(x1),
-          width: 'min-content', //Math.max(slicesize, 80),
+          width: 'min-content',
           position: 'absolute',
           zIndex: editing ? 10 : 0,
         }}

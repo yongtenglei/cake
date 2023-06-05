@@ -1,6 +1,7 @@
 import { useContext } from 'react'
 import { GraphContext } from '../GraphContext'
 import { Segment, DrawnSegment } from '../types'
+import { innerWidth } from '../spacing'
 
 export const useConvertSegToPixels = () => {
   const { xScale, yScale } = useContext(GraphContext)
@@ -17,6 +18,7 @@ export const useConvertSegToPixels = () => {
   }
 }
 
+// Easy way to round decimals to nearest tenth
 export const roundValue = (num: number) => Math.round(num * 10) / 10
 
 export const useConvertSegFromPixels = () => {
@@ -32,4 +34,9 @@ export const useConvertSegFromPixels = () => {
       type: 'value'
     }
   }
+}
+
+export const isDrawingComplete = (segments: Segment[]) => {
+  const seg = segments[segments.length - 1]
+  return seg?.x2 === 100
 }

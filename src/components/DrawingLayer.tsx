@@ -1,5 +1,5 @@
-import React, { useContext, useCallback, useState, useMemo } from 'react'
-import { useMousePosition } from '../hooks/useMousePosition'
+import React, { useContext, useCallback, useState, useEffect } from 'react'
+import clamp from 'lodash.clamp'
 import { height, width, margin, innerHeight, innerWidth } from '../spacing'
 import { GraphContext } from '../GraphContext'
 import { ValueBubbles } from './Value'
@@ -11,38 +11,31 @@ import {
   useConvertSegToPixels,
   useConvertSegFromPixels,
   roundValue,
+  isDrawingComplete,
 } from '../utils/graphUtils'
 
-// ids starting at 0. Increment every time you use one.
+// ids starting at 0. To make these unique, increment the number each time you use one.
 let id = 0
 
-export const DrawingLayer = () => {
+interface DrawingLayerProps {
+  segments: Segment[]
+  setSegments: (segment: Segment[]) => void
+}
+
+export const DrawingLayer = ({segments, setSegments}) => {
   const convertToPixels = useConvertSegToPixels()
   const convertFromPixels = useConvertSegFromPixels()
   const { yScale } = useContext(GraphContext)
 
-  const [segments, setSegments] = useState<Segment[]>([])
-  const [isDrawing, setIsDrawing] = useState(true)
-
-  const [movingId, setMovingId] = useState<number | null>(null)
   const [mouseX, setMouseX] = useState(0)
   const [mouseY, setMouseY] = useState(0)
-  const onMouseMove = useCallback((event: React.MouseEvent) => {
-    const x = event.clientX - margin.left
-    const y = event.clientY - margin.top
-    setMouseX(x)
-    setMouseY(y)
-    if(movingId) {
-      const newValue = roundValue(yScale.invert(y))
-      const newSegments = segments.map((seg) => {
-        if (seg.id === movingId) {
-          return { ...seg, y1: newValue, y2: newValue }
-        }
-        return seg
-      })
-      setSegments(newSegments)
-    }
-  }, [setMouseX, setMouseY, setSegments, yScale, segments, movingId])
+  const onMouseMove = useCallback(
+    (event: React.MouseEvent) => {
+      setMouseX(event.nativeEvent.offsetX - margin.left)
+      setMouseY(event.nativeEvent.offsetY - margin.top)
+    },
+    [setMouseX, setMouseY, yScale]
+  )
 
   const lastDrawnSegment = convertToPixels(
     segments[segments.length - 1] ?? {
@@ -55,38 +48,50 @@ export const DrawingLayer = () => {
     }
   )
   let { x2: leftX, y2: leftY } = lastDrawnSegment
+  const isDrawing = !isDrawingComplete(segments)
 
   const sloped = false // whether lines must be flat or can be angled
 
   // Don't let mouseX go more left than previous line
-  let constrainedMouseX = Math.max(mouseX, leftX)
+  let xPos = clamp(mouseX, leftX, innerWidth)
+  let yPos = clamp(mouseY, 0, innerHeight)
   // Snap to end if mouse within 10 pixels
-  if (constrainedMouseX + 10 > innerWidth) {
-    constrainedMouseX = innerWidth
+  if (xPos + 10 > innerWidth) {
+    xPos = innerWidth
   }
   // set upper left point of shape to be same as mouse Y when drawing rectangles
-  leftY = sloped ? leftY : mouseY
+  leftY = sloped ? leftY : yPos
+
+  const [movingId, setMovingId] = useState<number | null>(null)
+  useEffect(() => {
+    if (movingId) {
+      const newValue = roundValue(yScale.invert(yPos))
+      const newSegments = segments.map((seg) => {
+        if (seg.id === movingId) {
+          return { ...seg, y1: newValue, y2: newValue }
+        }
+        return seg
+      })
+      setSegments(newSegments)
+    }
+  }, [yPos, movingId])
 
   const onClick = useCallback(() => {
-    // segment has non-zero width
-    if (leftX !== constrainedMouseX) {
+    if (isDrawing && leftX !== xPos) {
+      // segment has non-zero width
       setSegments([
         ...segments,
         convertFromPixels({
           x1: leftX,
           y1: leftY,
-          x2: constrainedMouseX,
-          y2: mouseY,
+          x2: xPos,
+          y2: yPos,
           id: ++id,
           type: 'drawn',
         }),
       ])
     }
-    // this is the final segment
-    if (constrainedMouseX === innerWidth) {
-      setIsDrawing(false)
-    }
-  }, [segments, setSegments, constrainedMouseX, mouseY, leftX, leftY, convertFromPixels])
+  }, [segments, setSegments, xPos, yPos, leftX, leftY, convertFromPixels])
 
   const setSegmentLength = useCallback(
     (id: number, newWidth: number) => {
@@ -94,7 +99,9 @@ export const DrawingLayer = () => {
 
       const newSegments = segments.map((seg) => {
         if (seg.id === id) {
-          // don't allow endpoint to go over 100
+          // this is the changed segment.
+
+          // truncate anything outside the bounds of the graph
           const endpoint = Math.min(seg.x1 + newWidth, 100)
           delta = endpoint - seg.x2
           if (newWidth < 0) {
@@ -104,6 +111,7 @@ export const DrawingLayer = () => {
           return { ...seg, x2: endpoint }
         }
         if (delta !== null) {
+          // if delta is not null, this segment is after the changed one
           const newX1 = seg.x1 + delta
           const newX2 = Math.min(seg.x2 + delta, 100)
           // alter position of all segments after changed one
@@ -130,8 +138,8 @@ export const DrawingLayer = () => {
         id: id + 1,
         x1: leftX,
         y1: leftY,
-        x2: constrainedMouseX,
-        y2: mouseY,
+        x2: xPos,
+        y2: yPos,
         type: 'drawn',
       })
     )
@@ -143,7 +151,11 @@ export const DrawingLayer = () => {
   return (
     // HTML container listens for events at top level.
     // This is much harder with pure SVG.
-    <div onMouseMove={onMouseMove} onClick={onClick} onMouseUp={() => setMovingId(null)}>
+    <div
+      onMouseMove={onMouseMove}
+      onClick={onClick}
+      onMouseUp={() => setMovingId(null)}
+    >
       <svg width={width} height={height}>
         <g transform={`translate(${margin.left},${margin.top})`}>
           <AxisBottom />
@@ -155,7 +167,7 @@ export const DrawingLayer = () => {
           <ValueBubbles
             segments={pixelSegmentsWithCurrent}
             editable={!isDrawing}
-            setMovingId={(id) => setMovingId(id)}
+            setMovingId={setMovingId}
           />
 
           <ValueBrackets

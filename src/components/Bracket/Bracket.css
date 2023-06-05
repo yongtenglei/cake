@@ -2,7 +2,7 @@
   --bHeight: 10px; /* height of one curly, which is half the total height */
   --bRadius: 8px; /* radius of the four curves */
   --bSecondRadius: 10px; /* Makes the curve slightly nicer */
-  --bBorderWidth: 2px; /* bracket line thickness */
+  --bBorderWidth: 1.5px; /* bracket line thickness */
 }
 
 /* 
