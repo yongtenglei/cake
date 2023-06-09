@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
-import { innerHeight as bottom, width } from '../../spacing'
+import { innerHeight as bottom, width } from '../../constants'
 import { Segment } from '../../../types'
 import { GraphContext } from '../../GraphContext'
 import { Bracket } from './Bracket'
@@ -59,10 +59,8 @@ export const ValueBracket = ({
       exitEditing()
     }
   }
+
   const exitEditing = () => {
-    if(slicesize === 0) {
-      setSegmentLength(id, -1) // remove zero-size segment only on exit
-    }
     setEditing(false)
   }
   return (
@@ -86,6 +84,8 @@ export const ValueBracket = ({
               value={slicesize}
               onBlur={exitEditing}
               onKeyDown={handleKeyPress}
+              // this prevents clicks from also generating new sections
+              onClick={e => e.stopPropagation()}
               onChange={onChange}
               variant="outlined"
               size="small"

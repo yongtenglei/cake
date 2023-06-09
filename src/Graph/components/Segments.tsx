@@ -1,17 +1,16 @@
-import React, { useState } from 'react'
-import { innerHeight as bottom } from '../spacing'
+import React, { useState, useContext } from 'react'
+import { innerHeight as bottom, getAgentColor } from '../constants'
+import { GraphContext } from '../GraphContext'
 import { DrawnSegment } from '../../types'
 
 interface SegmentsProps {
   segments: DrawnSegment[]
+  color: string
 }
 
-export const Segments = ({ segments }: SegmentsProps) => {
-  // console.log(x)
-  // Don't let mouseX go more left than previous line
-  // let mouseX = Math.max(x - margin.left, leftX)
-
-
+export const Segments = ({ segments, color }: SegmentsProps) => {
+  // These are drawn as: the top line, the shading under the line, the right line
+  // There is no bottom line and the left line comes from the previous segment.
   return (
     <>
       {segments.map(({ x1, y1, x2, y2, id }) => {
@@ -30,7 +29,7 @@ export const Segments = ({ segments }: SegmentsProps) => {
 
             {/* fill */}
             <path
-              fill="#666"
+              fill={color}
               fillOpacity={0.5}
               d={`M${x1},${y1} L${x2},${y2} L${x2},${bottom} L${x1},${bottom}`}
             />

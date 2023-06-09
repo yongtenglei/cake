@@ -1,9 +1,9 @@
 import React, { useContext, useCallback, useState, useEffect } from 'react'
 import clamp from 'lodash.clamp'
-import { height, width, margin, innerHeight, innerWidth } from '../spacing'
+import { height, width, margin, innerHeight, innerWidth, getAgentColor } from '../constants'
 import { GraphContext } from '../GraphContext'
 import { ValueBubbles } from './Value'
-import { AxisLeft, AxisBottom } from './Axes'
+import { AxisLeft, AxisBottom } from './Axes/Axes'
 import { ValueBrackets } from './Bracket/ValueBrackets'
 import { Segment, DrawnSegment } from '../../types'
 import { Segments } from './Segments'
@@ -22,13 +22,13 @@ interface DrawingLayerProps {
   setSegments: (segment: Segment[]) => void
 }
 
-export const DrawingLayer = ({ segments, setSegments }) => {
+export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
   const convertToPixels = useConvertSegToPixels()
   const convertFromPixels = useConvertSegFromPixels()
-  const { yScale } = useContext(GraphContext)
-
   const [mouseX, setMouseX] = useState(0)
   const [mouseY, setMouseY] = useState(0)
+  const { yScale, currentAgent } = useContext(GraphContext)
+  
   const onMouseMove = useCallback(
     (event: React.MouseEvent) => {
       // add a check here for out of bounds?
@@ -67,7 +67,6 @@ export const DrawingLayer = ({ segments, setSegments }) => {
   const [movingId, setMovingId] = useState<number | null>(null)
   useEffect(() => {
     if (movingId) {
-      console.log(yPos, mouseY)
       const newValue = roundValue(yScale.invert(yPos))
       const newSegments = segments.map((seg) => {
         if (seg.id === movingId) {
@@ -98,38 +97,24 @@ export const DrawingLayer = ({ segments, setSegments }) => {
 
   const setSegmentLength = useCallback(
     (id: number, newWidth: number) => {
-      let delta: number | null = null
+      const changedSeg = segments.find(_ => _.id === id)
+      changedSeg.x2 = changedSeg.x1 + newWidth
 
-      const newSegments = segments.map((seg) => {
-        if (seg.id === id) {
-          // this is the changed segment.
-
-          // truncate anything outside the bounds of the graph
-          const endpoint = Math.min(seg.x1 + newWidth, 100)
-          delta = endpoint - seg.x2
-          if (newWidth < 0) {
-            return null
-          }
-          // alter width of changed segment
-          return { ...seg, x2: endpoint }
+      let lastEndpoint = 0
+      const newSegs = segments.map((seg) => {
+        // force following segment(s) to expand so there's no gaps
+        if(seg.x1 !== lastEndpoint) {
+          seg.x1 = lastEndpoint
         }
-        if (delta !== null) {
-          // if delta is not null, this segment is after the changed one
-          const newX1 = seg.x1 + delta
-          const newX2 = Math.min(seg.x2 + delta, 100)
-          // alter position of all segments after changed one
-          if (newX1 >= 100) {
-            // segment has gone off the end so omit it
-            return null
-          }
-          // cut endpoint to 100 so nothing goes off end
-          return { ...seg, x1: newX1, x2: newX2 }
+        // segment has no width, delete
+        if(seg.x1 >= seg.x2) {
+          return null
         }
-        return seg
+        lastEndpoint = seg.x2
+        return {...seg}
       })
-
       // filter out nulls and set segments to new values
-      setSegments(newSegments.filter((_) => _))
+      setSegments(newSegs.filter(_ => _))
     },
     [segments, setSegments]
   )
@@ -164,7 +149,7 @@ export const DrawingLayer = ({ segments, setSegments }) => {
           <AxisBottom />
           <AxisLeft />
 
-          <Segments segments={pixelSegmentsWithCurrent} />
+          <Segments segments={pixelSegmentsWithCurrent} color={getAgentColor(currentAgent)} />
 
           {/* bubbles displaying values. Must be after other items to display on top */}
           <ValueBubbles
@@ -177,7 +162,6 @@ export const DrawingLayer = ({ segments, setSegments }) => {
             segments={segmentsWithCurrent}
             setSegmentLength={setSegmentLength}
           />
-          {/* invisible bounding box for capturing mouse x and y */}
         </g>
       </svg>
     </div>

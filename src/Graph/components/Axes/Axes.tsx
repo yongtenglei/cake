@@ -5,8 +5,8 @@ import {
   innerHeight,
   xAxisLabelOffset,
   yAxisLabelOffset,
-} from '../spacing'
-import { GraphContext } from '../GraphContext'
+} from '../../constants'
+import { GraphContext } from '../../GraphContext'
 import './Axes.css'
 
 export const AxisLeft = () => {
