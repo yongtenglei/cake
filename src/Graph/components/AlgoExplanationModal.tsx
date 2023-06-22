@@ -31,9 +31,9 @@ export const AlgoExplanationModal = ({ open, onClose }) => {
           {Object.values(Algorithms).map((algo) => (
             <div key={algo.key}>
               <h3>{algo.name}</h3>
-              <p>
-                <Link href={algo.link}>Learn about this method</Link>
-              </p>
+              <p>{algo.shortDescription}</p>
+
+              <Link href={algo.link}>Learn about this method</Link>
             </div>
           ))}
         </DialogContentText>

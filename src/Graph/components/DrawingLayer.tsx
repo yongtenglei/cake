@@ -4,7 +4,7 @@ import { height, width, margin, innerHeight, innerWidth, getAgentColor } from '.
 import { GraphContext } from '../GraphContext'
 import { ValueBubbles } from './Value'
 import { AxisLeft, AxisBottom } from './Axes/Axes'
-import { ValueBrackets } from './Bracket/ValueBrackets'
+import { EditableValueBrackets } from './Bracket/ValueBrackets'
 import { Segment, DrawnSegment } from '../../types'
 import { Segments } from './Segments'
 import {
@@ -154,11 +154,11 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
           {/* bubbles displaying values. Must be after other items to display on top */}
           <ValueBubbles
             segments={pixelSegmentsWithCurrent}
-            editable={!isDrawing}
+            editable={true}
             setMovingId={setMovingId}
           />
 
-          <ValueBrackets
+          <EditableValueBrackets
             segments={segmentsWithCurrent}
             setSegmentLength={setSegmentLength}
           />

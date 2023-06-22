@@ -3,7 +3,6 @@ import { GraphContext } from '../GraphContext'
 import { DrawnSegment } from '../../types'
 import { roundValue } from '../graphUtils'
 import { innerHeight, innerWidth } from '../constants'
-import './Value.css'
 
 interface ValueBubblesProps {
   segments: DrawnSegment[]
@@ -19,7 +18,6 @@ export const ValueBubbles = ({
   const { yScale } = useContext(GraphContext)
   const formatValue = (val: number) => roundValue(yScale.invert(val))
 
-  // use `editable`
   return (
     <g x={0} y={0} height={innerHeight} width={innerWidth}>
       {segments.map(({ x1, x2, y2, id }) => {
@@ -28,10 +26,13 @@ export const ValueBubbles = ({
           <g
             transform={`translate(${x} ${y2})`}
             key={id}
-            className="vertGrabArea"
-            onMouseDown={() => setMovingId(id)}
+            style={{
+              cursor: editable ? 'ns-resize' : 'default',
+              userSelect: 'none',
+            }}
+            onMouseDown={editable ? () => setMovingId(id) : null}
           >
-            <circle r={15} fill="#ccc" className="bubble" />
+            <circle r={15} fill="#ccc" stroke="black" />
             <text dominantBaseline="middle" textAnchor="middle">
               {formatValue(y2)}
             </text>

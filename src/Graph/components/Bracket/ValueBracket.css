@@ -1,9 +1,0 @@
-.backetInputContainer {
-  text-align: center;
-  background-color: white;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 25px;
-  width: 80px;
-}

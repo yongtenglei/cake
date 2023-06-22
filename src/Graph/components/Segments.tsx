@@ -1,24 +1,31 @@
 import React, { useState, useContext } from 'react'
 import { innerHeight as bottom, getAgentColor } from '../constants'
-import { GraphContext } from '../GraphContext'
 import { DrawnSegment } from '../../types'
 
 interface SegmentsProps {
   segments: DrawnSegment[]
   color: string
+  partial?: boolean
 }
 
-export const Segments = ({ segments, color }: SegmentsProps) => {
+const lineColor = "#333"
+
+export const Segments = ({ segments, color, partial = false }: SegmentsProps) => {
   // These are drawn as: the top line, the shading under the line, the right line
   // There is no bottom line and the left line comes from the previous segment.
   return (
     <>
-      {segments.map(({ x1, y1, x2, y2, id }) => {
+      {segments.map(({ x1, y1, x2, y2, id }, i) => {
+
+        // when `partial` is true, don't fill the area, just "underline" the top line
+        const bottomFillLeft = partial ? Math.min(bottom, y1 + 15) : bottom
+        const bottomFillRight = partial ? Math.min(bottom, y2 + 15) : bottom
+
         return (
           <React.Fragment key={id}>
             {/* top line */}
             <line
-              stroke="black"
+              stroke={lineColor}
               x1={x1}
               y1={y1}
               x2={x2}
@@ -31,7 +38,7 @@ export const Segments = ({ segments, color }: SegmentsProps) => {
             <path
               fill={color}
               fillOpacity={0.5}
-              d={`M${x1},${y1} L${x2},${y2} L${x2},${bottom} L${x1},${bottom}`}
+              d={`M${x1},${y1} L${x2},${y2} L${x2},${bottomFillRight} L${x1},${bottomFillLeft}`}
             />
 
             {/* Grab handle */}
@@ -47,8 +54,13 @@ export const Segments = ({ segments, color }: SegmentsProps) => {
               onMouseUp={() => setMovingId(null)}
             /> */}
 
+            {/* version of right line that extends to the top */}
+            {/* <line stroke={lineColor} x1={x2} y1={0} x2={x2} y2={bottom} /> */}
+
+            {/* left line */}
+            <line stroke={lineColor} strokeLinecap="square" x1={x1} y1={y1} x2={x1} y2={bottom} />
             {/* right line */}
-            <line stroke="black" x1={x2} y1={0} x2={x2} y2={bottom} />
+            <line stroke={lineColor} strokeLinecap="square" x1={x2} y1={y2} x2={x2} y2={bottom} />
           </React.Fragment>
         )
       })}
