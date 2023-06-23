@@ -36,7 +36,7 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
       setMouseX(event.nativeEvent.offsetX - margin.left)
       setMouseY(event.nativeEvent.offsetY - margin.top)
     },
-    [setMouseX, setMouseY, yScale]
+    [setMouseX, setMouseY]
   )
 
   const lastDrawnSegment = convertToPixels(
@@ -76,7 +76,7 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
       })
       setSegments(newSegments)
     }
-  }, [yPos, movingId])
+  }, [yPos, movingId, setSegments, segments])
 
   const onClick = useCallback(() => {
     if (isDrawing && leftX !== xPos) {

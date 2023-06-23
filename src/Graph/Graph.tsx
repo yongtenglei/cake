@@ -9,11 +9,9 @@ import { Segment } from '../types'
 import { GraphContext } from './GraphContext'
 import { isDrawingComplete } from './graphUtils'
 import {
-  getAgentColor,
   AlgoName,
   innerHeight,
   innerWidth,
-  width,
 } from './constants'
 // import CakeRoundedIcon from '@mui/icons-material/CakeRounded';
 
@@ -56,7 +54,7 @@ const temp:Segment[][] = [
   ]
 ]
 
-export const App = () => {
+export const Graph = () => {
   const yScale = scaleLinear().domain([0, 10]).range([innerHeight, 0]).nice()
   const xScale = scaleLinear().domain([0, 100]).range([0, innerWidth]).nice()
 
