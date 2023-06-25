@@ -11,7 +11,7 @@ import {
   DialogContentText,
   Button,
 } from '@mui/material'
-import { Algorithms, AlgoName } from '../constants'
+import { Algorithms, Algorithm, AlgoName } from '../constants'
 import { AlgoExplanationModal } from './AlgoExplanationModal'
 
 interface SelectAlgoModalProps {
@@ -27,64 +27,18 @@ export const SelectAlgoModal = ({
   onConfirm,
   totalAgents,
 }: SelectAlgoModalProps) => {
-  const bestOption = Algorithms.divideAndChoose.key
-  const [selectedAlgo, setSelectedAlgo] = useState<AlgoName>(bestOption)
   const [algoExplainOpen, setAlgoExplainOpen] = useState(false)
 
   return (
     <>
       <Dialog open={open} onClose={onCancel}>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault()
-            onConfirm(selectedAlgo)
-          }}
-        >
-          <DialogTitle>Select Method</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Select which method to use to divide the resource between people.
-            </DialogContentText>
-
-            <br />
-            <FormLabel id="algo-select">Method: </FormLabel>
-            <RadioGroup
-              aria-labelledby="algo-select"
-              name="radio-buttons-group"
-            >
-              {Object.values(Algorithms).map((algo) => (
-                <FormControlLabel
-                  key={algo.key}
-                  value={algo.key}
-                  control={
-                    <Radio
-                      onChange={(e) =>
-                        setSelectedAlgo(e.target.value as AlgoName)
-                      }
-                    />
-                  }
-                  label={algo.name}
-                  checked={algo.key === selectedAlgo}
-                  disabled={
-                    totalAgents < algo.minAgents || totalAgents > algo.maxAgents
-                  }
-                  // algo.numAgentsText
-                />
-              ))}
-            </RadioGroup>
-            <DialogContentText>
-              <Button onClick={() => setAlgoExplainOpen(true)}>
-                What do these mean?
-              </Button>
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={onCancel}>Cancel</Button>
-            <Button type="submit" variant="contained">
-              Solve
-            </Button>
-          </DialogActions>
-        </form>
+        {/* separate wrapper from guts so "best algo" func only runs when it first opens */}
+        <SelectAlgoModalGuts
+          totalAgents={totalAgents}
+          onCancel={onCancel}
+          onConfirm={onConfirm}
+          openAlgoExplainModal={() => setAlgoExplainOpen(true)}
+        />
       </Dialog>
 
       <AlgoExplanationModal
@@ -92,5 +46,75 @@ export const SelectAlgoModal = ({
         onClose={() => setAlgoExplainOpen(false)}
       />
     </>
+  )
+}
+
+interface SelectAlgoModalGutsProps {
+  onCancel: VoidFunction
+  onConfirm: (algo: string) => void
+  totalAgents: number
+  openAlgoExplainModal: VoidFunction
+}
+
+const SelectAlgoModalGuts = ({
+  totalAgents,
+  onCancel,
+  onConfirm,
+  openAlgoExplainModal,
+}: SelectAlgoModalGutsProps) => {
+  const algoIsSelectable = (algo: Algorithm) =>
+    totalAgents >= algo.minAgents && totalAgents <= algo.maxAgents
+
+  const bestOption =
+    Object.values(Algorithms).find(algoIsSelectable)?.key ??
+    Algorithms.divideAndChoose.key
+
+  const [selectedAlgo, setSelectedAlgo] = useState<AlgoName>(bestOption)
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault()
+        onConfirm(selectedAlgo)
+      }}
+    >
+      <DialogTitle>Select Method</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Select which method to use to divide the resource between people.
+        </DialogContentText>
+
+        <br />
+        <FormLabel id="algo-select">Method: </FormLabel>
+        <RadioGroup aria-labelledby="algo-select" name="radio-buttons-group">
+          {Object.values(Algorithms).map((algo) => (
+            <FormControlLabel
+              key={algo.key}
+              value={algo.key}
+              control={
+                <Radio
+                  onChange={(e) => setSelectedAlgo(e.target.value as AlgoName)}
+              />
+              }
+              label={algo.name}
+              checked={algo.key === selectedAlgo}
+              disabled={!algoIsSelectable(algo)}
+              // algo.numAgentsText
+            />
+          ))}
+        </RadioGroup>
+        <DialogContentText>
+          <Button onClick={openAlgoExplainModal}>
+            What do these mean?
+          </Button>
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onCancel}>Cancel</Button>
+        <Button type="submit" variant="contained">
+          Solve
+        </Button>
+      </DialogActions>
+    </form>
   )
 }
