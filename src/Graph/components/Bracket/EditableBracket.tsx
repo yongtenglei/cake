@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Box, TextField, Button } from '@mui/material'
 import { Segment } from '../../../types'
 import { BracketContainer } from './BracketContainer'
+import './EditableBracket.css'
 
 interface EditableBracketProps {
   segment: Segment
@@ -15,8 +16,8 @@ export const EditableBracket = ({
   segNumber,
 }: EditableBracketProps) => {
   const [editing, setEditing] = useState(false)
-  const { x1, x2, id } = segment
-  const slicesize = x2 - x1
+  const { start, end, id } = segment
+  const slicesize = end - start
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     if (value === '') {
@@ -38,7 +39,7 @@ export const EditableBracket = ({
       <Box sx={{ textAlign: 'center' }}>
         <Box
           sx={{
-            width: '70px',
+            width: '60px',
             backgroundColor: 'white',
             display: 'inline-block',
             marginTop: '5px'
@@ -50,7 +51,7 @@ export const EditableBracket = ({
               type="number"
               autoFocus
               value={slicesize}
-              onBlur={exitEditing}
+              // onBlur={exitEditing}
               onKeyDown={handleKeyPress}
               // this prevents clicks from also generating new sections.
               // scoping clicks to the right areas is a better solution than this
@@ -60,6 +61,7 @@ export const EditableBracket = ({
               size="small"
               autoComplete="off"
               InputLabelProps={{ shrink: true }}
+              InputProps={{className:'Bracket_inputBox'}}
             />
           ) : (
             <Button

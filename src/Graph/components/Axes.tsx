@@ -5,10 +5,12 @@ import {
   innerHeight,
   xAxisLabelOffset,
   yAxisLabelOffset,
-} from '../../constants'
-import { GraphContext } from '../../GraphContext'
-import './Axes.css'
+} from '../constants'
+import { GraphContext } from '../GraphContext'
 
+const gridColor = '#999'
+const labelColor = 'black'
+const labelSize = '2.5em'
 export const AxisLeft = () => {
   const { yScale } = useContext(GraphContext)
   return (
@@ -19,6 +21,8 @@ export const AxisLeft = () => {
         transform={`translate(${-yAxisLabelOffset},${
           innerHeight / 2
         }) rotate(-90)`}
+        fill={labelColor}
+        style={{fontSize: labelSize}}
       >
         Value
       </text>
@@ -28,10 +32,11 @@ export const AxisLeft = () => {
           transform={`translate(0, ${yScale(tickValue)})`}
           key={tickValue}
         >
-          <line x2={innerWidth} />
+          <line x2={innerWidth} stroke={gridColor} />
           <text
             key={tickValue}
             style={{ textAnchor: 'end' }}
+            fill={labelColor}
             x={-tickOffset}
             dy=".32em"
           >
@@ -52,6 +57,8 @@ export const AxisBottom = () => {
         x={innerWidth / 2}
         y={innerHeight + xAxisLabelOffset}
         textAnchor="middle"
+        fill={labelColor}
+        style={{fontSize: labelSize}}
       >
         Portion
       </text>
@@ -61,11 +68,13 @@ export const AxisBottom = () => {
           key={tickValue}
           transform={`translate(${xScale(tickValue)},0)`}
         >
-          <line y2={innerHeight} />
+          <line y2={innerHeight}  stroke={gridColor}  />
           <text
             style={{ textAnchor: 'middle' }}
             dy=".7em"
             y={innerHeight + tickOffset}
+            fill={labelColor}
+
           >
             {tickValue}
           </text>

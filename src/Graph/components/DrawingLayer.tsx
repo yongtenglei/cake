@@ -3,7 +3,7 @@ import clamp from 'lodash.clamp'
 import { height, width, margin, innerHeight, innerWidth, getAgentColor } from '../constants'
 import { GraphContext } from '../GraphContext'
 import { ValueBubbles } from './Value'
-import { AxisLeft, AxisBottom } from './Axes/Axes'
+import { AxisLeft, AxisBottom } from './Axes'
 import { EditableValueBrackets } from './Bracket/ValueBrackets'
 import { Segment, DrawnSegment } from '../../types'
 import { Segments } from './Segments'
@@ -41,12 +41,11 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
 
   const lastDrawnSegment = convertToPixels(
     segments[segments.length - 1] ?? {
-      x1: 0,
-      y1: 0,
-      x2: 0,
-      y2: 0,
-      id: 0,
-      type: 'value',
+      start: 0,
+      startValue: 0,
+      end: 0,
+      endValue: 0,
+      id: 0
     }
   )
   let { x2: leftX, y2: leftY } = lastDrawnSegment
@@ -76,7 +75,7 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
       })
       setSegments(newSegments)
     }
-  }, [yPos, movingId, setSegments, segments])
+  }, [yPos, movingId, setSegments, segments, yScale])
 
   const onClick = useCallback(() => {
     if (isDrawing && leftX !== xPos) {
@@ -89,28 +88,27 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
           x2: xPos,
           y2: yPos,
           id: ++id,
-          type: 'drawn',
         }),
       ])
     }
-  }, [segments, setSegments, xPos, yPos, leftX, leftY, convertFromPixels])
+  }, [segments, setSegments, xPos, yPos, leftX, leftY, convertFromPixels, isDrawing])
 
   const setSegmentLength = useCallback(
     (id: number, newWidth: number) => {
       const changedSeg = segments.find(_ => _.id === id)
-      changedSeg.x2 = changedSeg.x1 + newWidth
+      changedSeg.end = changedSeg.start + newWidth
 
       let lastEndpoint = 0
       const newSegs = segments.map((seg) => {
         // force following segment(s) to expand so there's no gaps
-        if(seg.x1 !== lastEndpoint) {
-          seg.x1 = lastEndpoint
+        if(seg.start !== lastEndpoint) {
+          seg.end = lastEndpoint
         }
         // segment has no width, delete
-        if(seg.x1 >= seg.x2) {
+        if(seg.start >= seg.end) {
           return null
         }
-        lastEndpoint = seg.x2
+        lastEndpoint = seg.end
         return {...seg}
       })
       // filter out nulls and set segments to new values
@@ -128,7 +126,6 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
         y1: leftY,
         x2: xPos,
         y2: yPos,
-        type: 'drawn',
       })
     )
   }

@@ -19,7 +19,7 @@ export const ValueBrackets = ({ segments }: ValueBracketsProps) => {
               textAlign: 'center',
             }}
           >
-            {seg.x2 - seg.x1} %
+            {seg.end - seg.start} %
           </Box>
         </BracketContainer>
       ))}

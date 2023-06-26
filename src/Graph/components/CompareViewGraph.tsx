@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Stack, Box } from '@mui/material'
 import { height, width, margin, getAgentColor } from '../constants'
-import { AxisLeft, AxisBottom } from './Axes/Axes'
+import { AxisLeft, AxisBottom } from './Axes'
 import { Segments } from './Segments'
 import { useConvertSegToPixels } from '../graphUtils'
 import { Segment } from '../../types'

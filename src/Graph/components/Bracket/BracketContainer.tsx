@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useContext } from 'react'
 import { GraphContext } from '../../GraphContext'
 import { Segment } from '../../../types'
 import { Bracket } from './Bracket'
@@ -11,16 +11,16 @@ interface BracketContainerProps {
 
 export const BracketContainer = ({
   focused,
-  segment: { x1, x2 },
+  segment: { start, end },
   children,
 }: BracketContainerProps) => {
   const { xScale } = useContext(GraphContext)
-  const slicesize = x2 - x1
+  const slicesize = end - start
 
   return (
     <div
       style={{
-        left: xScale(x1),
+        left: xScale(start),
         width: 'min-content',
         position: 'absolute',
         zIndex: focused ? 10 : 0,

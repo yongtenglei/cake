@@ -8,59 +8,51 @@ import { SelectAlgoModal } from './components/SelectAlgoModal'
 import { Segment } from '../types'
 import { GraphContext } from './GraphContext'
 import { isDrawingComplete } from './graphUtils'
-import {
-  AlgoName,
-  innerHeight,
-  innerWidth,
-} from './constants'
+import { AlgoName, innerHeight, innerWidth, defaultCakeSize } from './constants'
 // import CakeRoundedIcon from '@mui/icons-material/CakeRounded';
 
-const temp:Segment[][] = [
+const temp: Segment[][] = [
   [
     {
-      "x1": 0,
-      "y1": 6.5,
-      "x2": 47,
-      "y2": 6.5,
-      "id": 1,
-      "type": "value"
+      start: 0,
+      startValue: 6.5,
+      end: 47,
+      endValue: 6.5,
+      id: 1,
     },
     {
-      "x1": 47,
-      "y1": 8.4,
-      "x2": 100,
-      "y2": 8.4,
-      "id": 2,
-      "type": "value"
-    }
+      start: 47,
+      startValue: 8.4,
+      end: 100,
+      endValue: 8.4,
+      id: 2,
+    },
   ],
   [
     {
-      "x1": 0,
-      "y1": 4.6,
-      "x2": 41,
-      "y2": 4.6,
-      "id": 3,
-      "type": "value"
+      start: 0,
+      startValue: 4.6,
+      end: 41,
+      endValue: 4.6,
+      id: 3,
     },
     {
-      "x1": 41,
-      "y1": 7.1,
-      "x2": 100,
-      "y2": 7.1,
-      "id": 4,
-      "type": "value"
-    }
-  ]
+      start: 41,
+      startValue: 7.1,
+      end: 100,
+      endValue: 7.1,
+      id: 4,
+    },
+  ],
 ]
 
 export const Graph = () => {
   const yScale = scaleLinear().domain([0, 10]).range([innerHeight, 0]).nice()
-  const xScale = scaleLinear().domain([0, 100]).range([0, innerWidth]).nice()
+  const xScale = scaleLinear().domain([0, defaultCakeSize]).range([0, innerWidth]).nice()
 
-  // const [preferences, setPreferences] = useState<Segment[][]>(temp)
-  const [preferences, setPreferences] = useState<Segment[][]>([[]])
-  
+  const [preferences, setPreferences] = useState<Segment[][]>(temp)
+  // const [preferences, setPreferences] = useState<Segment[][]>([[]])
+
   const [currentAgent, setCurrentAgent] = useState<number>(1) // Note: This is 1 indexed
   const [algoModalOpen, setAlgoModalOpen] = useState<boolean>(false)
   const [compareMode, setCompareMode] = useState<boolean>(false)
@@ -88,7 +80,6 @@ export const Graph = () => {
     }
   }
   const onClickRunAlgo = (algo: AlgoName) => {
-    setAlgoModalOpen(false)
     console.log('running ' + algo)
   }
 
@@ -115,7 +106,7 @@ export const Graph = () => {
           compareMode={compareMode}
         />
         {compareMode ? (
-            <CompareViewGraph preferences={preferences} />
+          <CompareViewGraph preferences={preferences} />
         ) : (
           <DrawingLayer
             segments={currentAgentPrefs}

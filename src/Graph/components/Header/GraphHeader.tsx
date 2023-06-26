@@ -1,4 +1,4 @@
-import { Box, Button, Stack, Tooltip, IconButton } from '@mui/material'
+import { Button, Stack, Tooltip, IconButton } from '@mui/material'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
@@ -9,7 +9,6 @@ import {
   MAX_AGENTS,
   getAgentColor,
   margin,
-  width,
   innerWidth,
 } from '../../constants'
 import './GraphHeader.css'

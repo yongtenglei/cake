@@ -20,6 +20,8 @@ export const yAxisLabelOffset = 50
 export const innerHeight = height - margin.top - margin.bottom
 export const innerWidth = width - margin.left - margin.right
 export const tickOffset = 7
+export const defaultCakeSize = 100
+
 
 // Algorithms
 export type AlgoName = 'divideAndChoose' | 'selfridgeConway'

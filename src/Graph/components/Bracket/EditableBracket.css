@@ -1,0 +1,12 @@
+/* Prevent the up and down arrows from appearing */
+/* They cause an unfortunate UX issue so we are better without them */
+.Bracket_inputBox > input::-webkit-outer-spin-button,
+.Bracket_inputBox > input::-webkit-inner-spin-button {
+  display: none;
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.Bracket_inputBox > input[type=number] {
+    -moz-appearance:textfield; /* Firefox */
+}

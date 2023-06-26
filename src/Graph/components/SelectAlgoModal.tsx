@@ -10,6 +10,8 @@ import {
   DialogActions,
   DialogContentText,
   Button,
+  CircularProgress,
+  Box,
 } from '@mui/material'
 import { Algorithms, Algorithm, AlgoName } from '../constants'
 import { AlgoExplanationModal } from './AlgoExplanationModal'
@@ -28,17 +30,30 @@ export const SelectAlgoModal = ({
   totalAgents,
 }: SelectAlgoModalProps) => {
   const [algoExplainOpen, setAlgoExplainOpen] = useState(false)
-
+  const [running, setIsRunning] = useState(false)
   return (
     <>
       <Dialog open={open} onClose={onCancel}>
-        {/* separate wrapper from guts so "best algo" func only runs when it first opens */}
-        <SelectAlgoModalGuts
-          totalAgents={totalAgents}
-          onCancel={onCancel}
-          onConfirm={onConfirm}
-          openAlgoExplainModal={() => setAlgoExplainOpen(true)}
-        />
+        {running ? (
+          <>
+            <DialogTitle>Running Algorithm</DialogTitle>
+            <DialogContent>
+              <Box margin={4} textAlign={'center'} minWidth={200}>
+                <CircularProgress size={100} />
+              </Box>
+            </DialogContent>
+          </>
+        ) : (
+          <SelectAlgoModalGuts
+            totalAgents={totalAgents}
+            onCancel={onCancel}
+            onConfirm={(algo: AlgoName) => {
+              setIsRunning(true)
+              onConfirm(algo)
+            }}
+            openAlgoExplainModal={() => setAlgoExplainOpen(true)}
+          />
+        )}
       </Dialog>
 
       <AlgoExplanationModal
@@ -56,6 +71,7 @@ interface SelectAlgoModalGutsProps {
   openAlgoExplainModal: VoidFunction
 }
 
+// separate wrapper from guts so "best algo" func only runs when it first opens
 const SelectAlgoModalGuts = ({
   totalAgents,
   onCancel,
@@ -94,7 +110,7 @@ const SelectAlgoModalGuts = ({
               control={
                 <Radio
                   onChange={(e) => setSelectedAlgo(e.target.value as AlgoName)}
-              />
+                />
               }
               label={algo.name}
               checked={algo.key === selectedAlgo}
@@ -104,9 +120,7 @@ const SelectAlgoModalGuts = ({
           ))}
         </RadioGroup>
         <DialogContentText>
-          <Button onClick={openAlgoExplainModal}>
-            What do these mean?
-          </Button>
+          <Button onClick={openAlgoExplainModal}>What do these mean?</Button>
         </DialogContentText>
       </DialogContent>
       <DialogActions>
