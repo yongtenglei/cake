@@ -1,9 +1,15 @@
 import React from 'react'
 import { Box } from '@mui/material'
-import { innerHeight as bottom, width } from '../../constants'
+import { innerHeight as bottom, margin, width } from '../../constants'
 import { Segment } from '../../../types'
 import { EditableBracket } from './EditableBracket'
 import { BracketContainer } from './BracketContainer'
+
+const styles = {
+  position: 'relative',
+  left: margin.left,
+  top: 15 - margin.bottom,
+}
 
 interface ValueBracketsProps {
   segments: Segment[]
@@ -11,7 +17,7 @@ interface ValueBracketsProps {
 
 export const ValueBrackets = ({ segments }: ValueBracketsProps) => {
   return (
-    <foreignObject x={0} y={bottom + 20} width={width} height="100">
+    <Box sx={styles}>
       {segments.map((seg, i) => (
         <BracketContainer focused={false} segment={seg} key={i}>
           <Box
@@ -23,7 +29,7 @@ export const ValueBrackets = ({ segments }: ValueBracketsProps) => {
           </Box>
         </BracketContainer>
       ))}
-    </foreignObject>
+    </Box>
   )
 }
 
@@ -37,7 +43,7 @@ export const EditableValueBrackets = ({
   setSegmentLength,
 }: EditableValueBracketsProps) => {
   return (
-    <foreignObject x={0} y={bottom + 20} width={width} height="100">
+    <Box  sx={styles}>
       {segments.map((seg, i) => (
         <EditableBracket
           segment={seg}
@@ -46,6 +52,6 @@ export const EditableValueBrackets = ({
           setSegmentLength={setSegmentLength}
         />
       ))}
-    </foreignObject>
+    </Box>
   )
 }

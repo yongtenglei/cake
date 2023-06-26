@@ -9,4 +9,5 @@
 
 .Bracket_inputBox > input[type=number] {
     -moz-appearance:textfield; /* Firefox */
+    max-width: 30px;
 }

@@ -39,7 +39,7 @@ export const EditableBracket = ({
       <Box sx={{ textAlign: 'center' }}>
         <Box
           sx={{
-            width: '60px',
+            maxWidth: '70px',
             backgroundColor: 'white',
             display: 'inline-block',
             marginTop: '5px'

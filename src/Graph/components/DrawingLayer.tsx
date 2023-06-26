@@ -1,6 +1,14 @@
 import React, { useContext, useCallback, useState, useEffect } from 'react'
 import clamp from 'lodash.clamp'
-import { height, width, margin, innerHeight, innerWidth, getAgentColor } from '../constants'
+import {
+  height,
+  width,
+  margin,
+  innerHeight,
+  innerWidth,
+  getAgentColor,
+  defaultCakeSize,
+} from '../constants'
 import { GraphContext } from '../GraphContext'
 import { ValueBubbles } from './Value'
 import { AxisLeft, AxisBottom } from './Axes'
@@ -28,7 +36,8 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
   const [mouseX, setMouseX] = useState(0)
   const [mouseY, setMouseY] = useState(0)
   const { yScale, currentAgent } = useContext(GraphContext)
-  
+  const cakeSize = defaultCakeSize
+
   const onMouseMove = useCallback(
     (event: React.MouseEvent) => {
       // add a check here for out of bounds?
@@ -39,13 +48,18 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
     [setMouseX, setMouseY]
   )
 
+  const onMouseUp = useCallback(() => {
+    // setSegments()
+    setMovingId(null)
+  }, [])
+
   const lastDrawnSegment = convertToPixels(
     segments[segments.length - 1] ?? {
       start: 0,
       startValue: 0,
       end: 0,
       endValue: 0,
-      id: 0
+      id: 0,
     }
   )
   let { x2: leftX, y2: leftY } = lastDrawnSegment
@@ -64,18 +78,6 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
   leftY = sloped ? leftY : yPos
 
   const [movingId, setMovingId] = useState<number | null>(null)
-  useEffect(() => {
-    if (movingId) {
-      const newValue = roundValue(yScale.invert(yPos))
-      const newSegments = segments.map((seg) => {
-        if (seg.id === movingId) {
-          return { ...seg, y1: newValue, y2: newValue }
-        }
-        return seg
-      })
-      setSegments(newSegments)
-    }
-  }, [yPos, movingId, setSegments, segments, yScale])
 
   const onClick = useCallback(() => {
     if (isDrawing && leftX !== xPos) {
@@ -91,35 +93,50 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
         }),
       ])
     }
-  }, [segments, setSegments, xPos, yPos, leftX, leftY, convertFromPixels, isDrawing])
+  }, [
+    segments,
+    setSegments,
+    xPos,
+    yPos,
+    leftX,
+    leftY,
+    convertFromPixels,
+    isDrawing,
+  ])
 
   const setSegmentLength = useCallback(
     (id: number, newWidth: number) => {
-      const changedSeg = segments.find(_ => _.id === id)
-      changedSeg.end = changedSeg.start + newWidth
+      const changedSeg = segments.find((_) => _.id === id)
+      changedSeg.end = Math.min(changedSeg.start + newWidth, cakeSize)
 
-      let lastEndpoint = 0
+      let previousEndpoint = 0
       const newSegs = segments.map((seg) => {
         // force following segment(s) to expand so there's no gaps
-        if(seg.start !== lastEndpoint) {
-          seg.end = lastEndpoint
+        if (seg.start !== previousEndpoint) {
+          seg.start = previousEndpoint
         }
-        // segment has no width, delete
-        if(seg.start >= seg.end) {
-          return null
-        }
-        lastEndpoint = seg.end
-        return {...seg}
+        previousEndpoint = seg.end
+        return { ...seg }
       })
-      // filter out nulls and set segments to new values
-      setSegments(newSegs.filter(_ => _))
+      // filter out empty segs and set segments to new values
+      setSegments(newSegs.filter((seg) => seg.start >= seg.end))
     },
     [segments, setSegments]
   )
 
-  const segmentsWithCurrent: Segment[] = [...segments]
+  let movableSegs = [...segments]
+  if (movingId) {
+    // currently adjusting value of a segment
+    const newYValue = roundValue(yScale.invert(yPos))
+    movableSegs = segments.map((seg) => {
+      if (seg.id === movingId) {
+        return { ...seg, startValue: newYValue, endValue: newYValue }
+      }
+      return seg
+    })
+  }
   if (isDrawing) {
-    segmentsWithCurrent.push(
+    movableSegs.push(
       convertFromPixels({
         id: id + 1,
         x1: leftX,
@@ -129,38 +146,37 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
       })
     )
   }
-  const pixelSegmentsWithCurrent: DrawnSegment[] = [...segmentsWithCurrent].map(
-    convertToPixels
-  )
+  const pixelSegs: DrawnSegment[] = movableSegs.map(convertToPixels)
 
   return (
     // HTML container listens for events at top level.
     // This is much harder with pure SVG.
-    <div
-      onMouseMove={onMouseMove}
-      onClick={onClick}
-      onMouseUp={() => setMovingId(null)}
-    >
-      <svg width={width} height={height}>
-        <g transform={`translate(${margin.left},${margin.top})`}>
-          <AxisBottom />
-          <AxisLeft />
+    <>
+      <div onMouseMove={onMouseMove} onClick={onClick} onMouseUp={onMouseUp}>
+        <svg width={width} height={height}>
+          <g transform={`translate(${margin.left},${margin.top})`}>
+            <AxisBottom />
+            <AxisLeft />
 
-          <Segments segments={pixelSegmentsWithCurrent} color={getAgentColor(currentAgent)} />
+            <Segments
+              segments={pixelSegs}
+              color={getAgentColor(currentAgent)}
+            />
 
-          {/* bubbles displaying values. Must be after other items to display on top */}
-          <ValueBubbles
-            segments={pixelSegmentsWithCurrent}
-            editable={true}
-            setMovingId={setMovingId}
-          />
+            {/* bubbles displaying values. Must be after other items to display on top */}
+            <ValueBubbles
+              segments={pixelSegs}
+              editable={true}
+              setMovingId={setMovingId}
+            />
+          </g>
+        </svg>
+      </div>
 
-          <EditableValueBrackets
-            segments={segmentsWithCurrent}
-            setSegmentLength={setSegmentLength}
-          />
-        </g>
-      </svg>
-    </div>
+      <EditableValueBrackets
+        segments={movableSegs}
+        setSegmentLength={setSegmentLength}
+      />
+    </>
   )
 }

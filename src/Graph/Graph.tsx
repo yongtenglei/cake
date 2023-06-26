@@ -5,10 +5,12 @@ import { DrawingLayer } from './components/DrawingLayer'
 import { GraphHeader } from './components/Header/GraphHeader'
 import { CompareViewGraph } from './components/CompareViewGraph'
 import { SelectAlgoModal } from './components/SelectAlgoModal'
-import { Segment } from '../types'
+import { Division, Segment } from '../types'
 import { GraphContext } from './GraphContext'
 import { isDrawingComplete } from './graphUtils'
 import { AlgoName, innerHeight, innerWidth, defaultCakeSize } from './constants'
+import { runDivisionAlgorithm } from './algorithm/run'
+import { CakeSliceResults } from './CakeSliceResults'
 // import CakeRoundedIcon from '@mui/icons-material/CakeRounded';
 
 const temp: Segment[][] = [
@@ -50,8 +52,9 @@ export const Graph = () => {
   const yScale = scaleLinear().domain([0, 10]).range([innerHeight, 0]).nice()
   const xScale = scaleLinear().domain([0, defaultCakeSize]).range([0, innerWidth]).nice()
 
-  const [preferences, setPreferences] = useState<Segment[][]>(temp)
-  // const [preferences, setPreferences] = useState<Segment[][]>([[]])
+  const [algoResults, setAlgoResults] = useState<Division[] | []>(null)
+  // const [preferences, setPreferences] = useState<Segment[][]>(temp)
+  const [preferences, setPreferences] = useState<Segment[][]>([[]])
 
   const [currentAgent, setCurrentAgent] = useState<number>(1) // Note: This is 1 indexed
   const [algoModalOpen, setAlgoModalOpen] = useState<boolean>(false)
@@ -81,6 +84,8 @@ export const Graph = () => {
   }
   const onClickRunAlgo = (algo: AlgoName) => {
     console.log('running ' + algo)
+    setAlgoResults(runDivisionAlgorithm(preferences, algo, defaultCakeSize))
+    setAlgoModalOpen(false)
   }
 
   const currentAgentPrefs = preferences[currentAgent - 1]
@@ -113,6 +118,8 @@ export const Graph = () => {
             setSegments={setCurrentAgentPrefs}
           />
         )}
+
+        <CakeSliceResults results={algoResults} />
       </Stack>
       <SelectAlgoModal
         open={algoModalOpen}

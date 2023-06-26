@@ -21,41 +21,42 @@ export const CompareViewGraph = ({ preferences }: CompareViewGraphProps) => {
 
   return (
     <Stack direction="row" spacing={1}>
-      <svg width={width} height={height}>
-        <g transform={`translate(${margin.left},${margin.top})`}>
-          <AxisBottom />
-          <AxisLeft />
+      <div>
+        <svg width={width} height={height}>
+          <g transform={`translate(${margin.left},${margin.top})`}>
+            <AxisBottom />
+            <AxisLeft />
 
-          {/* render all users' preferences except focused user */}
-          {preferences.map((segments, i) =>
-            i === focused ? null : (
+            {/* render all users' preferences except focused user */}
+            {preferences.map((segments, i) =>
+              i === focused ? null : (
+                <Segments
+                  key={i}
+                  segments={segments.map(convertToPixels)}
+                  // graying out the background looks good only when `partial` is false
+                  // color={isActive(i) ? getAgentColor(i + 1) : '#999'}
+                  color={getAgentColor(i + 1)}
+                  partial
+                />
+              )
+            )}
+            {/* put focused graph on top for best visibility */}
+            {focused === null ? null : (
               <Segments
-                key={i}
-                segments={segments.map(convertToPixels)}
-                // graying out the background looks good only when `partial` is false
-                // color={isActive(i) ? getAgentColor(i + 1) : '#999'}
-                color={getAgentColor(i + 1)}
-                partial
+                segments={focusedPreference.map(convertToPixels)}
+                color={getAgentColor(focused + 1)}
               />
-            )
-          )}
-          {/* put focused graph on top for best visibility */}
-          {focused === null ? null : (
-            <Segments
+            )}
+
+            <ValueBubbles
               segments={focusedPreference.map(convertToPixels)}
-              color={getAgentColor(focused + 1)}
+              editable={false}
+              setMovingId={() => {}}
             />
-          )}
-
-          <ValueBubbles
-            segments={focusedPreference.map(convertToPixels)}
-            editable={false}
-            setMovingId={() => {}}
-          />
-
-          <ValueBrackets segments={focusedPreference} />
-        </g>
-      </svg>
+          </g>
+        </svg>
+        <ValueBrackets segments={focusedPreference} />
+      </div>
       <Box component="section">
         <Stack
           className="Graph__ControlBox"
