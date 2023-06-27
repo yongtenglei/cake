@@ -57,13 +57,13 @@ export const CompareViewGraph = ({ preferences }: CompareViewGraphProps) => {
         </svg>
         <ValueBrackets segments={focusedPreference} />
       </div>
+      
       <Box component="section">
         <Stack
-          className="Graph__ControlBox"
           sx={{
             borderRadius: '4px',
             border: '1px solid black',
-            padding: '20px',
+            padding: 2,
             marginTop: margin.top + 'px',
           }}
         >

@@ -1,12 +1,11 @@
 import { Segment, Division } from '../../types'
-import { getValueForInterval, validateSegments } from './getValue'
+import { getValueForInterval } from './getValue'
 import { defaultCakeSize } from '../constants'
 
 export const selfridgeConway = (preferences: Segment[][], cakeSize = defaultCakeSize): Division[] => {
   if (preferences.length !== 3) {
     throw 'Divide and choose only works with three agents'
   }
-  validateSegments(preferences, cakeSize)
 
   // P1 divides
   // P2 if two largest are equal, pick slickes P3 then P2 then P1 DONE

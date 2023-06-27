@@ -67,20 +67,20 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
 
   const sloped = false // whether lines must be flat or can be angled
 
-  // Don't let mouseX go more left than previous line
-  let xPos = clamp(mouseX, leftX, innerWidth)
+  let xPos = mouseX
+  // don't need this snapping with current resolution, but could be useful later?
+  // // Snap to end if mouse within 10 pixels
+  // if (xPos + 10 > innerWidth) {
+  //   xPos = innerWidth
+  // }
   let yPos = clamp(mouseY, 0, innerHeight)
-  // Snap to end if mouse within 10 pixels
-  if (xPos + 10 > innerWidth) {
-    xPos = innerWidth
-  }
   // set upper left point of shape to be same as mouse Y when drawing rectangles
   leftY = sloped ? leftY : yPos
 
   const [movingId, setMovingId] = useState<number | null>(null)
 
   const onClick = useCallback(() => {
-    if (isDrawing && leftX !== xPos) {
+    if (isDrawing && xPos > leftX) {
       // segment has non-zero width
       setSegments([
         ...segments,
@@ -126,7 +126,7 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
 
   let movableSegs = [...segments]
   if (movingId) {
-    // currently adjusting value of a segment
+    // user is currently adjusting the value of a segment
     const newYValue = roundValue(yScale.invert(yPos))
     movableSegs = segments.map((seg) => {
       if (seg.id === movingId) {
@@ -135,7 +135,10 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
       return seg
     })
   }
-  if (isDrawing) {
+
+  // only show the segment currently being drawn 
+  // if in drawing mode and mouse is in undrawn territory
+  if (isDrawing && xPos > leftX) {
     movableSegs.push(
       convertFromPixels({
         id: id + 1,
@@ -149,9 +152,9 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
   const pixelSegs: DrawnSegment[] = movableSegs.map(convertToPixels)
 
   return (
-    // HTML container listens for events at top level.
-    // This is much harder with pure SVG.
     <>
+      {/* HTML container listens for events at top level.
+          This is *much* harder with pure SVG. */}
       <div onMouseMove={onMouseMove} onClick={onClick} onMouseUp={onMouseUp}>
         <svg width={width} height={height}>
           <g transform={`translate(${margin.left},${margin.top})`}>

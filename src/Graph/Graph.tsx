@@ -50,7 +50,10 @@ const temp: Segment[][] = [
 
 export const Graph = () => {
   const yScale = scaleLinear().domain([0, 10]).range([innerHeight, 0]).nice()
-  const xScale = scaleLinear().domain([0, defaultCakeSize]).range([0, innerWidth]).nice()
+  const xScale = scaleLinear()
+    .domain([0, defaultCakeSize])
+    .range([0, innerWidth])
+    .nice()
 
   const [algoResults, setAlgoResults] = useState<Division[] | []>(null)
   // const [preferences, setPreferences] = useState<Segment[][]>(temp)
@@ -83,9 +86,9 @@ export const Graph = () => {
     }
   }
   const onClickRunAlgo = (algo: AlgoName) => {
-    console.log('running ' + algo)
     setAlgoResults(runDivisionAlgorithm(preferences, algo, defaultCakeSize))
     setAlgoModalOpen(false)
+    setCompareMode(true)
   }
 
   const currentAgentPrefs = preferences[currentAgent - 1]
@@ -119,7 +122,9 @@ export const Graph = () => {
           />
         )}
 
-        <CakeSliceResults results={algoResults} />
+        {algoResults ? (
+          <CakeSliceResults results={algoResults} />
+        ) : null}
       </Stack>
       <SelectAlgoModal
         open={algoModalOpen}
