@@ -6,13 +6,13 @@ import './EditableBracket.css'
 
 interface EditableBracketProps {
   segment: Segment
-  setSegmentLength: (id: number, innerWidth: number) => void
+  setSegmentWidth: (id: number, end: number) => void
   segNumber: number
 }
 
 export const EditableBracket = ({
   segment,
-  setSegmentLength,
+  setSegmentWidth,
   segNumber,
 }: EditableBracketProps) => {
   const [editing, setEditing] = useState(false)
@@ -21,11 +21,11 @@ export const EditableBracket = ({
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     if (value === '') {
-      setSegmentLength(id, 0)
+      setSegmentWidth(id, start)
     }
     const newSliceSize = parseInt(value)
     if (!isNaN(newSliceSize)) {
-      setSegmentLength(id, newSliceSize)
+      setSegmentWidth(id, start + newSliceSize)
     }
   }
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {

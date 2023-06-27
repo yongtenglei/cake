@@ -36,12 +36,12 @@ export const ValueBrackets = ({ segments }: ValueBracketsProps) => {
 
 interface EditableValueBracketsProps {
   segments: Segment[]
-  setSegmentLength?: (id: number, innerWidth: number) => void
+  setSegmentWidth?: (id: number, innerWidth: number) => void
 }
 
 export const EditableValueBrackets = ({
   segments,
-  setSegmentLength,
+  setSegmentWidth,
 }: EditableValueBracketsProps) => {
   return (
     <Box sx={styles}>
@@ -50,7 +50,7 @@ export const EditableValueBrackets = ({
           segment={seg}
           key={seg.id}
           segNumber={i + 1}
-          setSegmentLength={setSegmentLength}
+          setSegmentWidth={setSegmentWidth}
         />
       ))}
     </Box>

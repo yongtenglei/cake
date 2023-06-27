@@ -16,7 +16,7 @@ export const useConvertSegToPixels = () => {
   }
 }
 
-// Easy way to round decimals to nearest tenth
+// Easy way to round decimals without floating point issues.
 export const roundValue = (num: number) => Math.round(num * 10) / 10
 
 export const useConvertSegFromPixels = () => {
