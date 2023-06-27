@@ -42,7 +42,7 @@ export const EditableBracket = ({
             maxWidth: '70px',
             backgroundColor: 'white',
             display: 'inline-block',
-            marginTop: '5px'
+            marginTop: '5px',
           }}
         >
           {editing ? (
@@ -61,7 +61,7 @@ export const EditableBracket = ({
               size="small"
               autoComplete="off"
               InputLabelProps={{ shrink: true }}
-              InputProps={{className:'Bracket_inputBox'}}
+              InputProps={{ className: 'Bracket_inputBox' }}
             />
           ) : (
             <Button

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box } from '@mui/material'
-import { innerHeight as bottom, margin, width } from '../../constants'
+import { innerHeight as bottom, margin, innerWidth } from '../../constants'
 import { Segment } from '../../../types'
 import { EditableBracket } from './EditableBracket'
 import { BracketContainer } from './BracketContainer'
@@ -9,6 +9,7 @@ const styles = {
   position: 'relative',
   left: margin.left,
   top: 15 - margin.bottom,
+  width: innerWidth,
 }
 
 interface ValueBracketsProps {
@@ -43,7 +44,7 @@ export const EditableValueBrackets = ({
   setSegmentLength,
 }: EditableValueBracketsProps) => {
   return (
-    <Box  sx={styles}>
+    <Box sx={styles}>
       {segments.map((seg, i) => (
         <EditableBracket
           segment={seg}

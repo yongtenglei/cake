@@ -67,7 +67,7 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
 
   const sloped = false // whether lines must be flat or can be angled
 
-  let xPos = mouseX
+  let xPos = clamp(mouseX, innerWidth)
   // don't need this snapping with current resolution, but could be useful later?
   // // Snap to end if mouse within 10 pixels
   // if (xPos + 10 > innerWidth) {
@@ -106,20 +106,21 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
 
   const setSegmentLength = useCallback(
     (id: number, newWidth: number) => {
-      const changedSeg = segments.find((_) => _.id === id)
-      changedSeg.end = Math.min(changedSeg.start + newWidth, cakeSize)
-
       let previousEndpoint = 0
       const newSegs = segments.map((seg) => {
-        // force following segment(s) to expand so there's no gaps
+        // force the segment following the changed one to expand or shrink
         if (seg.start !== previousEndpoint) {
           seg.start = previousEndpoint
         }
-        previousEndpoint = seg.end
-        return { ...seg }
+        // set the new end value for changed segment
+        const end =
+          seg.id === id ? Math.min(seg.start + newWidth, cakeSize) : seg.end
+
+        previousEndpoint = end
+        return { ...seg, end }
       })
-      // filter out empty segs and set segments to new values
-      setSegments(newSegs.filter((seg) => seg.start >= seg.end))
+      // filter out empty segs
+      setSegments(newSegs.filter((seg) => seg.start < seg.end))
     },
     [segments, setSegments]
   )
@@ -136,7 +137,7 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
     })
   }
 
-  // only show the segment currently being drawn 
+  // only show the segment currently being drawn
   // if in drawing mode and mouse is in undrawn territory
   if (isDrawing && xPos > leftX) {
     movableSegs.push(

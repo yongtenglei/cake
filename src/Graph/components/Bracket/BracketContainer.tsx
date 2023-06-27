@@ -21,7 +21,6 @@ export const BracketContainer = ({
     <div
       style={{
         left: xScale(start),
-        width: 'min-content',
         position: 'absolute',
         zIndex: focused ? 10 : 0,
       }}
