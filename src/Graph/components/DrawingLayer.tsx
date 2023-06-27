@@ -1,5 +1,6 @@
 import React, { useContext, useCallback, useState, useEffect } from 'react'
 import clamp from 'lodash.clamp'
+import { ScaleLinear } from 'd3'
 import {
   height,
   width,
@@ -30,6 +31,21 @@ interface DrawingLayerProps {
   setSegments: (segment: Segment[]) => void
 }
 
+const changeMovingSegmentValue = (
+  segments: Segment[],
+  movingId: number,
+  yScale: ScaleLinear<number, number, never>,
+  yPos: number
+) => {
+  const newYValue = roundValue(yScale.invert(yPos))
+  return segments.map((seg) => {
+    if (seg.id === movingId) {
+      return { ...seg, startValue: newYValue, endValue: newYValue }
+    }
+    return seg
+  })
+}
+
 export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
   const convertToPixels = useConvertSegToPixels()
   const convertFromPixels = useConvertSegFromPixels()
@@ -37,21 +53,6 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
   const [mouseY, setMouseY] = useState(0)
   const { yScale, currentAgent } = useContext(GraphContext)
   const cakeSize = defaultCakeSize
-
-  const onMouseMove = useCallback(
-    (event: React.MouseEvent) => {
-      // add a check here for out of bounds?
-      // we get weird numbers when mousing down over the buttons
-      setMouseX(event.nativeEvent.offsetX - margin.left)
-      setMouseY(event.nativeEvent.offsetY - margin.top)
-    },
-    [setMouseX, setMouseY]
-  )
-
-  const onMouseUp = useCallback(() => {
-    // setSegments()
-    setMovingId(null)
-  }, [])
 
   const lastDrawnSegment = convertToPixels(
     segments[segments.length - 1] ?? {
@@ -65,23 +66,29 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
   let { x2: leftX, y2: leftY } = lastDrawnSegment
   const isDrawing = !isDrawingComplete(segments)
 
-  const sloped = false // whether lines must be flat or can be angled
+  const sloped = false // flat (piecewise constant) or sloped (piecewise linear)
 
   let xPos = clamp(mouseX, innerWidth)
-  // don't need this snapping with current resolution, but could be useful later?
-  // // Snap to end if mouse within 10 pixels
-  // if (xPos + 10 > innerWidth) {
-  //   xPos = innerWidth
-  // }
   let yPos = clamp(mouseY, 0, innerHeight)
   // set upper left point of shape to be same as mouse Y when drawing rectangles
   leftY = sloped ? leftY : yPos
 
   const [movingId, setMovingId] = useState<number | null>(null)
 
-  const onClick = useCallback(() => {
+  // The mouse event handlers rely too much on mouse movements for `useCallback` to be a performance boost.
+  const onMouseMove = (event: React.MouseEvent) => {
+    setMouseX(event.nativeEvent.offsetX - margin.left)
+    setMouseY(event.nativeEvent.offsetY - margin.top)
+  }
+
+  const onMouseUp = () => {
+    const segs = changeMovingSegmentValue(segments, movingId, yScale, yPos)
+    setSegments(segs)
+    setMovingId(null)
+  }
+
+  const onClick = () => {
     if (isDrawing && xPos > leftX) {
-      // segment has non-zero width
       setSegments([
         ...segments,
         convertFromPixels({
@@ -93,16 +100,7 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
         }),
       ])
     }
-  }, [
-    segments,
-    setSegments,
-    xPos,
-    yPos,
-    leftX,
-    leftY,
-    convertFromPixels,
-    isDrawing,
-  ])
+  }
 
   const setSegmentLength = useCallback(
     (id: number, newWidth: number) => {
@@ -125,20 +123,14 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
     [segments, setSegments]
   )
 
-  let movableSegs = [...segments]
-  if (movingId) {
-    // user is currently adjusting the value of a segment
-    const newYValue = roundValue(yScale.invert(yPos))
-    movableSegs = segments.map((seg) => {
-      if (seg.id === movingId) {
-        return { ...seg, startValue: newYValue, endValue: newYValue }
-      }
-      return seg
-    })
-  }
+  // We can't call `setSegments` on every mouse move because it would cause a circular dependency
+  // so when the user is changing a segments values, we display a different visual than the `segment` state.
+  const movableSegs = movingId
+    ? changeMovingSegmentValue(segments, movingId, yScale, yPos)
+    : [...segments]
 
-  // only show the segment currently being drawn
-  // if in drawing mode and mouse is in undrawn territory
+  // Add the segment currently being drawn to display data 
+  // but only if the user is in drawing mode and mouse is in "drawing territory"
   if (isDrawing && xPos > leftX) {
     movableSegs.push(
       convertFromPixels({
@@ -154,8 +146,7 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
 
   return (
     <>
-      {/* HTML container listens for events at top level.
-          This is *much* harder with pure SVG. */}
+      {/* HTML container listens for events at top level. This is *much* harder with pure SVG. */}
       <div onMouseMove={onMouseMove} onClick={onClick} onMouseUp={onMouseUp}>
         <svg width={width} height={height}>
           <g transform={`translate(${margin.left},${margin.top})`}>
