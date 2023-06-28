@@ -5,30 +5,32 @@ import './ResizeHandles.css'
 interface HorizontalResizeHandlesProps {
   segments: DrawnSegment[]
   setXMovingId: (id: number) => void
-  xMovingId: number | null
+  isDrawing: boolean
 }
 
 export const HorizontalResizeHandles = ({
   segments,
   setXMovingId,
-  xMovingId,
+  isDrawing,
 }: HorizontalResizeHandlesProps) => {
   return (
     <>
       {segments.map((seg, i) => {
-        if (i === segments.length - 1) {
+        if (isDrawing && i === segments.length - 1) {
           return null
         } else {
+          const onMouseDown = () => setXMovingId(seg.id)
           return (
             <line
               tabIndex={0}
-              className={'ResizeHandle'}
+              className={'ResizeHorizontalHandle'}
               key={seg.id}
               x1={seg.x2}
               x2={seg.x2}
               y1={innerHeight}
               y2={0}
-              onMouseDown={() => setXMovingId(seg.id)}
+              onMouseDown={onMouseDown}
+              onFocus={onMouseDown}
             />
           )
         }

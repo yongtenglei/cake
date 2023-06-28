@@ -12,7 +12,7 @@ interface ValueBubblesProps {
 export const ValueBubbles = ({ segments }: ValueBubblesProps) => (
   <VerticalResizeHandles
     segments={segments}
-    setMovingCornerId={noop}
+    setCornerMovingId={noop}
     setYMovingId={noop}
     isDrawing={false}
     editable={false}
@@ -21,7 +21,7 @@ export const ValueBubbles = ({ segments }: ValueBubblesProps) => (
 
 interface VerticalResizeHandlesProps {
   segments: DrawnSegment[]
-  setMovingCornerId: (corner: [number, number]) => void
+  setCornerMovingId: (corner: [number, number]) => void
   setYMovingId: (id: number) => void
   isDrawing: boolean
   editable: boolean
@@ -29,7 +29,7 @@ interface VerticalResizeHandlesProps {
 
 export const VerticalResizeHandles = ({
   segments,
-  setMovingCornerId,
+  setCornerMovingId,
   setYMovingId,
   isDrawing,
   editable,
@@ -48,7 +48,7 @@ export const VerticalResizeHandles = ({
             <ValueBubble
               className={cornerClass}
               editable={editable}
-              onMouseDown={() => setMovingCornerId([id, 1])}
+              onMouseDown={() => setCornerMovingId([id, 1])}
               x={x1}
               y={y1}
             />
@@ -64,7 +64,7 @@ export const VerticalResizeHandles = ({
             <ValueBubble
               className={cornerClass}
               editable={editable}
-              onMouseDown={() => setMovingCornerId([id, 2])}
+              onMouseDown={() => setCornerMovingId([id, 2])}
               x={x2}
               y={y2}
             />

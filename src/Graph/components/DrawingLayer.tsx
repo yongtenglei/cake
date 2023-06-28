@@ -22,6 +22,13 @@ import {
   isDrawingComplete,
 } from '../graphUtils'
 import { HorizontalResizeHandles, VerticalResizeHandles } from './ResizeHandles'
+import {
+  changeSegmentFlatValue,
+  changeSegmentWidth,
+  changeSegmentWidthNumerically,
+  changeSegmentCornerValue,
+  changeSegmentWithKeyboard,
+} from './adjustSegments'
 
 // ids starting at 0. To make these unique, increment the number each time you use one.
 let id = 0
@@ -36,12 +43,12 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
   const convertFromPixels = useConvertSegFromPixels()
   const [mouseX, setMouseX] = useState(0)
   const [mouseY, setMouseY] = useState(0)
+  const [isMouseDown, setIsMouseDown] = useState(false)
   const [yMovingId, setYMovingId] = useState<number | null>(null)
   const [xMovingId, setXMovingId] = useState<number | null>(null)
-  const [movingCornerId, setMovingCornerId] = useState<[number, number] | null>(
+  const [cornerMovingId, setCornerMovingId] = useState<[number, number] | null>(
     null
   )
-
   const { xScale, yScale, currentAgent } = useContext(GraphContext)
   const cakeSize = defaultCakeSize
   const isDrawing = !isDrawingComplete(segments)
@@ -55,93 +62,114 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
       id: 0,
     }
   )
-  let { x2: leftX } = lastDrawnSegment
+  const lastSegmentEnd = lastDrawnSegment.x2
 
-  let xPos = clamp(mouseX, 0, innerWidth)
-  let yPos = clamp(mouseY, 0, innerHeight)
-
-  // The mouse event handlers rely too much on mouse movements for `useCallback` to be a performance boost.
+  // The event handlers rely too much on mouse movements for `useCallback` to be a performance boost.
   const onMouseMove = (event: React.MouseEvent) => {
-    console.log(document.activeElement)
-    setMouseX(event.nativeEvent.offsetX - margin.left)
-    setMouseY(event.nativeEvent.offsetY - margin.top)
+    const x = event.nativeEvent.offsetX - margin.left
+    const y = event.nativeEvent.offsetY - margin.top
+    const constrainedX = clamp(x, 0, innerWidth)
+    const constrainedY = clamp(y, 0, innerHeight)
+    setMouseX(constrainedX)
+    setMouseY(constrainedY)
+
+    // putting this in a `useEffect` greatly complicates things, best to keep it here.
+    if (isMouseDown) {
+      let segsWithDrawing = [...segments]
+      segsWithDrawing = yMovingId
+        ? changeSegmentFlatValue(segments, yMovingId, yScale, constrainedY)
+        : segsWithDrawing
+
+      segsWithDrawing = xMovingId
+        ? changeSegmentWidth(
+            segments,
+            xMovingId,
+            xScale,
+            constrainedX,
+            cakeSize
+          )
+        : segsWithDrawing
+
+      segsWithDrawing = cornerMovingId
+        ? changeSegmentCornerValue(
+            segments,
+            cornerMovingId,
+            yScale,
+            constrainedY
+          )
+        : segsWithDrawing
+      setSegments(segsWithDrawing)
+    }
   }
 
-  const onMouseUp = () => {
-    let segs = segments
-    if (yMovingId) {
-      segs = changeSegmentValue(segs, yMovingId, yScale, yPos)
-      setYMovingId(null)
+  const onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const segs = changeSegmentWithKeyboard(
+      event,
+      segments,
+      xMovingId,
+      yMovingId,
+      cornerMovingId,
+      cakeSize
+    )
+    if (segs) {
+      setSegments(segs)
     }
-    if (xMovingId) {
-      segs = changeSegmentWidth(segs, xMovingId, xScale, xPos, cakeSize)
-      setXMovingId(null)
-    }
-    if (movingCornerId) {
-      segs = changeSegmentSlope(segments, movingCornerId, yScale, yPos)
-      setMovingCornerId(null)
-    }
-    setSegments(segs)
   }
+
+  const onBlur = () => {
+    setYMovingId(null)
+    setXMovingId(null)
+    setCornerMovingId(null)
+    console.log('blur')
+  }
+
+  // keeping track of mouse down/up helps mouse and keyboard play nice with each other
+  const onMouseDown = () => setIsMouseDown(true)
 
   const onClick = () => {
-    if (isDrawing && xPos > leftX) {
-      setSegments([
-        ...segments,
-        convertFromPixels({
-          x1: leftX,
-          y1: yPos,
-          x2: xPos,
-          y2: yPos,
-          id: ++id,
-        }),
-      ])
+    setIsMouseDown(false)
+    if (isDrawing && mouseX > lastSegmentEnd) {
+      const newSegment = {
+        x1: lastSegmentEnd,
+        y1: mouseY,
+        x2: mouseX,
+        y2: mouseY,
+        id: ++id,
+      }
+      setSegments([...segments, convertFromPixels(newSegment)])
     }
   }
 
-  const setSegmentWidth = useCallback(
-    (id: number, newEnd: number) => {
-      setSegments(changeSegmentWidthNumerically(segments, id, newEnd, cakeSize))
-    },
-    [segments, setSegments]
-  )
+  const setSegmentWidth = (id: number, newEnd: number) => {
+    setSegments(changeSegmentWidthNumerically(segments, id, newEnd, cakeSize))
+  }
 
-  // We can't call `setSegments` on every mouse move because it would cause a circular dependency
-  // so when the user is draging to change a segments width/value,
-  // we display a different visual than the `segment` state.
-  let movableSegs = [...segments]
-
-  movableSegs = yMovingId
-    ? changeSegmentValue(segments, yMovingId, yScale, yPos)
-    : movableSegs
-
-  movableSegs = xMovingId
-    ? changeSegmentWidth(segments, xMovingId, xScale, xPos, cakeSize)
-    : movableSegs
-
-  movableSegs = movingCornerId
-    ? changeSegmentSlope(segments, movingCornerId, yScale, yPos)
-    : movableSegs
-
-  // Add the segment currently being drawn to display data
-  // but only if the user is in drawing mode and mouse is in "drawing territory"
-  if (isDrawing && xPos > leftX) {
-    movableSegs.push(
+  let segsWithDrawing = [...segments]
+  // Add the segment currently being drawn to the display data
+  // but only if the user is in drawing mode and mouse is in undrawn territory
+  if (isDrawing && mouseX > lastSegmentEnd) {
+    segsWithDrawing.push(
       convertFromPixels({
         id: id + 1,
-        x1: leftX,
-        y1: yPos,
-        x2: xPos,
-        y2: yPos,
+        x1: lastSegmentEnd,
+        y1: mouseY,
+        x2: mouseX,
+        y2: mouseY,
       })
     )
   }
-  const pixelSegs: DrawnSegment[] = movableSegs.map(convertToPixels)
+  const pixelSegs: DrawnSegment[] = segsWithDrawing.map(convertToPixels)
 
   return (
     <>
       {/* HTML container listens for events at top level. This is *much* harder with pure SVG. */}
-      <div onMouseMove={onMouseMove} onClick={onClick} onMouseUp={onMouseUp}>
+      <div
+        onMouseMove={onMouseMove}
+        onMouseDown={onMouseDown}
+        onClick={onClick}
+        onKeyUp={onKeyUp}
+        onBlur={onBlur}
+      >
         <svg width={width} height={height}>
           <g transform={`translate(${margin.left},${margin.top})`}>
             <AxisBottom />
@@ -155,12 +183,12 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
             <HorizontalResizeHandles
               segments={pixelSegs}
               setXMovingId={setXMovingId}
-              xMovingId={xMovingId}
+              isDrawing={isDrawing}
             />
 
             <VerticalResizeHandles
               segments={pixelSegs}
-              setMovingCornerId={setMovingCornerId}
+              setCornerMovingId={setCornerMovingId}
               setYMovingId={setYMovingId}
               isDrawing={isDrawing}
               editable
@@ -170,78 +198,9 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
       </div>
 
       <EditableValueBrackets
-        segments={movableSegs}
+        segments={segsWithDrawing}
         setSegmentWidth={setSegmentWidth}
       />
     </>
   )
-}
-
-const changeSegmentValue = (
-  segments: Segment[],
-  id: number,
-  yScale: ScaleLinear<number, number, never>,
-  yPos: number
-) => {
-  const newYValue = roundValue(yScale.invert(yPos))
-  return segments.map((seg) => {
-    if (seg.id === id) {
-      return { ...seg, startValue: newYValue, endValue: newYValue }
-    }
-    return seg
-  })
-}
-
-const changeSegmentWidth = (
-  segments: Segment[],
-  id: number,
-  xScale: ScaleLinear<number, number, never>,
-  xPos: number,
-  cakeSize: number
-) => {
-  const changingSeg = segments.find((seg) => seg.id === id)
-  const constrainedXValue = Math.max(xScale.invert(xPos), changingSeg.start)
-  const newEndpoint = Math.round(constrainedXValue)
-  return changeSegmentWidthNumerically(segments, id, newEndpoint, cakeSize)
-}
-const changeSegmentWidthNumerically = (
-  segments: Segment[],
-  id: number,
-  newEnd: number,
-  cakeSize: number
-) => {
-  const changedIndex = segments.findIndex((seg) => seg.id === id)
-  const newSegs = segments.map((seg, i) => {
-    // set the new end value for changed segment
-    const end = i === changedIndex ? Math.min(newEnd, cakeSize) : seg.end
-
-    let start = seg.start
-    if (i - 1 === changedIndex && seg.start !== newEnd) {
-      // force the segment after the changed one to expand or shrink
-      start = newEnd
-    } else if (i > changedIndex && seg.start < newEnd) {
-      // force segments beyond that to shrink
-      start = newEnd
-    }
-    return { ...seg, end, start }
-  })
-  // filter out empty segs
-  return newSegs.filter((seg) => seg.start < seg.end)
-}
-
-const changeSegmentSlope = (
-  segments: Segment[],
-  movingCornerId: [number, number],
-  yScale: ScaleLinear<number, number, never>,
-  yPos: number
-) => {
-  const [id, corner] = movingCornerId
-  return segments.map((seg) => {
-    if (seg.id === id) {
-      const field = corner === 1 ? 'startValue' : 'endValue'
-      const value = clamp(roundValue(yScale.invert(yPos)), 0, 10)
-      return { ...seg, [field]: value }
-    }
-    return seg
-  })
 }

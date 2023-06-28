@@ -23,10 +23,7 @@ export const ValueBubble = ({
   return (
     <g
       transform={`translate(${x} ${y})`}
-      style={{
-        cursor: editable ? 'ns-resize' : 'default',
-        userSelect: 'none',
-      }}
+      onFocus={onMouseDown}
       onMouseDown={onMouseDown}
       className={className}
       tabIndex={editable ? 0 : null}
