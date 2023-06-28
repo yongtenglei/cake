@@ -1,8 +1,0 @@
-.ResizeHandle {
-  stroke-width: 8px;
-  stroke: transparent;
-  cursor: ew-resize;
-}
-.ResizeHandle:hover, .ResizeHandle:focus, .ResizeHandle__moving {
-  stroke: #333;
-}

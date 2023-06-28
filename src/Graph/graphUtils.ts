@@ -1,6 +1,7 @@
 import { useContext } from 'react'
 import { GraphContext } from './GraphContext'
 import { Segment, DrawnSegment } from '../types'
+import { defaultCakeSize } from './constants'
 
 export const useConvertSegToPixels = () => {
   const { xScale, yScale } = useContext(GraphContext)
@@ -35,5 +36,5 @@ export const useConvertSegFromPixels = () => {
 
 export const isDrawingComplete = (segments: Segment[]) => {
   const seg = segments[segments.length - 1]
-  return seg?.end === 100
+  return seg?.end === defaultCakeSize
 }

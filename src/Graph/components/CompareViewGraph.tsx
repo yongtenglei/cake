@@ -5,8 +5,8 @@ import { AxisLeft, AxisBottom } from './Axes'
 import { Segments } from './Segments'
 import { useConvertSegToPixels } from '../graphUtils'
 import { Segment } from '../../types'
-import { ValueBubbles } from './Value'
 import { ValueBrackets } from './Bracket/ValueBrackets'
+import { ValueBubbles } from './ResizeHandles'
 
 interface CompareViewGraphProps {
   preferences: Segment[][]
@@ -48,16 +48,12 @@ export const CompareViewGraph = ({ preferences }: CompareViewGraphProps) => {
               />
             )}
 
-            <ValueBubbles
-              segments={focusedPreference.map(convertToPixels)}
-              editable={false}
-              setMovingId={() => {}}
-            />
+            <ValueBubbles segments={focusedPreference.map(convertToPixels)} />
           </g>
         </svg>
         <ValueBrackets segments={focusedPreference} />
       </div>
-      
+
       <Box component="section">
         <Stack
           sx={{

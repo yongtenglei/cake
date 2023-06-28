@@ -107,3 +107,53 @@ test('splits a tricky case in an envy-free way', () => {
 //   value: 262,
 //   valuePercent: 0.46785714285714286
 // }
+
+test('splits a tricky sloped case in an envy-free way', () => {
+  const person1 = [
+    genFlatSeg(0, 45, 3.5),
+    genSlopeSeg(45, 100, 7.5, 6.5),
+  ]
+  const person2 = [
+    genSlopeSeg(0, 60, 8, 9.5),
+    genSlopeSeg(60, 100, 2.5, 5.5)
+  ]
+  const result = divideAndChoose([person1, person2])
+  expect(result).toHaveLength(2)
+  testIfEnvyFree(person1, person2, result)
+})
+
+// The following experimental results created the above test case
+// [
+// [
+//   {
+//       "start": 0,
+//       "startValue": 3.5,
+//       "end": 46,
+//       "endValue": 3.5,
+//       "id": 1
+//   },
+//   {
+//       "start": 46,
+//       "startValue": 7.444444444444445,
+//       "end": 100,
+//       "endValue": 6.694444444444445,
+//       "id": 2
+//   }
+// ],
+// [
+//   {
+//       "start": 0,
+//       "startValue": 7.9,
+//       "end": 63,
+//       "endValue": 9.36111111111111,
+//       "id": 1
+//   },
+//   {
+//       "start": 63,
+//       "startValue": 2.666666666666667,
+//       "end": 100,
+//       "endValue": 5.5,
+//       "id": 2
+//   }
+// ]
+// ]

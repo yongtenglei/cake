@@ -1,0 +1,35 @@
+/* Bar for horizontal resizing */
+.ResizeHandle {
+  stroke-width: 8px;
+  stroke: #333;
+  cursor: ew-resize;
+  outline: none;
+  opacity: 0;
+}
+.ResizeHandle:hover,
+.ResizeHandle:focus {
+  opacity: 1;
+}
+
+/* Circles for changing values. The central and corner ones share a lot of styles */
+.ResizeVerticalHandle, .ResizeCornerHandle {
+  cursor: ns-resize;
+  outline: none;
+}
+
+/* Corner ones only show on hover/focus, unless the line is sloped */
+.ResizeCornerHandle {
+  opacity: 0;
+}
+
+.ResizeVerticalHandle:hover,
+.ResizeVerticalHandle:focus,
+.ResizeCornerHandle:hover,
+.ResizeCornerHandle:focus {
+  stroke-width: 2;
+  opacity: 1;
+}
+
+.ResizeCornerHandle.visible {
+  opacity: 1;
+}
