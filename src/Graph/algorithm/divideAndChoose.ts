@@ -2,6 +2,7 @@ import { Segment, Division } from '../../types'
 import { getValueForInterval } from './getValue'
 import { defaultCakeSize } from '../constants'
 
+// need to rework this to be exact and subdivide increments
 export const divideAndChoose = (
   preferences: Segment[][],
   cakeSize = defaultCakeSize
@@ -47,14 +48,17 @@ const cutSlice = (
   preferences: Segment[][],
   start: number,
   end: number,
-  cakeValue: number
+  expectedValue: number
 ): Division => {
-  const value = getValueForInterval(preferences[agent - 1], start, end)
+  // Getting ans saving every agent's evaluations for this slice makes later calculation much simpler
+  const allEvaluationsForSlice = preferences.map(segments => getValueForInterval(segments, start, end))
+  const value = allEvaluationsForSlice[agent - 1]
   return {
     owner: agent,
     start,
     end,
     value,
-    valuePercent: value / cakeValue,
+    values: allEvaluationsForSlice,
+    valuePercent: value / expectedValue,
   }
 }

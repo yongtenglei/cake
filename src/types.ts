@@ -25,4 +25,5 @@ export type Division = {
   end: number
   value: number
   valuePercent: number
+  values: number[]
 }
