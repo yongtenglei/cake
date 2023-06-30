@@ -11,7 +11,7 @@ import { isDrawingComplete } from './graphUtils'
 import { AlgoName, innerHeight, innerWidth, defaultCakeSize } from './constants'
 import { runDivisionAlgorithm } from './algorithm/run'
 import { CakeSliceResults } from './CakeSliceResults'
-// import CakeRoundedIcon from '@mui/icons-material/CakeRounded';
+import { LoadingModal } from '../components/LoadingModal'
 
 const temp: Segment[][] = [
   [
@@ -62,7 +62,7 @@ export const Graph = () => {
   const [currentAgent, setCurrentAgent] = useState<number>(1) // Note: This is 1 indexed
   const [algoModalOpen, setAlgoModalOpen] = useState<boolean>(false)
   const [compareMode, setCompareMode] = useState<boolean>(false)
-
+  const [loading, setLoading] = useState<boolean>(false)
   const onClickCompare = () => setCompareMode(!compareMode)
 
   const setCurrentAgentPrefs = (segs: Segment[]) => {
@@ -85,9 +85,13 @@ export const Graph = () => {
       setCurrentAgent(nextAgent)
     }
   }
-  const onClickRunAlgo = (algo: AlgoName) => {
-    setAlgoResults(runDivisionAlgorithm(preferences, algo, defaultCakeSize))
+  const onClickRunAlgo = async (algo: AlgoName) => {
+    setLoading(true)
     setAlgoModalOpen(false)
+    
+    setAlgoResults(await runDivisionAlgorithm(preferences, algo, defaultCakeSize))
+    
+    setLoading(false)
     setCompareMode(true)
   }
 
@@ -122,9 +126,7 @@ export const Graph = () => {
           />
         )}
 
-        {algoResults ? (
-          <CakeSliceResults results={algoResults} />
-        ) : null}
+        {algoResults ? <CakeSliceResults results={algoResults} /> : null}
       </Stack>
       <SelectAlgoModal
         open={algoModalOpen}
@@ -132,6 +134,7 @@ export const Graph = () => {
         onConfirm={onClickRunAlgo}
         totalAgents={preferences.length}
       />
+      <LoadingModal open={loading} title={'Running Algorithm'} />
     </GraphContext.Provider>
   )
 }

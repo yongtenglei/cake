@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { Graph } from './Graph/Graph'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { Router } from './Router'
 import './index.css'
 
 const theme = createTheme({
@@ -14,7 +14,7 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <Graph />
+      <Router />
     </ThemeProvider>
   </React.StrictMode>
 )

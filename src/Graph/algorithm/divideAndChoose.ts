@@ -3,10 +3,10 @@ import { getValueForInterval } from './getValue'
 import { defaultCakeSize } from '../constants'
 
 // need to rework this to be exact and subdivide increments
-export const divideAndChoose = (
+export const divideAndChoose = async (
   preferences: Segment[][],
   cakeSize = defaultCakeSize
-): Division[] => {
+): Promise<Division[]> => {
   if (preferences.length !== 2) {
     throw 'Divide and choose only works with two agents'
   }

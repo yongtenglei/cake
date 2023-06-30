@@ -2,10 +2,10 @@ import { divideAndChoose } from './divideAndChoose'
 import { genFlatSeg, genSlopeSeg } from './testUtil'
 import { testIfEnvyFree } from './testUtil'
 
-test('splits a uniform flat value graph evenly in half', () => {
+test('splits a uniform flat value graph evenly in half', async () => {
   const person1 = [genFlatSeg(0, 100, 10)] // 1000
   const person2 = [genFlatSeg(0, 100, 10)] // 1000
-  const result = divideAndChoose([person1, person2])
+  const result = await divideAndChoose([person1, person2])
   expect(result).toHaveLength(2)
   // Each agent values the cake uniformly for a total of 1000 value.
   // The results should be an even 500/500 split.
@@ -15,10 +15,10 @@ test('splits a uniform flat value graph evenly in half', () => {
   testIfEnvyFree(2, result)
 })
 
-test('splits a seesaw-like graph in an envy-free way', () => {
+test('splits a seesaw-like graph in an envy-free way', async () => {
   const person1 = [genFlatSeg(0, 50, 10), genFlatSeg(50, 100, 5)] // 750, halfway point is 37.5%
   const person2 = [genFlatSeg(0, 50, 5), genFlatSeg(50, 100, 10)] // 750, halfway point is 67.5%
-  const result = divideAndChoose([person1, person2])
+  const result = await divideAndChoose([person1, person2])
   expect(result).toHaveLength(2)
   // The slices should be 375 value on both sides for person 1,
   // but the second slice is better for person 2.
@@ -28,18 +28,17 @@ test('splits a seesaw-like graph in an envy-free way', () => {
   testIfEnvyFree(2, result)
 })
 
-test('splits a seesaw-like sloped graph in an envy-free way', () => {
+test('splits a seesaw-like sloped graph in an envy-free way', async() => {
   const person1 = [genSlopeSeg(0, 100, 10, 0)] // 500, halfway point is ~30%
   const person2 = [genSlopeSeg(0, 100, 0, 10)] // 500, halfway point is ~70%
-  const result = divideAndChoose([person1, person2])
+  const result = await divideAndChoose([person1, person2])
   expect(result).toHaveLength(2)
   expect(result[0]).toMatchObject({ owner: 1, start: 0, end: 30, value: 255 })
   expect(result[1]).toMatchObject({ owner: 2, start: 30, end: 100, value: 455 })
   testIfEnvyFree(2, result)
 })
 
-test('splits a tricky case in an envy-free way', () => {
-  // The 
+test('splits a tricky case in an envy-free way', async() => {
   const person1 = [
     genFlatSeg(0, 40, 1),
     genFlatSeg(40, 65, 8.3),
@@ -52,7 +51,7 @@ test('splits a tricky case in an envy-free way', () => {
     genFlatSeg(70, 90, 8),
     genFlatSeg(90, 100, 0),
   ]
-  const result = divideAndChoose([person1, person2])
+  const result = await divideAndChoose([person1, person2])
   expect(result).toHaveLength(2)
   testIfEnvyFree(2, result)
 })
@@ -85,7 +84,7 @@ test('splits a tricky case in an envy-free way', () => {
 //   valuePercent: 0.46785714285714286
 // }
 
-test('splits a tricky sloped case in an envy-free way', () => {
+test('splits a tricky sloped case in an envy-free way', async() => {
   const person1 = [
     genFlatSeg(0, 45, 3.5),
     genSlopeSeg(45, 100, 7.5, 6.5),
@@ -94,7 +93,7 @@ test('splits a tricky sloped case in an envy-free way', () => {
     genSlopeSeg(0, 60, 8, 9.5),
     genSlopeSeg(60, 100, 2.5, 5.5)
   ]
-  const result = divideAndChoose([person1, person2])
+  const result = await divideAndChoose([person1, person2])
   expect(result).toHaveLength(2)
   testIfEnvyFree(2, result)
 })

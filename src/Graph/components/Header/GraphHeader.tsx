@@ -1,16 +1,19 @@
-import { Button, Stack, Tooltip, IconButton } from '@mui/material'
+
+import {
+  Button,
+  Stack,
+  Tooltip,
+  IconButton,
+} from '@mui/material'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import CheckIcon from '@mui/icons-material/Check'
 import AssessmentIcon from '@mui/icons-material/Assessment'
 import EditIcon from '@mui/icons-material/Edit'
-import {
-  MAX_AGENTS,
-  getAgentColor,
-  margin,
-  innerWidth,
-} from '../../constants'
+import { ExtraOptions } from './ExtraOptions'
+
+import { MAX_AGENTS, getAgentColor, margin, innerWidth } from '../../constants'
 import './GraphHeader.css'
 
 interface GraphHeaderProps {
@@ -102,6 +105,9 @@ export const GraphHeader = ({
             >
               Finish
             </Button>
+
+<ExtraOptions />
+            
           </Stack>
         </Tooltip>
       </Stack>

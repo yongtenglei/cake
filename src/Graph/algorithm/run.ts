@@ -8,7 +8,7 @@ export const runDivisionAlgorithm = (
   preferences: Segment[][],
   algo: AlgoName,
   cakeSize,
-): Division[] => {
+): Promise<Division[]> => {
   
   console.log(`Running ${algo}...`)
   console.log('Cake size:', cakeSize)

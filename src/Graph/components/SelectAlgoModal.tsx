@@ -34,26 +34,15 @@ export const SelectAlgoModal = ({
   return (
     <>
       <Dialog open={open} onClose={onCancel}>
-        {running ? (
-          <>
-            <DialogTitle>Running Algorithm</DialogTitle>
-            <DialogContent>
-              <Box margin={4} textAlign={'center'} minWidth={200}>
-                <CircularProgress size={100} />
-              </Box>
-            </DialogContent>
-          </>
-        ) : (
-          <SelectAlgoModalGuts
-            totalAgents={totalAgents}
-            onCancel={onCancel}
-            onConfirm={(algo: AlgoName) => {
-              setIsRunning(true)
-              onConfirm(algo)
-            }}
-            openAlgoExplainModal={() => setAlgoExplainOpen(true)}
-          />
-        )}
+        <SelectAlgoModalGuts
+          totalAgents={totalAgents}
+          onCancel={onCancel}
+          onConfirm={(algo: AlgoName) => {
+            setIsRunning(true)
+            onConfirm(algo)
+          }}
+          openAlgoExplainModal={() => setAlgoExplainOpen(true)}
+        />
       </Dialog>
 
       <AlgoExplanationModal
