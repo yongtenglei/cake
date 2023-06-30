@@ -3,16 +3,12 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import DownloadIcon from '@mui/icons-material/GetApp'
 import UploadIcon from '@mui/icons-material/Publish'
 import ExportImageIcon from '@mui/icons-material/Panorama'
-import {
-  IconButton,
-  Menu,
-  MenuItem,
-  ListItemIcon,
-} from '@mui/material'
+import { IconButton, Menu, MenuItem, ListItemIcon } from '@mui/material'
 import { downloadScreenshot } from '../../../utils/export'
-
+import { LoadingModal } from '../../../components/LoadingModal'
 
 export const ExtraOptions = () => {
+  const [loading, setLoading] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -20,14 +16,16 @@ export const ExtraOptions = () => {
   }
   const handleClose = () => setAnchorEl(null)
 
-  const onClickExportImage = () => {
+  const onClickExportImage = async () => {
     handleClose()
-    // put up a spinner?
-    downloadScreenshot()
+    setLoading(true)
+    await downloadScreenshot()
+    setLoading(false)
   }
 
   return (
     <div>
+      <LoadingModal open={loading} title="Exporting Image" />
       <IconButton
         aria-label="delete"
         id="options-menu-button"

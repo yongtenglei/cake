@@ -1,8 +1,20 @@
 # A Visual Solver for Fair Division
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a single page application for educating about the problem of fair dividing a resource among several people, commonly called "Cake Cutting." It is built with [React](https://react.dev/) and uses [React-Router](https://reactrouter.com/) for internal routing. 
 
-View it live at https://cake-division.netlify.app/
+It was bootstrapped with [Create React App](https://github.com/facebook/create-react-app) which simplifies app set up.
+
+It is hosted from github using Netlify. View it live at https://cake-division.netlify.app/
+
+## Libraries
+
+### Material UI
+
+This project uses [Material UI](https://mui.com/material-ui/) components. These are a robust set of components and styling built by Google and used by hundreds of apps and websites. In the code, anything imported from `@mui/material` or `@mui/icons-material` is Material UI.
+
+### D3
+
+Graph display uses the data visualization library [D3](https://d3js.org/) in a very basic way. The mapping between pixels and graph values uses D3, but that's about it.
 
 ## Available Scripts
 

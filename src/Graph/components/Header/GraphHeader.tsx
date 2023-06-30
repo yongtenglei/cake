@@ -1,10 +1,4 @@
-
-import {
-  Button,
-  Stack,
-  Tooltip,
-  IconButton,
-} from '@mui/material'
+import { Button, Stack, Tooltip, IconButton } from '@mui/material'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
@@ -63,7 +57,7 @@ export const GraphHeader = ({
               : `Mark the values for person ${currentAgent} before continuing`
           }
         >
-          <Stack spacing={1} direction="row">
+          <Stack spacing={1} paddingRight={1} direction="row">
             <Button
               variant="contained"
               disabled={!isComplete || totalAgents < 2}
@@ -105,11 +99,9 @@ export const GraphHeader = ({
             >
               Finish
             </Button>
-
-<ExtraOptions />
-            
           </Stack>
         </Tooltip>
+        <ExtraOptions />
       </Stack>
     </Stack>
   )
