@@ -106,7 +106,7 @@ export const Graph = () => {
         currentAgent,
       }}
     >
-      <Stack margin={3}>
+      <Stack marginX={3}>
         <GraphHeader
           totalAgents={preferences.length}
           isComplete={isComplete}

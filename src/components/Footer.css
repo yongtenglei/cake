@@ -1,0 +1,32 @@
+@import '../base.css';
+
+.Footer {
+  background-color: rgb(41, 41, 42);
+}
+
+.Footer__Body {
+  color: white;
+  flex-direction: column;
+  margin: 8px 0;
+}
+
+.Footer__links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.Footer__link > a,
+.Footer__link > a:visited {
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+}
+
+.Footer__link > a:hover,
+.Footer__link > a:focus {
+  text-decoration: underline;
+}
+
+.Footer__copyright {
+  text-align: center;
+}

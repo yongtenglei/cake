@@ -1,14 +1,15 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { ErrorPage } from './Pages/ErrorPage'
-import { Root } from './Root'
+import { Main } from './Main'
 import { Graph } from './Graph/Graph'
 import { PrivacyPolicyPage } from './Pages/PrivacyPolicyPage'
+import { TutorialPage } from './Pages/TutorialPage'
 import { LandingPage } from './Pages/LandingPage'
 
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <Root />,
+    element: <Main />,
     errorElement: <ErrorPage />,
     children: [
       {
@@ -16,11 +17,15 @@ export const router = createBrowserRouter([
         element: <LandingPage />
       },
       {
-        path: 'graph/',
+        path: '/graph',
         element: <Graph />,
       },
       {
-        path: 'privacy-policy/',
+        path: '/tutorial',
+        element: <TutorialPage />,
+      },
+      {
+        path: '/privacy-policy',
         element: <PrivacyPolicyPage />
       }
     ],

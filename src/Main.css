@@ -1,0 +1,18 @@
+@import './base.css';
+
+.PageWrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(184, 184, 245);
+}
+
+.content {
+  flex-grow: 1;
+  max-width: var(--bodyMaxWidth);
+  width: 100%;
+  background-color: white;
+  padding: 64px 16px;
+  margin: 0 16px;
+  align-self: center;
+}

@@ -1,0 +1,44 @@
+@import '../base.css';
+
+:root {
+  --navColor: rgb(77, 66, 226);
+}
+
+.Navigation {
+  background-color: var(--navColor);
+  box-shadow: 0px 0px 8px rgb(18 18 18);
+}
+
+.Navigation__homeIcon {
+  color: white;
+}
+
+.Navigation__links {
+  list-style: none;
+  margin: 0 16px;
+  display: flex;
+}
+
+.Navigation__link {
+  vertical-align: middle;
+}
+
+.Navigation__link:hover, .Navigation__link:focus {
+  background-color: rgb(79, 79, 251);
+}
+
+.Navigation__link > a {
+  color: white;
+  text-decoration: none;
+  padding: 16px 32px;
+  display: block;
+}
+
+.Navigation__link > a:visited {
+  color: white;
+}
+
+.Navigation__link > a.active {
+  color: var(--navColor);
+  background-color: white;
+ }

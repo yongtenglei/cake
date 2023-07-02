@@ -74,21 +74,19 @@ export const GraphHeader = ({
                   : null
               }
             >
-              <span>
-                <Button
-                  variant="contained"
-                  disabled={!isComplete || cantAddMoreAgents}
-                  onClick={() => {
-                    if (compareMode) {
-                      onClickCompare()
-                    }
-                    onClickCreateAgent()
-                  }}
-                  startIcon={<PersonAddIcon />}
-                >
-                  Add Person
-                </Button>
-              </span>
+              <Button
+                variant="contained"
+                disabled={!isComplete || cantAddMoreAgents}
+                onClick={() => {
+                  if (compareMode) {
+                    onClickCompare()
+                  }
+                  onClickCreateAgent()
+                }}
+                startIcon={<PersonAddIcon />}
+              >
+                Add Person
+              </Button>
             </Tooltip>
 
             <Button
