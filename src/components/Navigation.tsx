@@ -7,13 +7,13 @@ export const Navigation = () => {
   return (
     <div className="Navigation">
       <div className="LayoutBody Navigation__body">
-        <NavLink
+        <Link
           className="Navigation__link Navigation__homeIcon"
-          to={'/'}
+          href={'/'}
           aria-label={'home'}
         >
           <CakeRoundedIcon />
-        </NavLink>
+        </Link>
 
         <ol className="Navigation__links">
           <li>
