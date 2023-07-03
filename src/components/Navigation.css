@@ -1,16 +1,14 @@
-@import '../base.css';
-
-:root {
-  --navColor: rgb(77, 66, 226);
-}
+@import '../index.css';
 
 .Navigation {
-  background-color: var(--navColor);
-  box-shadow: 0px 0px 8px rgb(18 18 18);
+  background-color: var(--cPrimary);
+  z-index: 1;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px -1px, rgba(0, 0, 0, 0.14) 0px 4px 5px 0px, rgba(0, 0, 0, 0.12) 0px 1px 10px 0px;
 }
 
-.Navigation__homeIcon {
-  color: white;
+.Navigation__body {
+  display: flex;
+  justify-content: space-between;
 }
 
 .Navigation__links {
@@ -20,25 +18,29 @@
 }
 
 .Navigation__link {
-  vertical-align: middle;
-}
-
-.Navigation__link:hover, .Navigation__link:focus {
-  background-color: rgb(79, 79, 251);
-}
-
-.Navigation__link > a {
-  color: white;
+  color: black;
   text-decoration: none;
   padding: 16px 32px;
   display: block;
+  border-bottom: 4px solid transparent;
 }
 
-.Navigation__link > a:visited {
-  color: white;
+.Navigation__link:visited {
+  color: black;
 }
 
-.Navigation__link > a.active {
-  color: var(--navColor);
-  background-color: white;
+.Navigation__link:hover, .Navigation__link:focus {
+  background-color: var(--cPrimaryLight);
+  border-bottom-color: white;
+}
+
+.Navigation__link.active {
+  border-bottom-color: white;
  }
+
+
+.Navigation__homeIcon {
+  color: white;
+  /* temp */
+  padding: 12px 32px;
+}

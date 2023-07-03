@@ -5,12 +5,10 @@ import './Main.css'
 
 export const Main = () => {
   return (
-    <div className='PageWrapper'>
+    <div className="PageWrapper">
       <Navigation />
       <main className="content">
-
-          <Outlet />
-
+        <Outlet />
       </main>
       <Footer />
     </div>

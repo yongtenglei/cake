@@ -1,12 +1,15 @@
 export const MAX_AGENTS = 3
 
-// Same as the Material UI default theme colors
-export const C_PRIMARY = '#42a5f5'
-export const C_SECONDARY = '#ba68c8'
-export const C_ERROR = '#ef5350'
-export const C_WARNING = '#ff9800'
-export const C_SUCCESS = '#4caf50'
-const agentColors = [C_PRIMARY, C_SUCCESS, C_SECONDARY]
+export const C_GREEN = '#A1DE93'
+export const C_YELLOW = '#F7F48B'
+export const C_LIGHT_BLUE = '#5090d3'
+export const C_PINK = '#E8A2CF'
+export const C_PURPLE = '#8575BF'
+export const C_RED = '#F47C7C'
+export const C_DARKER_BLUE = '#6f7099'
+export const C_GRAY = '#676768'
+export const C_ORANGE = '#676768'
+const agentColors = [C_GREEN,  C_LIGHT_BLUE, C_RED, C_YELLOW,  C_DARKER_BLUE, C_PINK, C_GRAY, C_PURPLE, C_ORANGE]
 export const getAgentColor = (agent: number) => agentColors[agent - 1] ?? ''
 
 // Spacing

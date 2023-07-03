@@ -1,29 +1,33 @@
 import { NavLink } from 'react-router-dom'
+import { Link, Button } from '@mui/material'
 import CakeRoundedIcon from '@mui/icons-material/CakeRounded'
 import './Navigation.css'
 
 export const Navigation = () => {
   return (
-    <nav className="Navigation ">
-      <div className="LayoutBody">
-        <div className="Navigation__link">
-          <NavLink
-            className="Navigation__homeIcon "
-            to={'/'}
-            aria-label={'home'}
-          >
-            <CakeRoundedIcon />
-          </NavLink>
-        </div>
+    <div className="Navigation">
+      <div className="LayoutBody Navigation__body">
+        <NavLink
+          className="Navigation__link Navigation__homeIcon"
+          to={'/'}
+          aria-label={'home'}
+        >
+          <CakeRoundedIcon />
+        </NavLink>
+
         <ol className="Navigation__links">
-          <li className="Navigation__link">
-            <NavLink to={'/graph'}>Tool</NavLink>
+          <li>
+            <NavLink to={'/graph'} className="Navigation__link">
+              Tool
+            </NavLink>
           </li>
-          <li className="Navigation__link">
-            <NavLink to={'/tutorial'}>Tutorial</NavLink>
-          </li>
+          <li></li>
         </ol>
+
+        <Button component={Link} color="secondary" variant="contained" href={'/tutorial'}>
+          Learn
+        </Button>
       </div>
-    </nav>
+    </div>
   )
 }

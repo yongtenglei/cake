@@ -5,6 +5,9 @@ export const Footer = () => {
   return (
     <footer className="Footer">
       <section className="Footer__Body LayoutBody">
+        <div className="Footer__copyright">
+          © Andy Ernst {new Date().getFullYear()}. MIT license.
+        </div>
         <ol className="Footer__links">
           <li className="Footer__link">
             <Link href={'/graph'}>Fair Division Tool</Link>
@@ -16,10 +19,6 @@ export const Footer = () => {
             <Link href={'/privacy-policy'}>Privacy policy</Link>
           </li>
         </ol>
-        <div className='Footer__copyright'>
-          Developed in coordination with the University of Edinburgh.<br />
-        © Andy Ernst, {(new Date()).getFullYear()}. All rights reserved.
-        </div>
       </section>
     </footer>
   )

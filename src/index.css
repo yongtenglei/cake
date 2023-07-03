@@ -1,3 +1,15 @@
+:root {
+  --bodyMaxWidth: 1200px;
+  /* These must match what's defined in the theme in index.tsx */
+  --cPrimary: #ffa726;
+  --cPrimaryLight: #ffb851;
+  --cPrimaryDark: #f57d00;
+  --cSecondary: #00b0ff;
+  --cSecondaryLight: #33bfff;
+  --cSecondaryDark: #007bb2;
+  --cDark: #24292e;
+}
+
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
@@ -7,4 +19,12 @@ body {
 
 * {
   box-sizing: border-box;
+}
+
+.LayoutBody {
+  margin: 0 auto;
+  max-width: var(--bodyMaxWidth);
+  width: 100%;
+  padding: 0 16px;
+  display: flex;
 }

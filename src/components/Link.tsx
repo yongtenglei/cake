@@ -8,7 +8,7 @@ type Props = React.ComponentProps<typeof MuiLink>
 export const Link = ({ children, ...props }: Props) => {
   const isExternal = !props.href.startsWith('/')
   return (
-    <MuiLink {...props} target={isExternal ? '_blank' : null}>
+    <MuiLink {...props} target={isExternal ? '_blank' : null} rel="noopener">
       {children}
       {isExternal ? (
         <>

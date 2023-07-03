@@ -20,9 +20,7 @@ export const PrivacyPolicyPage = () => {
       <p>
         If you have any questions about this Privacy Policy, You can contact us:
       </p>
-      <ul>
-        <li>By email: andycernst [at] gmail.com</li>
-      </ul>
+      <p>By email: andycernst [at] gmail.com</p>
     </article>
   )
 }
