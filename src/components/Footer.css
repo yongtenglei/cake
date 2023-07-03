@@ -2,11 +2,12 @@
 
 .Footer {
   background-color: var(--cDark);
+  padding: 4px 0;
 }
 
 .Footer__Body {
   color: white;
-  flex-direction: row;
+  flex-direction: column;
   padding: 8px;
 }
 
@@ -18,6 +19,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  text-align: center;
 }
 
 .Footer__link  {

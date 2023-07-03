@@ -13,7 +13,7 @@ import {
   CircularProgress,
   Box,
 } from '@mui/material'
-import { Algorithms, Algorithm, AlgoName } from '../constants'
+import { Algorithms, Algorithm, AlgoName } from '../graphConstants'
 import { AlgoExplanationModal } from './AlgoExplanationModal'
 
 interface SelectAlgoModalProps {

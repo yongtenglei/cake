@@ -1,6 +1,6 @@
-import { NavLink } from 'react-router-dom'
-import { Link, Button } from '@mui/material'
+import { Button } from '@mui/material'
 import CakeRoundedIcon from '@mui/icons-material/CakeRounded'
+import { Link, NavLink } from './Link'
 import './Navigation.css'
 
 export const Navigation = () => {
@@ -13,13 +13,14 @@ export const Navigation = () => {
           aria-label={'home'}
         >
           <CakeRoundedIcon />
+          Fair Slice
         </Link>
 
         <div style={{display: 'flex'}}>
           <ol className="Navigation__links">
             <li>
-              <NavLink to={'/graph'} className="Navigation__link">
-                Tool
+              <NavLink href={'/graph'} className="Navigation__link">
+                Splitting Tool
               </NavLink>
             </li>
           </ol>

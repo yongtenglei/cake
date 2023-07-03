@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { GraphContext } from './GraphContext'
 import { Segment, DrawnSegment } from '../types'
-import { defaultCakeSize } from './constants'
+import { defaultCakeSize } from './graphConstants'
 
 export const useConvertSegToPixels = () => {
   const { xScale, yScale } = useContext(GraphContext)

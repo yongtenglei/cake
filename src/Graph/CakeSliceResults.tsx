@@ -2,8 +2,9 @@ import React, { useContext } from 'react'
 import { Tooltip, Box } from '@mui/material'
 import { getValueForInterval } from './algorithm/getValue'
 import { Division, Segment } from '../types'
-import { margin, innerWidth, getAgentColor } from './constants'
+import { margin, innerWidth } from './graphConstants'
 import { GraphContext } from './GraphContext'
+import { getAgentColor } from '../constants'
 
 interface CakeSliceResultsProps {
   results: Division[]

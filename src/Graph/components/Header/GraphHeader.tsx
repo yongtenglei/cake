@@ -1,15 +1,14 @@
-import { Button, Stack, Tooltip, IconButton } from '@mui/material'
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import { Button, Stack, Tooltip, IconButton, Box } from '@mui/material'
+import ArrowBackIcon from '@mui/icons-material/ArrowBackIos'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForwardIos'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import CheckIcon from '@mui/icons-material/Check'
 import AssessmentIcon from '@mui/icons-material/Assessment'
 import EditIcon from '@mui/icons-material/Edit'
-import { MAX_AGENTS, getAgentColor, margin, innerWidth } from '../../constants'
+import { MAX_AGENTS, margin, innerWidth } from '../../graphConstants'
+import { getAgentColor } from '../../../constants'
 import { Preferences } from '../../../types'
 import { ExtraOptions } from './ExtraOptions'
-import './GraphHeader.css'
-
 
 interface GraphHeaderProps {
   isComplete: boolean
@@ -36,7 +35,7 @@ export const GraphHeader = ({
   setNewData,
   preferences,
 }: GraphHeaderProps) => {
-  const navigationDisabled = !isComplete || totalAgents === 1
+  const navigationDisabled = totalAgents === 1
   const cantAddMoreAgents = totalAgents === MAX_AGENTS
 
   return (
@@ -55,14 +54,33 @@ export const GraphHeader = ({
       />
 
       <Stack direction="row" width="100%" justifyContent="flex-end">
-        <Tooltip
-          title={
-            isComplete
-              ? null
-              : `Mark the values for person ${currentAgent} before continuing`
-          }
-        >
-          <Stack spacing={1} paddingRight={1} direction="row">
+        <Stack spacing={1} paddingRight={1} direction="row">
+        <div>
+            <Tooltip
+              title={
+                cantAddMoreAgents
+                  ? `This tool supports up to ${MAX_AGENTS} people`
+                  : null
+              }
+            >
+              <span>
+                <Button
+                  variant="contained"
+                  disabled={!isComplete || cantAddMoreAgents}
+                  onClick={() => {
+                    if (compareMode) {
+                      onClickCompare()
+                    }
+                    onClickCreateAgent()
+                  }}
+                  startIcon={<PersonAddIcon />}
+                >
+                  Add Person
+                </Button>
+              </span>
+            </Tooltip>
+          </div>
+          <div>
             <Button
               variant="contained"
               disabled={!isComplete || totalAgents < 2}
@@ -71,29 +89,9 @@ export const GraphHeader = ({
             >
               {compareMode ? 'Edit' : 'Compare'}
             </Button>
+          </div>
 
-            <Tooltip
-              title={
-                cantAddMoreAgents
-                  ? `This tool supports up to ${MAX_AGENTS} people`
-                  : null
-              }
-            >
-              <Button
-                variant="contained"
-                disabled={!isComplete || cantAddMoreAgents}
-                onClick={() => {
-                  if (compareMode) {
-                    onClickCompare()
-                  }
-                  onClickCreateAgent()
-                }}
-                startIcon={<PersonAddIcon />}
-              >
-                Add Person
-              </Button>
-            </Tooltip>
-
+          <div>
             <Button
               variant="contained"
               disabled={!isComplete}
@@ -102,8 +100,8 @@ export const GraphHeader = ({
             >
               Finish
             </Button>
-          </Stack>
-        </Tooltip>
+          </div>
+        </Stack>
         <ExtraOptions setNewData={setNewData} preferences={preferences} />
       </Stack>
     </Stack>
@@ -124,12 +122,22 @@ const SwitchAgent = ({
   compareMode,
 }: SwitchAgentProps) => {
   return (
-    <div>
+    <Stack direction="column">
       <Stack
         spacing={1}
         justifyContent="center"
         alignItems="center"
         direction="row"
+        sx={{
+          backgroundColor: compareMode
+            ? '#d5d5d5'
+            : getAgentColor(currentAgent),
+          paddingY: 1,
+          paddingX: 2,
+          borderRadius: '4px',
+          display: 'inline-flex',
+          margin: 'auto',
+        }}
       >
         {compareMode ? null : (
           <Tooltip title="Previous person">
@@ -145,16 +153,7 @@ const SwitchAgent = ({
             </span>
           </Tooltip>
         )}
-        <h2
-          className="GraphHeader__heading"
-          style={{
-            backgroundColor: compareMode
-              ? '#d5d5d5'
-              : getAgentColor(currentAgent),
-          }}
-        >
-          {compareMode ? 'Compare View' : `Person ${currentAgent}`}
-        </h2>
+        <h2>{compareMode ? 'Compare View' : `Person ${currentAgent}`}</h2>
 
         {compareMode ? null : (
           <Tooltip title="Next person">
@@ -171,11 +170,11 @@ const SwitchAgent = ({
           </Tooltip>
         )}
       </Stack>
-      <div className="GraphHeader__helperText">
+      <Box sx={{ textAlign: 'center' }}>
         {compareMode
           ? 'Viewing the values of all people'
           : `Indicate how person ${currentAgent} values each part`}
-      </div>
-    </div>
+      </Box>
+    </Stack>
   )
 }

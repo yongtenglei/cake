@@ -5,7 +5,7 @@ import {
   innerHeight,
   xAxisLabelOffset,
   yAxisLabelOffset,
-} from '../constants'
+} from '../graphConstants'
 import { GraphContext } from '../GraphContext'
 
 const gridColor = '#999'

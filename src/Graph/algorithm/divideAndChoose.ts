@@ -1,6 +1,6 @@
 import { Preferences, Division } from '../../types'
 import { getValueForInterval } from './getValue'
-import { defaultCakeSize } from '../constants'
+import { defaultCakeSize } from '../graphConstants'
 
 // need to rework this to be exact and subdivide increments
 export const divideAndChoose = async (

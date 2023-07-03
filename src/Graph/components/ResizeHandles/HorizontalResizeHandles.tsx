@@ -1,5 +1,5 @@
 import { DrawnSegment } from '../../../types'
-import { innerHeight } from '../../constants'
+import { innerHeight } from '../../graphConstants'
 import './ResizeHandles.css'
 
 interface HorizontalResizeHandlesProps {

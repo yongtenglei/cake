@@ -1,14 +1,17 @@
 import { Outlet } from 'react-router-dom'
 import { Navigation } from './components/Navigation'
 import { Footer } from './components/Footer'
-import './Main.css'
+import './MainLayout.css'
 
-export const Main = () => {
+export const MainLayout = () => {
   return (
     <div className="PageWrapper">
       <Navigation />
-      <main className="content">
+      
+      <main className="main">
+        <div className='content'>
         <Outlet />
+        </div>
       </main>
       <Footer />
     </div>

@@ -7,9 +7,9 @@ import {
   margin,
   innerHeight,
   innerWidth,
-  getAgentColor,
   defaultCakeSize,
-} from '../constants'
+} from '../graphConstants'
+import { getAgentColor } from '../../constants'
 import { GraphContext } from '../GraphContext'
 import { AxisLeft, AxisBottom } from './Axes'
 import { EditableValueBrackets } from './Bracket/ValueBrackets'

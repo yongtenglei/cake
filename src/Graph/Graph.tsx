@@ -8,7 +8,7 @@ import { SelectAlgoModal } from './components/SelectAlgoModal'
 import { Division, Segment, Preferences } from '../types'
 import { GraphContext } from './GraphContext'
 import { isDrawingComplete } from './graphUtils'
-import { AlgoName, innerHeight, innerWidth, defaultCakeSize } from './constants'
+import { AlgoName, innerHeight, innerWidth, defaultCakeSize } from './graphConstants'
 import { runDivisionAlgorithm } from './algorithm/run'
 import { CakeSliceResults } from './CakeSliceResults'
 import { LoadingModal } from '../components/LoadingModal'
@@ -47,6 +47,14 @@ const temp: Preferences = [
     },
   ],
 ]
+
+// import useMediaQuery from '@mui/material/useMediaQuery';
+
+// export default function SimpleMediaQuery() {
+//   const matches = useMediaQuery('(min-width:600px)');
+
+//   return <span>{`(min-width:600px) matches: ${matches}`}</span>;
+// }
 
 export const Graph = () => {
   const yScale = scaleLinear().domain([0, 10]).range([innerHeight, 0]).nice()
@@ -111,7 +119,7 @@ export const Graph = () => {
         currentAgent,
       }}
     >
-      <Stack marginX={3}>
+      <Stack>
         <GraphHeader
           totalAgents={preferences.length}
           isComplete={isComplete}

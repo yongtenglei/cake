@@ -1,6 +1,6 @@
 import { Preferences, Division } from '../../types'
 import { getValueForInterval } from './getValue'
-import { defaultCakeSize } from '../constants'
+import { defaultCakeSize } from '../graphConstants'
 
 export const selfridgeConway = (preferences: Preferences, cakeSize = defaultCakeSize): Promise<Division[]> => {
   if (preferences.length !== 3) {

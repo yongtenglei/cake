@@ -1,4 +1,4 @@
-import { AlgoName } from '../constants'
+import { AlgoName } from '../graphConstants'
 import { Preferences, Division } from '../../types'
 import {  validateSegments } from './validation'
 import { divideAndChoose } from './divideAndChoose'

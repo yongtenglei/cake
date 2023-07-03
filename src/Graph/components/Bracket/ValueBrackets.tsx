@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box } from '@mui/material'
-import { innerHeight as bottom, margin, innerWidth } from '../../constants'
+import { innerHeight as bottom, margin, innerWidth } from '../../graphConstants'
 import { Segment } from '../../../types'
 import { EditableBracket } from './EditableBracket'
 import { BracketContainer } from './BracketContainer'
