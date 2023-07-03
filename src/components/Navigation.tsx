@@ -1,6 +1,8 @@
+import { forwardRef } from 'react'
 import { Button } from '@mui/material'
 import CakeRoundedIcon from '@mui/icons-material/CakeRounded'
 import { Link, NavLink } from './Link'
+import title from './title.svg'
 import './Navigation.css'
 
 export const Navigation = () => {
@@ -12,11 +14,14 @@ export const Navigation = () => {
           href={'/'}
           aria-label={'home'}
         >
-          <CakeRoundedIcon />
-          Fair Slice
+          <img
+            src="https://creazilla-store.fra1.digitaloceanspaces.com/emojis/53176/birthday-cake-emoji-clipart-md.png"
+            style={{ width: '40px' }}
+          />
+          <img src={title} />
         </Link>
 
-        <div style={{display: 'flex'}}>
+        <div style={{ display: 'flex' }}>
           <ol className="Navigation__links">
             <li>
               <NavLink href={'/graph'} className="Navigation__link">
@@ -26,7 +31,9 @@ export const Navigation = () => {
           </ol>
 
           <Button
-            component={Link}
+            component={forwardRef((props, ref) => (
+              <Link {...props} ref={ref as any} />
+            ))}
             color="secondary"
             variant="contained"
             href={'/tutorial'}

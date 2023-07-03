@@ -1,5 +1,6 @@
 import { Stack } from '@mui/material'
 import { useRouteError, isRouteErrorResponse } from 'react-router-dom'
+import { LayoutBase } from '../MainLayout'
 
 export const ErrorPage = () => {
   const error = useRouteError()
@@ -20,12 +21,18 @@ export const ErrorPage = () => {
   }
 
   return (
-    <Stack alignItems="center" padding={4}>
-      <h1>This doesn't look right...</h1>
-      <p>{routingError ? 'This page doesn\'t exist.' : 'Sorry, an unexpected error has occurred.'}</p>
-      <p>
-        <i>{errorMessage}</i>
-      </p>
-    </Stack>
+    <LayoutBase>
+      <Stack component="main" alignItems="center" padding={4}>
+        <h1>This doesn't look right...</h1>
+        <p>
+          {routingError
+            ? "This page doesn't exist."
+            : 'Sorry, an unexpected error has occurred.'}
+        </p>
+        <p>
+          <i>{errorMessage}</i>
+        </p>
+      </Stack>
+    </LayoutBase>
   )
 }

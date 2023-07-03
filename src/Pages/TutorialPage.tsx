@@ -1,3 +1,3 @@
 export const TutorialPage = () => {
-return <>nothing here yet</>
+  return <>nothing here yet</>
 }

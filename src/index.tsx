@@ -18,7 +18,7 @@ const theme = createTheme({
   palette: {
     primary: {
       main: '#ffa726',
-      dark: '#f57d00',
+      dark: '#d5660a',
     },
     secondary: {
       main: '#00b0ff',
@@ -27,7 +27,8 @@ const theme = createTheme({
 })
 
 export const router = createBrowserRouter([
-  { path: '/', element: <LandingPage /> },
+  // Landing page doesn't use the main layout
+  { path: '/', element: <LandingPage />,     errorElement: <ErrorPage /> },
   {
     path: '/',
     element: <MainLayout />,
