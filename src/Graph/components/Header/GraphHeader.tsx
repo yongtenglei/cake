@@ -35,7 +35,6 @@ export const GraphHeader = ({
   setNewData,
   preferences,
 }: GraphHeaderProps) => {
-  const navigationDisabled = totalAgents === 1
   const cantAddMoreAgents = totalAgents === MAX_AGENTS
 
   return (
@@ -47,7 +46,7 @@ export const GraphHeader = ({
       maxWidth={innerWidth}
     >
       <SwitchAgent
-        navigationDisabled={navigationDisabled}
+        navigationDisabled={totalAgents < 2}
         onChangeIndex={onChangeIndex}
         currentAgent={currentAgent}
         compareMode={compareMode}
@@ -94,7 +93,7 @@ export const GraphHeader = ({
           <div>
             <Button
               variant="contained"
-              disabled={!isComplete}
+              disabled={!isComplete || totalAgents < 2}
               onClick={onClickDone}
               startIcon={<CheckIcon />}
             >
@@ -137,6 +136,7 @@ const SwitchAgent = ({
           borderRadius: '4px',
           display: 'inline-flex',
           margin: 'auto',
+          height: 60,
         }}
       >
         {compareMode ? null : (
@@ -173,7 +173,7 @@ const SwitchAgent = ({
       <Box sx={{ textAlign: 'center' }}>
         {compareMode
           ? 'Viewing the values of all people'
-          : `Indicate how person ${currentAgent} values each part`}
+          : `Draw how person ${currentAgent} values each part`}
       </Box>
     </Stack>
   )

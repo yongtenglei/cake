@@ -33,6 +33,7 @@
 .Navigation__link:hover, .Navigation__link:focus {
   background-color: var(--cPrimaryLight);
   border-bottom-color: white;
+  text-decoration: none;
 }
 
 .Navigation__link.active {

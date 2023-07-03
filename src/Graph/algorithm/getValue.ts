@@ -1,11 +1,15 @@
 import { Segment } from '../../types'
 
-// Returns the total value of an interval, 
+// could wrap this with lodash's `memorize` to cache results
+export const getTotalValue = (segments: Segment[]) =>
+  getValueForInterval(segments, 0, Infinity)
+  
+// Returns the total value of an interval,
 // even if covers several segments or splits segments in half.
 export const getValueForInterval = (
   segments: Segment[],
-  start: number,
-  end: number
+  start,
+  end
 ): number => {
   let total = 0
   for (const seg of segments) {
@@ -19,6 +23,8 @@ export const getValueForInterval = (
   return total
 }
 
+// Measures the area of a segment
+// Works with flat or sloped sections, whole numbers and decimals.
 const measurePartialSegment = (seg: Segment, start: number, end: number) => {
   const startCap = Math.max(start, seg.start)
   const endCap = Math.min(end, seg.end)

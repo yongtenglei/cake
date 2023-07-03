@@ -26,12 +26,14 @@ const HeroImage = () => {
             flexBasis: '50%',
             flexGrow: 0,
             justifyContent: 'center',
+            alignItems: 'center',
             padding: 6,
+            maxHeight: 600,
           }}
         >
           <img
             src="https://creazilla-store.fra1.digitaloceanspaces.com/emojis/53176/birthday-cake-emoji-clipart-md.png"
-            style={{ width: '100%' }}
+            style={{ width: '100%', maxWidth: 500 }}
           />
           <div style={{position: 'relative', top: '-200px', textAlign: 'center', fontSize: 40}}>PLACEHOLDER</div>
         </Stack>
