@@ -1,10 +1,10 @@
-import { Segment, Division } from '../../types'
+import { Preferences, Division } from '../../types'
 import { getValueForInterval } from './getValue'
 import { defaultCakeSize } from '../constants'
 
 // need to rework this to be exact and subdivide increments
 export const divideAndChoose = async (
-  preferences: Segment[][],
+  preferences: Preferences,
   cakeSize = defaultCakeSize
 ): Promise<Division[]> => {
   if (preferences.length !== 2) {
@@ -45,7 +45,7 @@ export const divideAndChoose = async (
 
 const cutSlice = (
   agent: number,
-  preferences: Segment[][],
+  preferences: Preferences,
   start: number,
   end: number,
   expectedValue: number

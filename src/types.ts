@@ -1,4 +1,5 @@
-// See graphUtils for converting between these two types
+// See graphUtils for converting between these two types of segments
+
 
 // startValue and endValue [0-10] (increments of 0.1)
 // start and end [0-100] (increments of 1)
@@ -19,6 +20,8 @@ export type DrawnSegment = {
   y2: number
 }
 
+export type Preferences = Segment[][]
+
 export type Division = {
   owner: number
   start: number
@@ -27,3 +30,4 @@ export type Division = {
   valuePercent: number
   values: number[]
 }
+

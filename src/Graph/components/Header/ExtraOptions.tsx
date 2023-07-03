@@ -3,11 +3,24 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import DownloadIcon from '@mui/icons-material/GetApp'
 import UploadIcon from '@mui/icons-material/Publish'
 import ExportImageIcon from '@mui/icons-material/Panorama'
-import { IconButton, Menu, MenuItem, ListItemIcon } from '@mui/material'
-import { downloadScreenshot } from '../../../utils/export'
+import { IconButton, Menu, MenuItem, ListItemIcon, Box } from '@mui/material'
+import {
+  downloadScreenshot,
+  downloadValueData,
+  uploadValueData,
+} from '../../../utils/export'
 import { LoadingModal } from '../../../components/LoadingModal'
+import { Preferences } from '../../../types'
 
-export const ExtraOptions = () => {
+interface ExtraOptionsProps {
+  setNewData: (pref: Preferences) => void
+  preferences: Preferences
+}
+
+export const ExtraOptions = ({
+  setNewData,
+  preferences,
+}: ExtraOptionsProps) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -21,6 +34,25 @@ export const ExtraOptions = () => {
     setLoading(true)
     await downloadScreenshot()
     setLoading(false)
+  }
+  const onClickDownloadData = () => {
+    handleClose()
+    downloadValueData(preferences)
+  }
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    handleClose()
+    if (e.target.files) {
+      console.log(e.target.files[0])
+      try {
+        setNewData(await uploadValueData(e.target.files[0]))
+      } catch (e) {
+        alert(
+          'There was a problem with that file. Please check and try again.\n' +
+            e.message
+        )
+      }
+    }
   }
 
   return (
@@ -49,17 +81,27 @@ export const ExtraOptions = () => {
           horizontal: 'center',
         }}
       >
-        <MenuItem onClick={handleClose}>
+        <MenuItem component="label" htmlFor="uploadFile">
+          <Box
+            component="input"
+            id="uploadFile"
+            type="file"
+            onChange={handleFileChange}
+            accept=".csv"
+            // @ts-ignore
+            onClick={(event) => (event.target.value = null)}
+            sx={{ display: 'none' }}
+          />
           <ListItemIcon>
             <UploadIcon fontSize="small" />
           </ListItemIcon>
-          Upload
+          Upload Inputs
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={onClickDownloadData}>
           <ListItemIcon>
             <DownloadIcon fontSize="small" />
           </ListItemIcon>
-          Download
+          Download Inputs
         </MenuItem>
         <MenuItem onClick={onClickExportImage}>
           <ListItemIcon>

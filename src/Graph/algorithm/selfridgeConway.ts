@@ -1,8 +1,8 @@
-import { Segment, Division } from '../../types'
+import { Preferences, Division } from '../../types'
 import { getValueForInterval } from './getValue'
 import { defaultCakeSize } from '../constants'
 
-export const selfridgeConway = (preferences: Segment[][], cakeSize = defaultCakeSize): Promise<Division[]> => {
+export const selfridgeConway = (preferences: Preferences, cakeSize = defaultCakeSize): Promise<Division[]> => {
   if (preferences.length !== 3) {
     throw 'Divide and choose only works with three agents'
   }

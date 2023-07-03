@@ -5,7 +5,7 @@ import { DrawingLayer } from './components/DrawingLayer'
 import { GraphHeader } from './components/Header/GraphHeader'
 import { CompareViewGraph } from './components/CompareViewGraph'
 import { SelectAlgoModal } from './components/SelectAlgoModal'
-import { Division, Segment } from '../types'
+import { Division, Segment, Preferences } from '../types'
 import { GraphContext } from './GraphContext'
 import { isDrawingComplete } from './graphUtils'
 import { AlgoName, innerHeight, innerWidth, defaultCakeSize } from './constants'
@@ -13,7 +13,7 @@ import { runDivisionAlgorithm } from './algorithm/run'
 import { CakeSliceResults } from './CakeSliceResults'
 import { LoadingModal } from '../components/LoadingModal'
 
-const temp: Segment[][] = [
+const temp: Preferences = [
   [
     {
       start: 0,
@@ -56,9 +56,14 @@ export const Graph = () => {
     .nice()
 
   const [algoResults, setAlgoResults] = useState<Division[] | []>(null)
-  // const [preferences, setPreferences] = useState<Segment[][]>(temp)
-  const [preferences, setPreferences] = useState<Segment[][]>([[]])
-
+  // const [preferences, setPreferences] = useState<Preferences>(temp)
+  const [preferences, setPreferences] = useState<Preferences>([[]])
+  const setNewData = (pref: Preferences) => {
+    setPreferences(pref)
+    setCurrentAgent(1)
+    setCompareMode(true)
+    setAlgoResults(null)
+  }
   const [currentAgent, setCurrentAgent] = useState<number>(1) // Note: This is 1 indexed
   const [algoModalOpen, setAlgoModalOpen] = useState<boolean>(false)
   const [compareMode, setCompareMode] = useState<boolean>(false)
@@ -116,6 +121,8 @@ export const Graph = () => {
           onClickCreateAgent={onClickCreateAgent}
           onClickCompare={onClickCompare}
           compareMode={compareMode}
+          preferences={preferences} 
+          setNewData={setNewData}
         />
         {compareMode ? (
           <CompareViewGraph preferences={preferences} />

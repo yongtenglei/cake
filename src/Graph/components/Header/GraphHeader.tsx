@@ -5,10 +5,11 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import CheckIcon from '@mui/icons-material/Check'
 import AssessmentIcon from '@mui/icons-material/Assessment'
 import EditIcon from '@mui/icons-material/Edit'
-import { ExtraOptions } from './ExtraOptions'
-
 import { MAX_AGENTS, getAgentColor, margin, innerWidth } from '../../constants'
+import { Preferences } from '../../../types'
+import { ExtraOptions } from './ExtraOptions'
 import './GraphHeader.css'
+
 
 interface GraphHeaderProps {
   isComplete: boolean
@@ -19,6 +20,8 @@ interface GraphHeaderProps {
   onClickCreateAgent: VoidFunction
   onClickCompare: VoidFunction
   compareMode: boolean
+  setNewData: (pref: Preferences) => void
+  preferences: Preferences
 }
 
 export const GraphHeader = ({
@@ -30,6 +33,8 @@ export const GraphHeader = ({
   onClickCreateAgent,
   onClickCompare,
   compareMode,
+  setNewData,
+  preferences,
 }: GraphHeaderProps) => {
   const navigationDisabled = !isComplete || totalAgents === 1
   const cantAddMoreAgents = totalAgents === MAX_AGENTS
@@ -99,7 +104,7 @@ export const GraphHeader = ({
             </Button>
           </Stack>
         </Tooltip>
-        <ExtraOptions />
+        <ExtraOptions setNewData={setNewData} preferences={preferences} />
       </Stack>
     </Stack>
   )

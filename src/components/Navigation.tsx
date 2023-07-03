@@ -15,18 +15,24 @@ export const Navigation = () => {
           <CakeRoundedIcon />
         </Link>
 
-        <ol className="Navigation__links">
-          <li>
-            <NavLink to={'/graph'} className="Navigation__link">
-              Tool
-            </NavLink>
-          </li>
-          <li></li>
-        </ol>
+        <div style={{display: 'flex'}}>
+          <ol className="Navigation__links">
+            <li>
+              <NavLink to={'/graph'} className="Navigation__link">
+                Tool
+              </NavLink>
+            </li>
+          </ol>
 
-        <Button component={Link} color="secondary" variant="contained" href={'/tutorial'}>
-          Learn
-        </Button>
+          <Button
+            component={Link}
+            color="secondary"
+            variant="contained"
+            href={'/tutorial'}
+          >
+            Learn
+          </Button>
+        </div>
       </div>
     </div>
   )

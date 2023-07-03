@@ -4,12 +4,12 @@ import { height, width, margin, getAgentColor } from '../constants'
 import { AxisLeft, AxisBottom } from './Axes'
 import { Segments } from './Segments'
 import { useConvertSegToPixels } from '../graphUtils'
-import { Segment } from '../../types'
+import { Preferences } from '../../types'
 import { ValueBrackets } from './Bracket/ValueBrackets'
 import { ValueBubbles } from './ResizeHandles'
 
 interface CompareViewGraphProps {
-  preferences: Segment[][]
+  preferences: Preferences
 }
 
 export const CompareViewGraph = ({ preferences }: CompareViewGraphProps) => {

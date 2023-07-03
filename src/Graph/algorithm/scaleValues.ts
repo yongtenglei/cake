@@ -1,5 +1,5 @@
-import { Segment } from '../../types'
+import { Preferences } from '../../types'
 
-export const scaleValues = (preferences: Segment[][]): Segment[][] => {
+export const scaleValues = (preferences: Preferences): Preferences => {
   throw 'Not implemented'
 }

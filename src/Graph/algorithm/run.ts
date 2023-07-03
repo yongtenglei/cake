@@ -1,11 +1,11 @@
-import { AlgoName, defaultCakeSize } from '../constants'
-import { Segment, Division } from '../../types'
+import { AlgoName } from '../constants'
+import { Preferences, Division } from '../../types'
 import {  validateSegments } from './validation'
 import { divideAndChoose } from './divideAndChoose'
 import { selfridgeConway } from './selfridgeConway'
 
 export const runDivisionAlgorithm = (
-  preferences: Segment[][],
+  preferences: Preferences,
   algo: AlgoName,
   cakeSize,
 ): Promise<Division[]> => {
