@@ -1,12 +1,12 @@
 :root {
   --bodyMaxWidth: 1200px;
   /* These must match what's defined in the theme in index.tsx */
-  --cPrimary: #ffa726;
-  --cPrimaryLight: #ffb851;
-  --cPrimaryDark: #d5660a;
-  --cSecondary: #00b0ff;
-  --cSecondaryLight: #33bfff;
-  --cSecondaryDark: #007bb2;
+  --cPrimary: #FFB703;
+  /* --cPrimaryLight: #ffb851; */
+  --cPrimaryDark: #FB8500;
+  --cSecondary: #0d77b0;
+  --cSecondaryLight: #8ECAE6;
+  --cSecondaryDark: #02405f;
   --cDark: #24292e;
 }
 

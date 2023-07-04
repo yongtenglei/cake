@@ -1,4 +1,4 @@
-import { forwardRef } from 'react'
+import { ForwardedRef } from 'react'
 import { Link as RRLink, NavLink as RRNavLink } from 'react-router-dom'
 import { Link as MuiLink } from '@mui/material'
 import LaunchIcon from '@mui/icons-material/Launch'
@@ -16,13 +16,17 @@ export const NavLink = ({ href, ...props }: NavLinkProps) => (
 
 // Abstraction over MUI's Link.
 // External links will automatically open in a new window and have an "external" icon
-type LinkProps = React.ComponentProps<typeof MuiLink>
+type LinkProps = React.ComponentProps<typeof MuiLink> & {
+  innerRef?: ForwardedRef<unknown>
+}
 
-export const Link = ({ children, href, ...props }: LinkProps) => {
+export const Link = ({ children, href, innerRef, ...props }: LinkProps) => {
   const isExternal = !href.startsWith('/')
   return (
     <MuiLink
       {...props}
+      // @ts-ignore
+      ref={innerRef}
       component={RRLink}
       to={href}
       target={isExternal ? '_blank' : null}

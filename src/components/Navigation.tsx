@@ -2,7 +2,7 @@ import { forwardRef } from 'react'
 import { Button } from '@mui/material'
 import CakeRoundedIcon from '@mui/icons-material/CakeRounded'
 import { Link, NavLink } from './Link'
-import title from './title.svg'
+import title from '../images/title.svg'
 import './Navigation.css'
 
 export const Navigation = () => {
@@ -18,7 +18,7 @@ export const Navigation = () => {
             src="https://creazilla-store.fra1.digitaloceanspaces.com/emojis/53176/birthday-cake-emoji-clipart-md.png"
             style={{ width: '40px' }}
           />
-          <img src={title} />
+          <img src={title} alt="Fair Slice"/>
         </Link>
 
         <div style={{ display: 'flex' }}>
@@ -32,7 +32,7 @@ export const Navigation = () => {
 
           <Button
             component={forwardRef((props, ref) => (
-              <Link {...props} ref={ref as any} />
+              <Link {...props} innerRef={ref} />
             ))}
             color="secondary"
             variant="contained"

@@ -1,6 +1,10 @@
 import { Stack } from '@mui/material'
+import { ReactSVG } from 'react-svg'
 import { useRouteError, isRouteErrorResponse } from 'react-router-dom'
 import { LayoutBase } from '../MainLayout'
+import cakeOutline from '../images/cake_outline.svg'
+
+import './ErrorPage.css'
 
 export const ErrorPage = () => {
   const error = useRouteError()
@@ -23,7 +27,8 @@ export const ErrorPage = () => {
   return (
     <LayoutBase>
       <Stack component="main" alignItems="center" padding={4}>
-        <h1>This doesn't look right...</h1>
+        <h1>Sorry, it's not always a piece of cake</h1>
+        <ReactSVG src={cakeOutline}  className="ErrorCake" />
         <p>
           {routingError
             ? "This page doesn't exist."

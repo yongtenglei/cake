@@ -65,6 +65,7 @@ export const GraphHeader = ({
               <span>
                 <Button
                   variant="contained"
+                  color="secondary"
                   disabled={!isComplete || cantAddMoreAgents}
                   onClick={() => {
                     if (compareMode) {
@@ -82,6 +83,7 @@ export const GraphHeader = ({
           <div>
             <Button
               variant="contained"
+              color="secondary"
               disabled={!isComplete || totalAgents < 2}
               onClick={onClickCompare}
               startIcon={compareMode ? <EditIcon /> : <AssessmentIcon />}
@@ -93,6 +95,7 @@ export const GraphHeader = ({
           <div>
             <Button
               variant="contained"
+              color="secondary"
               disabled={!isComplete || totalAgents < 2}
               onClick={onClickDone}
               startIcon={<CheckIcon />}
