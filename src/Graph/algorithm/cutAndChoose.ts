@@ -3,7 +3,7 @@ import { getValueForInterval, getTotalValue } from './getValue'
 import { defaultCakeSize } from '../graphConstants'
 
 // need to rework this to be exact and subdivide increments
-export const divideAndChoose = async (
+export const cutAndChoose = async (
   preferences: Preferences,
   cakeSize = defaultCakeSize
 ): Promise<Division[]> => {

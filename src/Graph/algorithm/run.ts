@@ -1,7 +1,7 @@
 import { AlgoName } from '../graphConstants'
 import { Preferences, Division } from '../../types'
 import {  validateSegments } from './validation'
-import { divideAndChoose } from './divideAndChoose'
+import { cutAndChoose } from './cutAndChoose'
 import { selfridgeConway } from './selfridgeConway'
 
 export const runDivisionAlgorithm = (
@@ -21,8 +21,8 @@ export const runDivisionAlgorithm = (
 
   // run fair division method
   switch (algo) {
-    case 'divideAndChoose':
-      return divideAndChoose(preferences, cakeSize)
+    case 'cutAndChoose':
+      return cutAndChoose(preferences, cakeSize)
     case 'selfridgeConway':
       return selfridgeConway(preferences, cakeSize)
     default:

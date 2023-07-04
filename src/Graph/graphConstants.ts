@@ -15,7 +15,7 @@ export const defaultCakeSize = 100
 
 
 // Algorithms
-export type AlgoName = 'divideAndChoose' | 'selfridgeConway'
+export type AlgoName = 'cutAndChoose' | 'selfridgeConway'
 
 export interface Algorithm {
   key: AlgoName
@@ -28,8 +28,8 @@ export interface Algorithm {
 }
 
 export const Algorithms: Record<AlgoName, Algorithm> = {
-  divideAndChoose: {
-    key: 'divideAndChoose',
+  cutAndChoose: {
+    key: 'cutAndChoose',
     name: 'Divide and Choose',
     numAgentsText: '2 people',
     minAgents: 2,

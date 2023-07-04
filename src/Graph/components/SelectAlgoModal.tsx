@@ -72,7 +72,7 @@ const SelectAlgoModalGuts = ({
 
   const bestOption =
     Object.values(Algorithms).find(algoIsSelectable)?.key ??
-    Algorithms.divideAndChoose.key
+    Algorithms.cutAndChoose.key
 
   const [selectedAlgo, setSelectedAlgo] = useState<AlgoName>(bestOption)
 
