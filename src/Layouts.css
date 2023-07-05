@@ -14,9 +14,10 @@
   background-color: #eee;
 }
 
-.content {
-  background-color: white;
-  margin: 16px;
+/* WIP */
+.bodyContainer {
+  /* margin: 0 16px; */
+  margin: auto;
   padding: 32px;
   width: 100%;
   max-width: var(--bodyMaxWidth);

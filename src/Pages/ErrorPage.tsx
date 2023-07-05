@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material'
 import { ReactSVG } from 'react-svg'
 import { useRouteError, isRouteErrorResponse } from 'react-router-dom'
-import { LayoutBase } from '../MainLayout'
+import { LayoutBase } from '../Layouts'
 import cakeOutline from '../images/cake_outline.svg'
 
 import './ErrorPage.css'

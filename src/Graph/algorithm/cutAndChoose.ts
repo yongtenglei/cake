@@ -42,8 +42,9 @@ export const cutAndChoose = async (
   }
 }
 
-const findCutLine = (preference: Segment[], targetPercentVal: number) => {
-
+const findCutLine = (segments: Segment[], targetPercentVal: number) => {
+  const totalCakeValue = getTotalValue(segments)
+  const targetValue = totalCakeValue * targetPercentVal
 
 
 }

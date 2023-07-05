@@ -37,6 +37,7 @@ export const Navigation = () => {
             color="secondary"
             variant="contained"
             href={'/tutorial'}
+            sx={{marginY: 1}}
           >
             Learn
           </Button>

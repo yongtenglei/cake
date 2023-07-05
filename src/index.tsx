@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { ErrorPage } from './Pages/ErrorPage'
-import { MainLayout } from './MainLayout'
+import { MainLayout } from './Layouts'
 import { Graph } from './Graph/Graph'
 import { PrivacyPolicyPage } from './Pages/PrivacyPolicyPage'
 import { TutorialPage } from './Pages/TutorialPage'
@@ -17,13 +17,13 @@ const theme = createTheme({
   },
   palette: {
     primary: {
-      main: '#FFB703',
-      dark: '#FB8500',
-    },
-    secondary: {
       light: '#8ECAE6',
       main: '#0d77b0',
       dark: '#02405f',
+    },
+    secondary: {
+      main: '#FFB703',
+      dark: '#FB8500',
     },
   },
 })

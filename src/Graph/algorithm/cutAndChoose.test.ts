@@ -53,6 +53,7 @@ test('splits a tricky case in an envy-free way', async() => {
   ]
   const result = await cutAndChoose([person1, person2])
   expect(result).toHaveLength(2)
+  // difference is 134 147
   testIfEnvyFree(2, result)
 })
 
