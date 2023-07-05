@@ -17,8 +17,9 @@
 /* WIP */
 .bodyContainer {
   /* margin: 0 16px; */
-  margin: auto;
+  margin: 0 auto;
   padding: 32px;
   width: 100%;
   max-width: var(--bodyMaxWidth);
+  background-color: white;
 }

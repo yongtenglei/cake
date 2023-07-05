@@ -70,6 +70,7 @@ const HeroImage = () => {
           zIndex: '1',
           display: 'flex',
           color: 'white',
+          backgroundColor: 'transparent',
         }}
       >
         <Stack>

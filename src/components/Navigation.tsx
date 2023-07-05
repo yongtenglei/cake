@@ -1,6 +1,5 @@
 import { forwardRef } from 'react'
 import { Button } from '@mui/material'
-import CakeRoundedIcon from '@mui/icons-material/CakeRounded'
 import { Link, NavLink } from './Link'
 import title from '../images/title.svg'
 import './Navigation.css'
@@ -10,7 +9,7 @@ export const Navigation = () => {
     <div className="Navigation">
       <div className="LayoutBody Navigation__body">
         <Link
-          className="Navigation__link Navigation__homeIcon"
+          className="Navigation__homeIcon"
           href={'/'}
           aria-label={'home'}
         >

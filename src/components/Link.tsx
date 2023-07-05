@@ -22,6 +22,7 @@ type LinkProps = React.ComponentProps<typeof MuiLink> & {
 
 export const Link = ({ children, href, innerRef, ...props }: LinkProps) => {
   const isExternal = !href.startsWith('/')
+  const extraProps = isExternal ? {target: '_blank', rel: 'noopener'} : {}
   return (
     <MuiLink
       {...props}
@@ -29,8 +30,7 @@ export const Link = ({ children, href, innerRef, ...props }: LinkProps) => {
       ref={innerRef}
       component={RRLink}
       to={href}
-      target={isExternal ? '_blank' : null}
-      rel="noopener"
+      {...extraProps}
     >
       {children}
       {isExternal ? (

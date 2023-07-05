@@ -67,7 +67,6 @@ export const EditableBracket = ({
             <Button
               onClick={() => setEditing(true)}
               variant="outlined"
-              color="secondary"
               aria-label={`Segment ${segNumber} has width ${slicesize}%, click to edit`}
             >
               {slicesize} %

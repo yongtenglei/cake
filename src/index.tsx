@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { CssBaseline }from '@mui/material'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { ErrorPage } from './Pages/ErrorPage'
@@ -8,7 +9,6 @@ import { Graph } from './Graph/Graph'
 import { PrivacyPolicyPage } from './Pages/PrivacyPolicyPage'
 import { TutorialPage } from './Pages/TutorialPage'
 import { LandingPage } from './Pages/LandingPage'
-import CssBaseline from '@mui/material/CssBaseline'
 import './index.css'
 
 const theme = createTheme({
@@ -22,6 +22,7 @@ const theme = createTheme({
       dark: '#02405f',
     },
     secondary: {
+      light: '#ffde8b',
       main: '#FFB703',
       dark: '#FB8500',
     },
