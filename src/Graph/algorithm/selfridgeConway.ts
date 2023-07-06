@@ -1,14 +1,21 @@
-import { Preferences, Division } from '../../types'
-import { getValueForInterval } from './getValue'
+import { Preferences, Slice } from '../../types'
+import { getValueForInterval, getTotalValue, cutSlice, findCutLine } from './getValue'
 import { defaultCakeSize } from '../graphConstants'
 
-export const selfridgeConway = (preferences: Preferences, cakeSize = defaultCakeSize): Promise<Division[]> => {
+export const selfridgeConway = (preferences: Preferences, cakeSize = defaultCakeSize): Promise<Slice[]> => {
   if (preferences.length !== 3) {
     throw 'Divide and choose only works with three agents'
   }
 
+  const [p1Prefs, p2Prefs, p3Prefs] = preferences
   // P1 divides
-  // P2 if two largest are equal, pick slickes P3 then P2 then P1 DONE
+  const firstCut = findCutLine(p1Prefs, 1/3)
+  const secondCut = findCutLine(p1Prefs, 2/3)
+  const p2s1 = getValueForInterval(p2Prefs, 0, firstCut)
+  const p2s2 = getValueForInterval(p2Prefs, firstCut, secondCut)
+  const p2s3 = getValueForInterval(p2Prefs, secondCut, cakeSize)
+  // P2 if two largest are equal, pick slices P3 then P2 then P1 DONE
+
 
   // ELSE
   // P2 trims so the two largest slices are equal, trimmings set aside

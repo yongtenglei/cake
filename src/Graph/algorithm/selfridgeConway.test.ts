@@ -14,6 +14,7 @@ test('splits a "no trimming needed" uniform evaluation cake into even (almost) t
   expect(result[0]).toMatchObject({ owner: 1, start: 0, end: 30, value: 300 })
   expect(result[1]).toMatchObject({ owner: 2, start: 30, end: 60, value: 300 })
   expect(result[2]).toMatchObject({ owner: 3, start: 60, end: 90, value: 300 })
+  testIfEnvyFree(3, result)
 })
 
 test('splits a "no trimming needed" asymetrical evaluation cake fairly', async () => {
@@ -29,4 +30,5 @@ test('splits a "no trimming needed" asymetrical evaluation cake fairly', async (
   expect(result[0]).toMatchObject({ owner: 1, start: 0, end: 30, value: 300 })
   expect(result[1]).toMatchObject({ owner: 2, start: 30, end: 60, value: 300 })
   expect(result[2]).toMatchObject({ owner: 3, start: 60, end: 90, value: 300 })
+  testIfEnvyFree(3, result)
 })

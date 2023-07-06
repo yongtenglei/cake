@@ -1,4 +1,4 @@
-import { Segment, Division } from '../../types'
+import { Segment, Slice } from '../../types'
 
 export const halfwayPointOfTriangleArea = 70.71
 
@@ -32,7 +32,7 @@ export const genSlopeSeg = (
   }
 }
 
-export const testIfEnvyFree = (numPeople: number, result: Division[]) => {
+export const testIfEnvyFree = (numPeople: number, result: Slice[]) => {
   // We can't get to 100% accuracy when using floating point math
   const fudgeFactor = 0.1
 

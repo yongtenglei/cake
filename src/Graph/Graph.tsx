@@ -5,7 +5,7 @@ import { DrawingLayer } from './components/DrawingLayer'
 import { GraphHeader } from './components/Header/GraphHeader'
 import { CompareViewGraph } from './components/CompareViewGraph'
 import { SelectAlgoModal } from './components/SelectAlgoModal'
-import { Division, Segment, Preferences } from '../types'
+import { Slice, Segment, Preferences } from '../types'
 import { GraphContext } from './GraphContext'
 import { isDrawingComplete } from './graphUtils'
 import { AlgoName, innerHeight, innerWidth, defaultCakeSize } from './graphConstants'
@@ -63,7 +63,7 @@ export const Graph = () => {
     .range([0, innerWidth])
     .nice()
 
-  const [algoResults, setAlgoResults] = useState<Division[] | []>(null)
+  const [algoResults, setAlgoResults] = useState<Slice[] | []>(null)
   // const [preferences, setPreferences] = useState<Preferences>(temp)
   const [preferences, setPreferences] = useState<Preferences>([[]])
   const setNewData = (pref: Preferences) => {

@@ -22,7 +22,14 @@ export type DrawnSegment = {
 
 export type Preferences = Segment[][]
 
-export type Division = {
+export type UnassignedSlice = {
+  start: number
+  end: number
+  values: number[]
+  assign: (agent: number) => Slice
+}
+
+export type Slice = {
   owner: number
   start: number
   end: number

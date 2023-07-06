@@ -1,5 +1,5 @@
 import { AlgoName } from '../graphConstants'
-import { Preferences, Division } from '../../types'
+import { Preferences, Slice } from '../../types'
 import { validateSegments } from './validation'
 import { cutAndChoose } from './cutAndChoose'
 import { selfridgeConway } from './selfridgeConway'
@@ -8,7 +8,7 @@ export const runDivisionAlgorithm = (
   preferences: Preferences,
   algo: AlgoName,
   cakeSize
-): Promise<Division[]> => {
+): Promise<Slice[]> => {
   console.log(`Running ${algo}...`)
   console.log('Cake size:', cakeSize)
   console.log('Preferences:', preferences)

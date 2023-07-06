@@ -1,4 +1,4 @@
-import { Segment, Preferences, Division } from '../../types'
+import { Segment, Preferences, UnassignedSlice, Slice } from '../../types'
 
 export const findCutLine = (segments: Segment[], targetPercentVal: number) => {
   const totalCakeValue = getTotalValue(segments)
@@ -15,20 +15,23 @@ export const findCutLine = (segments: Segment[], targetPercentVal: number) => {
   throw 'No cutline in segment'
 }
 
+// Finds the cutline up to about 0.01 precision.
+// Could get more precise with a math library, or just multiplying the numbers
+// by 100 or 1000 to get them out of floating point range.
 const findSegmentCutline = (seg: Segment, targetArea: number) => {
   const segValue = measureSegment(seg)
   const width = seg.end - seg.start
   const slope = (seg.endValue - seg.startValue) / width
 
   if (seg.startValue === seg.endValue) {
-    // flat segment
+    // Flat segment
     const targetAreaPercent = targetArea / segValue
     return seg.start + width * targetAreaPercent
   } else {
-    // sloped segment
+    // Sloped segment
     // Thanks to Bence Szilágyi for help with the math here.
 
-    // The formula is the result of adding a triangle and rectangle together, 
+    // The formula is the result of adding a triangle and rectangle together,
     // then solving for the width and one side (endValue):
     // triangle area = (endValue * width) / 2
     // rectangle area = startValue * width
@@ -36,9 +39,9 @@ const findSegmentCutline = (seg: Segment, targetArea: number) => {
     // The endValue can be found with the width and slope:
     // endValue = width * slope
     //
-    // The rectangle and triangle definitions "assume" that the slope is positive 
-    // but this actually works even if the slope is negative because in that case the 
-    // area of the triangle will be negative. 
+    // The rectangle and triangle definitions "assume" that the slope is positive
+    // but this actually works even if the slope is negative because in that case the
+    // area of the triangle will be negative.
     const targetEnd =
       (-seg.startValue +
         Math.sqrt(seg.startValue ** 2 + 2 * slope * targetArea)) /
@@ -91,28 +94,34 @@ const measurePartialSegment = (seg: Segment, start: number, end: number) => {
   return measuringWidth * avgValue
 }
 
-export const measureSegment = (seg: Segment) =>
-  measurePartialSegment(seg, seg.start, seg.end)
+export const measureSegment = (seg: Segment) => {
+  return measurePartialSegment(seg, seg.start, seg.end)
+}
 
 export const cutSlice = (
-  agent: number,
   preferences: Preferences,
   start: number,
   end: number
-): Division => {
-  const totalCakeValue = getTotalValue(preferences[agent - 1])
-
+): UnassignedSlice => {
   // Getting and saving every agent's evaluations for this slice makes later calculation much simpler
   const allEvaluationsForSlice = preferences.map((segments) =>
     getValueForInterval(segments, start, end)
   )
-  const value = allEvaluationsForSlice[agent - 1]
   return {
-    owner: agent,
     start,
     end,
-    value,
     values: allEvaluationsForSlice,
-    valuePercent: value / totalCakeValue,
+    assign: (agent: number): Slice => {
+      const totalCakeValue = getTotalValue(preferences[agent - 1])
+      const value = allEvaluationsForSlice[agent - 1]
+      return {
+        start,
+        end,
+        value,
+        values: allEvaluationsForSlice,
+        owner: agent,
+        valuePercent: value / totalCakeValue,
+      }
+    },
   }
 }

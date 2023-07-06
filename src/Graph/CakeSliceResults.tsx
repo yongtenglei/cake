@@ -1,12 +1,12 @@
 import React, { useContext } from 'react'
 import { Tooltip, Box } from '@mui/material'
-import { Division, Segment } from '../types'
+import { Slice, Segment } from '../types'
 import { margin, innerWidth } from './graphConstants'
 import { GraphContext } from './GraphContext'
 import { getAgentColor } from '../constants'
 
 interface CakeSliceResultsProps {
-  results: Division[]
+  results: Slice[]
 }
 
 const boxHeight = 30
