@@ -11,11 +11,11 @@ export const selfridgeConway = (preferences: Preferences, cakeSize = defaultCake
   // P1 divides
   const firstCut = findCutLine(p1Prefs, 1/3)
   const secondCut = findCutLine(p1Prefs, 2/3)
-  const p2s1 = getValueForInterval(p2Prefs, 0, firstCut)
-  const p2s2 = getValueForInterval(p2Prefs, firstCut, secondCut)
-  const p2s3 = getValueForInterval(p2Prefs, secondCut, cakeSize)
+  const sliceA = cutSlice(preferences, 0, firstCut)
+  const sliceB = cutSlice(preferences, firstCut, secondCut)
+  const sliceC = cutSlice(preferences, secondCut, cakeSize)
   // P2 if two largest are equal, pick slices P3 then P2 then P1 DONE
-
+  const p2sortedSlices = [sliceA, sliceB, sliceC].sort((a,b) => a.values[1])
 
   // ELSE
   // P2 trims so the two largest slices are equal, trimmings set aside

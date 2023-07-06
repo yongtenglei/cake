@@ -9,8 +9,8 @@ test('splits a uniform flat value graph evenly in half', async () => {
   // Each agent values the cake uniformly for a total of 1000 value.
   // The results should be an even 500/500 split.
   // Actual order doesn't matter but it's difficult to test that.
-  expect(result[0]).toMatchObject({ owner: 2, start: 0, end: 50, value: 500 })
-  expect(result[1]).toMatchObject({ owner: 1, start: 50, end: 100, value: 500 })
+  expect(result[0]).toMatchObject({ owner: 1, start: 0, end: 50, value: 500 })
+  expect(result[1]).toMatchObject({ owner: 0, start: 50, end: 100, value: 500 })
   testIfEnvyFree(2, result)
 })
 
@@ -19,11 +19,11 @@ test('splits a seesaw-like graph in an envy-free way', async () => {
   const person2 = [genFlatSeg(0, 50, 5), genFlatSeg(50, 100, 10)] // 750, halfway point is 67.5%
   const result = await cutAndChoose([person1, person2])
   expect(result).toHaveLength(2)
-  // The slices should be 375 value on both sides for person 1,
-  // but the second slice is better for person 2.
-  expect(result[0]).toMatchObject({ owner: 1, start: 0, end: 37.5, value: 375 })
+  // The slices should be 375 value on both sides for person 0,
+  // but the second slice is better for person 1.
+  expect(result[0]).toMatchObject({ owner: 0, start: 0, end: 37.5, value: 375 })
   expect(result[1]).toMatchObject({
-    owner: 2,
+    owner: 1,
     start: 37.5,
     end: 100,
     value: 562.5,
@@ -38,11 +38,11 @@ test('splits a seesaw-like sloped graph in an envy-free way', async () => {
   expect(result).toHaveLength(2)
   // We get a weird `TypeError: val.toAsymmetricMatcher is not a function` bug when testing
   // with `toMatchObject` and `expect.closeTo` so doing things the verbose way.
-  expect(result[0].owner).toBe(1)
+  expect(result[0].owner).toBe(0)
   expect(result[0].end).toBeCloseTo(100 - halfwayPointOfTriangleArea)
   expect(result[0].value).toBeCloseTo(250)
 
-  expect(result[1].owner).toBe(2)
+  expect(result[1].owner).toBe(1)
   testIfEnvyFree(2, result)
 })
 

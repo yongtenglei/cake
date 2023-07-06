@@ -36,13 +36,11 @@ export const testIfEnvyFree = (numPeople: number, result: Slice[]) => {
   // We can't get to 100% accuracy when using floating point math
   const fudgeFactor = 0.1
 
-  // This gets a bit tricky with counting.
-  // For this part, only `owner` is 1-indexed.
   for (let a = 0; a < numPeople; a++) {
     // Using person `a`'s evaluations, collect each person's slice
     // values into an array.
     const totalValues = result.reduce((acc, slice) => {
-      acc[slice.owner - 1] += slice.values[a]
+      acc[slice.owner] += slice.values[a]
       return acc
     }, new Array(numPeople).fill(0))
     
@@ -54,7 +52,7 @@ export const testIfEnvyFree = (numPeople: number, result: Slice[]) => {
       // is worth less (to person `a`) than their own slice.
       expect(
         value - fudgeFactor,
-        `Person ${a + 1} envies person ${i + 1}'s slices`
+        `Person ${a} envies person ${i}'s slices`
       ).toBeLessThanOrEqual(obtainedValue)
     })
   }

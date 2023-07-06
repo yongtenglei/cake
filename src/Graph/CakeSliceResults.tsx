@@ -29,7 +29,7 @@ export const CakeSliceResults = ({ results }: CakeSliceResultsProps) => {
         return (
           <Tooltip
             key={slice.start}
-            title={`To person ${slice.owner}, this slice is worth ${percentValue}% of the whole.`}
+            title={`To person ${slice.owner + 1}, this slice is worth ${percentValue}% of the whole.`}
           >
             <Box
               sx={{
@@ -40,7 +40,7 @@ export const CakeSliceResults = ({ results }: CakeSliceResultsProps) => {
                 textAlign: 'center',
               }}
             >
-              Person {slice.owner}
+              Person {slice.owner + 1}
               <Box
                 sx={{
                   width: '100%',
@@ -61,7 +61,7 @@ export const CakeSliceResults = ({ results }: CakeSliceResultsProps) => {
               >
                 {slice.start}
               </Box>
-              {i + 1 === results.length ? (
+              {i === results.length ? (
                 <Box
                   sx={{
                     position: 'absolute',

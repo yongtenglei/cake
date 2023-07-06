@@ -35,8 +35,8 @@ export const CompareViewGraph = ({ preferences }: CompareViewGraphProps) => {
                   key={i}
                   segments={segments.map(convertToPixels)}
                   // graying out the background looks good only when `partial` is false
-                  // color={isActive(i) ? getAgentColor(i + 1) : '#999'}
-                  color={getAgentColor(i + 1)}
+                  // color={isActive(i) ? getAgentColor(i) : '#999'}
+                  color={getAgentColor(i)}
                   partial
                 />
               )
@@ -45,7 +45,7 @@ export const CompareViewGraph = ({ preferences }: CompareViewGraphProps) => {
             {focused === null ? null : (
               <Segments
                 segments={focusedPreference.map(convertToPixels)}
-                color={getAgentColor(focused + 1)}
+                color={getAgentColor(focused)}
               />
             )}
 
@@ -86,7 +86,7 @@ export const CompareViewGraph = ({ preferences }: CompareViewGraphProps) => {
                 sx={{
                   width: 15,
                   height: 15,
-                  backgroundColor: getAgentColor(i + 1),
+                  backgroundColor: getAgentColor(i),
                 }}
               />
               <div>Person {i + 1}</div>

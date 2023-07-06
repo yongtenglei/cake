@@ -2,7 +2,6 @@ import React from 'react'
 import { innerHeight as bottom } from '../graphConstants'
 import { DrawnSegment } from '../../types'
 import { shadeHexColor } from '../../utils/colorUtils'
-import { getAgentColor } from '../../constants'
 
 interface SegmentsProps {
   segments: DrawnSegment[]

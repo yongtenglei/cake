@@ -112,8 +112,8 @@ export const cutSlice = (
     end,
     values: allEvaluationsForSlice,
     assign: (agent: number): Slice => {
-      const totalCakeValue = getTotalValue(preferences[agent - 1])
-      const value = allEvaluationsForSlice[agent - 1]
+      const totalCakeValue = getTotalValue(preferences[agent])
+      const value = allEvaluationsForSlice[agent]
       return {
         start,
         end,

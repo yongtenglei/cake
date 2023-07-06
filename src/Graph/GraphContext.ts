@@ -10,5 +10,5 @@ interface Graph {
 export const GraphContext = createContext<Graph>({
   yScale: scaleLinear(),
   xScale: scaleLinear(),
-  currentAgent: 1
+  currentAgent: 0
 })

@@ -1,5 +1,4 @@
-// See graphUtils for converting between these two types of segments
-
+// See graphUtils for converting between Segment and DrawnSegment
 
 // startValue and endValue [0-10] (increments of 0.1)
 // start and end [0-100] (increments of 1)

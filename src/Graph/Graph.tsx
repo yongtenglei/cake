@@ -72,7 +72,8 @@ export const Graph = () => {
     setCompareMode(true)
     setAlgoResults(null)
   }
-  const [currentAgent, setCurrentAgent] = useState<number>(1) // Note: This is 1 indexed
+  // Agents are zero-index in the code, but 1-indexed when displaying to users
+  const [currentAgent, setCurrentAgent] = useState<number>(0)
   const [algoModalOpen, setAlgoModalOpen] = useState<boolean>(false)
   const [compareMode, setCompareMode] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
@@ -80,20 +81,20 @@ export const Graph = () => {
 
   const setCurrentAgentPrefs = (segs: Segment[]) => {
     const prefs = [...preferences]
-    prefs[currentAgent - 1] = segs
+    prefs[currentAgent] = segs
     setPreferences(prefs)
   }
   const onClickDone = () => setAlgoModalOpen(true)
   const onClickCreateAgent = () => {
-    setCurrentAgent(preferences.length + 1)
+    setCurrentAgent(preferences.length)
     setPreferences([...preferences, []])
   }
   const onChangeIndex = (i: number) => {
     const nextAgent = currentAgent + i
-    if (nextAgent > preferences.length) {
-      setCurrentAgent(1)
-    } else if (nextAgent < 1) {
-      setCurrentAgent(preferences.length)
+    if (nextAgent >= preferences.length) {
+      setCurrentAgent(0)
+    } else if (nextAgent < 0) {
+      setCurrentAgent(preferences.length - 1)
     } else {
       setCurrentAgent(nextAgent)
     }
@@ -108,7 +109,7 @@ export const Graph = () => {
     setCompareMode(true)
   }
 
-  const currentAgentPrefs = preferences[currentAgent - 1]
+  const currentAgentPrefs = preferences[currentAgent]
   const isComplete = isDrawingComplete(currentAgentPrefs)
 
   return (

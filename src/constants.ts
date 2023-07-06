@@ -10,7 +10,7 @@ export const C_LIGHT_PURPLE = '#bc8fea'
 export const C_GRAY = '#676768'
 export const C_ORANGE = '#676768'
 const agentColors = [C_GREEN, C_YELLOW, C_RED, C_BLUE,  C_PINK, C_GRAY,  C_ORANGE,  C_LIGHT_BLUE,  C_LIGHT_PURPLE,]
-export const getAgentColor = (agent: number) => agentColors[agent - 1] ?? ''
+export const getAgentColor = (agent: number) => agentColors[agent] ?? ''
 
 // General colors
 export const C_DARK_BG = '#333'

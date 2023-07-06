@@ -153,7 +153,7 @@ const SwitchAgent = ({
             </span>
           </Tooltip>
         )}
-        <h2>{compareMode ? 'Compare View' : `Person ${currentAgent}`}</h2>
+        <h2>{compareMode ? 'Compare View' : `Person ${currentAgent + 1}`}</h2>
 
         {compareMode ? null : (
           <Tooltip title="Next person">
@@ -173,7 +173,7 @@ const SwitchAgent = ({
       <Box sx={{ textAlign: 'center' }}>
         {compareMode
           ? 'Viewing the values of all people'
-          : `Draw how person ${currentAgent} values each part`}
+          : `Draw how person ${currentAgent + 1} values each part`}
       </Box>
     </Stack>
   )
