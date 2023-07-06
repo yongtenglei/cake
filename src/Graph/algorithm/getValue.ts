@@ -1,3 +1,5 @@
+import maxBy from 'lodash.maxby'
+import remove from 'lodash.remove'
 import { Segment, Preferences, UnassignedSlice, Slice } from '../../types'
 
 export const findCutLine = (segments: Segment[], targetPercentVal: number) => {
@@ -15,9 +17,11 @@ export const findCutLine = (segments: Segment[], targetPercentVal: number) => {
   throw 'No cutline in segment'
 }
 
-// Finds the cutline up to about 0.01 precision.
-// Could get more precise with a math library, or just multiplying the numbers
-// by 100 or 1000 to get them out of floating point range.
+/**
+ * Finds the cutline up to about 0.01 precision.
+ * Could get more precise with a math library, or just multiplying the numbers
+ * by 100 or 1000 to get them out of floating point range.
+ */
 const findSegmentCutline = (seg: Segment, targetArea: number) => {
   const segValue = measureSegment(seg)
   const width = seg.end - seg.start
@@ -54,8 +58,10 @@ const findSegmentCutline = (seg: Segment, targetArea: number) => {
 export const getTotalValue = (segments: Segment[]) =>
   getValueForInterval(segments, 0, Infinity)
 
-// Returns the total value of an interval,
-// even if covers several segments or splits segments in half.
+/**
+ * Returns the total value of an interval,
+ * even if covers several segments or splits segments in half.
+ */
 export const getValueForInterval = (
   segments: Segment[],
   start,
@@ -73,8 +79,10 @@ export const getValueForInterval = (
   return total
 }
 
-// Measures the area of a segment
-// Works with flat or sloped sections, whole numbers and decimals.
+/**
+ * Measures the area of a segment
+ * Works with flat or sloped sections, whole numbers and decimals.
+ */
 const measurePartialSegment = (seg: Segment, start: number, end: number) => {
   const startCap = Math.max(start, seg.start)
   const endCap = Math.min(end, seg.end)
@@ -124,4 +132,43 @@ export const cutSlice = (
       }
     },
   }
+}
+
+/**
+ * Sorts big to small by one agent's value function
+ */
+export const sortSlicesDecending = (
+  agent: number,
+  slices: UnassignedSlice[]
+) => {
+  return [...slices].sort((a, b) => b.values[agent] - a.values[agent])
+}
+
+export const findBestSlice = (
+  agent: number,
+  slices: UnassignedSlice[]
+): UnassignedSlice => {
+  return maxBy(slices, (slice: UnassignedSlice) => slice.values[agent])
+}
+
+/**
+ * Returns an array of two items.
+ * The slice removed and the remaining slices
+ */
+export const removeSlice = (
+  slice: UnassignedSlice,
+  slices: UnassignedSlice[]
+): [UnassignedSlice, UnassignedSlice[]] => {
+  // `remove` mutates the array so make a copy of it first
+  const remaining = [...slices]
+  const removed: UnassignedSlice = remove(remaining, slice)[0]
+  return [removed, remaining]
+}
+
+/**
+ * Returns an array of two items.
+ * The best slice for the given agent and the remaining slices
+ */
+export const removeBestSlice = (agent: number, slices: UnassignedSlice[]) => {
+  return removeSlice(findBestSlice(agent, slices), slices)
 }

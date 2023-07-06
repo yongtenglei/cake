@@ -2,10 +2,10 @@ import { Preferences, Slice } from '../../types'
 import { cutSlice, findCutLine } from './getValue'
 import { defaultCakeSize } from '../graphConstants'
 
-export const cutAndChoose = async (
+export const cutAndChoose = (
   preferences: Preferences,
   cakeSize = defaultCakeSize
-): Promise<Slice[]> => {
+): Slice[] => {
   if (preferences.length !== 2) {
     throw 'Cut and choose only works with two agents'
   }

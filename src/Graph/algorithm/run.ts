@@ -4,7 +4,7 @@ import { validateSegments } from './validation'
 import { cutAndChoose } from './cutAndChoose'
 import { selfridgeConway } from './selfridgeConway'
 
-export const runDivisionAlgorithm = (
+export const runDivisionAlgorithm = async (
   preferences: Preferences,
   algo: AlgoName,
   cakeSize
@@ -18,7 +18,6 @@ export const runDivisionAlgorithm = (
   // do we need to do other checks? number munging?
 
   let result = null
-  // run fair division method
   switch (algo) {
     case 'cutAndChoose':
       result = cutAndChoose(preferences, cakeSize)
@@ -26,6 +25,11 @@ export const runDivisionAlgorithm = (
     case 'selfridgeConway':
       result = selfridgeConway(preferences, cakeSize)
       break
+    // If server-side methods are implemented in the future,
+    // be sure to `await` the asynchronous response as shown here
+    // case 'some server-side method':
+    //   result = await method(preferences, cakeSize)
+    //   break
     default:
       throw new Error(`Algorithm not implemented: ${algo}`)
   }
