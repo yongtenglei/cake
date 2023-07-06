@@ -1,31 +1,34 @@
 import { AlgoName } from '../graphConstants'
 import { Preferences, Division } from '../../types'
-import {  validateSegments } from './validation'
+import { validateSegments } from './validation'
 import { cutAndChoose } from './cutAndChoose'
 import { selfridgeConway } from './selfridgeConway'
 
 export const runDivisionAlgorithm = (
   preferences: Preferences,
   algo: AlgoName,
-  cakeSize,
+  cakeSize
 ): Promise<Division[]> => {
-  
   console.log(`Running ${algo}...`)
   console.log('Cake size:', cakeSize)
   console.log('Preferences:', preferences)
   // simple error checking
   validateSegments(preferences, cakeSize)
 
+  // do we need to do other checks? number munging?
 
-  // do we need to do other checks or number munging here?
-
+  let result = null
   // run fair division method
   switch (algo) {
     case 'cutAndChoose':
-      return cutAndChoose(preferences, cakeSize)
+      result = cutAndChoose(preferences, cakeSize)
+      break
     case 'selfridgeConway':
-      return selfridgeConway(preferences, cakeSize)
+      result = selfridgeConway(preferences, cakeSize)
+      break
     default:
       throw new Error(`Algorithm not implemented: ${algo}`)
   }
+  console.log('Results:', result)
+  return result
 }

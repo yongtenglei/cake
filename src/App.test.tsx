@@ -4,8 +4,7 @@ import { Graph } from './Graph/Graph'
 
 test('renders header', () => {
   render(<Graph />)
-  // queries by role can be a bit slow, 
-  // but it doesn't matter for a project of this size
+  // queries by role can be a bit slow in large projects, but doesn't matter here
   screen.getByRole('heading', {name: 'Person 1'})
 
   screen.getByRole('button', {name: 'Previous person'})

@@ -10,8 +10,6 @@ import {
   DialogActions,
   DialogContentText,
   Button,
-  CircularProgress,
-  Box,
 } from '@mui/material'
 import { Algorithms, Algorithm, AlgoName } from '../graphConstants'
 import { AlgoExplanationModal } from './AlgoExplanationModal'
@@ -86,7 +84,7 @@ const SelectAlgoModalGuts = ({
       <DialogTitle>Select Method</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Select which method to use to divide the resource between people.
+          Select how to divide the resource.
         </DialogContentText>
 
         <br />
@@ -115,7 +113,7 @@ const SelectAlgoModalGuts = ({
       <DialogActions>
         <Button onClick={onCancel}>Cancel</Button>
         <Button type="submit" variant="contained">
-          Solve
+          Find Solution
         </Button>
       </DialogActions>
     </form>

@@ -1,5 +1,7 @@
 import { Segment, Division } from '../../types'
 
+export const halfwayPointOfTriangleArea = 70.71
+
 let id = 0
 export const genFlatSeg = (
   start: number,
@@ -31,6 +33,9 @@ export const genSlopeSeg = (
 }
 
 export const testIfEnvyFree = (numPeople: number, result: Division[]) => {
+  // We can't get to 100% accuracy when using floating point math
+  const fudgeFactor = 0.1
+
   // This gets a bit tricky with counting.
   // For this part, only `owner` is 1-indexed.
   for (let a = 0; a < numPeople; a++) {
@@ -48,7 +53,7 @@ export const testIfEnvyFree = (numPeople: number, result: Division[]) => {
       // Assert that all other people's slice total value
       // is worth less (to person `a`) than their own slice.
       expect(
-        value,
+        value - fudgeFactor,
         `Person ${a + 1} envies person ${i + 1}'s slices`
       ).toBeLessThanOrEqual(obtainedValue)
     })
