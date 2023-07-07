@@ -1,40 +1,69 @@
-import maxBy from 'lodash.maxby'
-import remove from 'lodash.remove'
-import { Segment, Preferences, UnassignedSlice, Slice } from '../../types'
+import { Segment } from '../../types'
 
-export const findCutLine = (segments: Segment[], targetPercentVal: number) => {
+export const findCutLineByPercent = (
+  segments: Segment[],
+  targetPercentVal: number
+) => {
   const totalCakeValue = getTotalValue(segments)
-  const targetArea = totalCakeValue * targetPercentVal
+  const targetValue = totalCakeValue * targetPercentVal
+  return findCutLineByValue(segments, targetValue)
+}
+
+export const findCutLineByValue = (
+  segments: Segment[],
+  targetValue: number,
+  options?: { startBound: number; endBound: number }
+): number => {
   let runningTotal = 0
   for (const seg of segments) {
-    const segmentVal = measureSegment(seg)
-    if (runningTotal + segmentVal >= targetArea) {
-      return findSegmentCutline(seg, targetArea - runningTotal)
+    const segValue = options
+      ? measurePartialSegment(seg, options.startBound, options.endBound)
+      : measureSegment(seg)
+
+    if (runningTotal + segValue >= targetValue) {
+      return findSegmentCutline(seg, targetValue - runningTotal, options)
     } else {
-      runningTotal += segmentVal
+      runningTotal += segValue
     }
   }
   throw 'No cutline in segment'
 }
 
 /**
- * Finds the cutline up to about 0.01 precision.
- * Could get more precise with a math library, or just multiplying the numbers
- * by 100 or 1000 to get them out of floating point range.
+ * Finds the cutline up to ~10e-13 precision which is the error with floating point numbers.
+ * Could get more precise with a math library but that's already extremely good.
  */
-const findSegmentCutline = (seg: Segment, targetArea: number) => {
-  const segValue = measureSegment(seg)
-  const width = seg.end - seg.start
-  const slope = (seg.endValue - seg.startValue) / width
+const findSegmentCutline = (
+  seg: Segment,
+  targetArea: number,
+  options?: { startBound: number; endBound: number }
+): number => {
+  // sanity check so we don't expand the scope of the segment
+  if (options) {
+    options.startBound = Math.max(options.startBound, seg.start)
+    options.endBound = Math.min(options.endBound, seg.end)
+  }
+  const slope = (seg.endValue - seg.startValue) / (seg.end - seg.start)
+
+  const start = options?.startBound ?? seg.start
+  const end = options?.endBound ?? seg.end
 
   if (seg.startValue === seg.endValue) {
     // Flat segment
+    const segValue = options
+      ? measurePartialSegment(seg, options.startBound, options.endBound)
+      : measureSegment(seg)
     const targetAreaPercent = targetArea / segValue
-    return seg.start + width * targetAreaPercent
+    return start + (end - start) * targetAreaPercent
   } else {
     // Sloped segment
+    let startVal = seg.startValue
+    if (options?.startBound) {
+      startVal += options.startBound
+        ? (options.startBound - seg.start) * slope
+        : 0
+    }
     // Thanks to Bence Szilágyi for help with the math here.
-
     // The formula is the result of adding a triangle and rectangle together,
     // then solving for the width and one side (endValue):
     // triangle area = (endValue * width) / 2
@@ -47,15 +76,13 @@ const findSegmentCutline = (seg: Segment, targetArea: number) => {
     // but this actually works even if the slope is negative because in that case the
     // area of the triangle will be negative.
     const targetEnd =
-      (-seg.startValue +
-        Math.sqrt(seg.startValue ** 2 + 2 * slope * targetArea)) /
-      slope
-    return seg.start + targetEnd
+      (-startVal + Math.sqrt(startVal ** 2 + 2 * slope * targetArea)) / slope
+    return start + targetEnd
   }
 }
 
 // could wrap this with lodash's `memorize` to cache results
-export const getTotalValue = (segments: Segment[]) =>
+export const getTotalValue = (segments: Segment[]): number =>
   getValueForInterval(segments, 0, Infinity)
 
 /**
@@ -64,8 +91,8 @@ export const getTotalValue = (segments: Segment[]) =>
  */
 export const getValueForInterval = (
   segments: Segment[],
-  start,
-  end
+  start: number,
+  end: number
 ): number => {
   let total = 0
   for (const seg of segments) {
@@ -88,6 +115,9 @@ const measurePartialSegment = (seg: Segment, start: number, end: number) => {
   const endCap = Math.min(end, seg.end)
   const measuringWidth = endCap - startCap
 
+  if (measuringWidth < 0) {
+    throw `Negative width in measurePartialSegment in segment ${seg} with start ${start} end ${end}`
+  }
   // flat section
   if (seg.startValue === seg.endValue) {
     return seg.startValue * measuringWidth
@@ -104,71 +134,4 @@ const measurePartialSegment = (seg: Segment, start: number, end: number) => {
 
 export const measureSegment = (seg: Segment) => {
   return measurePartialSegment(seg, seg.start, seg.end)
-}
-
-export const cutSlice = (
-  preferences: Preferences,
-  start: number,
-  end: number
-): UnassignedSlice => {
-  // Getting and saving every agent's evaluations for this slice makes later calculation much simpler
-  const allEvaluationsForSlice = preferences.map((segments) =>
-    getValueForInterval(segments, start, end)
-  )
-  return {
-    start,
-    end,
-    values: allEvaluationsForSlice,
-    assign: (agent: number): Slice => {
-      const totalCakeValue = getTotalValue(preferences[agent])
-      const value = allEvaluationsForSlice[agent]
-      return {
-        start,
-        end,
-        value,
-        values: allEvaluationsForSlice,
-        owner: agent,
-        valuePercent: value / totalCakeValue,
-      }
-    },
-  }
-}
-
-/**
- * Sorts big to small by one agent's value function
- */
-export const sortSlicesDecending = (
-  agent: number,
-  slices: UnassignedSlice[]
-) => {
-  return [...slices].sort((a, b) => b.values[agent] - a.values[agent])
-}
-
-export const findBestSlice = (
-  agent: number,
-  slices: UnassignedSlice[]
-): UnassignedSlice => {
-  return maxBy(slices, (slice: UnassignedSlice) => slice.values[agent])
-}
-
-/**
- * Returns an array of two items.
- * The slice removed and the remaining slices
- */
-export const removeSlice = (
-  slice: UnassignedSlice,
-  slices: UnassignedSlice[]
-): [UnassignedSlice, UnassignedSlice[]] => {
-  // `remove` mutates the array so make a copy of it first
-  const remaining = [...slices]
-  const removed: UnassignedSlice = remove(remaining, slice)[0]
-  return [removed, remaining]
-}
-
-/**
- * Returns an array of two items.
- * The best slice for the given agent and the remaining slices
- */
-export const removeBestSlice = (agent: number, slices: UnassignedSlice[]) => {
-  return removeSlice(findBestSlice(agent, slices), slices)
 }

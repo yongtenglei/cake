@@ -21,11 +21,19 @@ export type DrawnSegment = {
 
 export type Preferences = Segment[][]
 
+/** `UnassignedSlice`s don't belong to anyone, so store a `values` array with the
+ * slice value for each of the agents.
+ * Use `.assign()` to turn a `UnassignedSlice` into a `Slice`.
+ * `Slice`s are assigned to given agent but still keep the `values` array for all agents.
+ *
+ * Note that `UnassignedSlice` and `Slice` cannot be turned back into `Segment`
+ * objects and are immutable.
+ */
 export type UnassignedSlice = {
   start: number
   end: number
   values: number[]
-  assign: (agent: number) => Slice
+  assign: (agent: number) => Readonly<Slice>
 }
 
 export type Slice = {
@@ -36,4 +44,3 @@ export type Slice = {
   valuePercent: number
   values: number[]
 }
-

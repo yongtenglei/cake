@@ -1,5 +1,6 @@
 import { Preferences, Slice } from '../../types'
-import { cutSlice, findCutLine } from './getValue'
+import { findCutLineByPercent } from './getValue'
+import { cutSlice } from './sliceUtils'
 import { defaultCakeSize } from '../graphConstants'
 
 export const cutAndChoose = (
@@ -11,7 +12,7 @@ export const cutAndChoose = (
   }
 
   // agent 0 cuts
-  const cutPoint = findCutLine(preferences[0], 0.5)
+  const cutPoint = findCutLineByPercent(preferences[0], 0.5)
 
   const slice1 = cutSlice(preferences, 0, cutPoint)
   const slice2 = cutSlice(preferences, cutPoint, cakeSize)

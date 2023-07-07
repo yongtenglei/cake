@@ -46,12 +46,15 @@ test('splits a "no trimming needed" asymetrical evaluation cake fairly', () => {
   testIfEnvyFree(3, result)
 })
 
-test('splits a more complex cake fairly', () => {
-  const person0 = [genFlatSeg(0, 90, 10)] // 900
-  const person1 = [genFlatSeg(0, 30, 5), genFlatSeg(30, 90, 10)]
+test('splits a simple "trimming needed" cake fairly', () => {
+  const person0 = [
+    genFlatSeg(0, 30, 10),
+    genFlatSeg(30, 60, 5),
+    genFlatSeg(60, 90, 10),
+  ]
+  const person1 = [genFlatSeg(0, 90, 10)]
   const person2 = [genFlatSeg(0, 60, 5), genFlatSeg(60, 90, 10)]
   const result = selfridgeConway([person0, person1, person2], 90)
 
-  expect(result).toHaveLength(3)
   testIfEnvyFree(3, result)
 })

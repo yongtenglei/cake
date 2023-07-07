@@ -43,11 +43,11 @@ test('splits a seesaw-like sloped graph in an envy-free way', () => {
   expect(result).toHaveLength(2)
   // We get a weird `TypeError: val.toAsymmetricMatcher is not a function` bug when testing
   // with `toMatchObject` and `expect.closeTo` so doing things the verbose way.
-  expect(result[0].owner).toBe(1)
+  expect(result[0].owner).toBe(0)
   expect(result[0].end).toBeCloseTo(100 - halfwayPointOfTriangleArea)
   expect(result[0].value).toBeCloseTo(250)
 
-  expect(result[1].owner).toBe(2)
+  expect(result[1].owner).toBe(1)
   testIfEnvyFree(2, result)
 })
 

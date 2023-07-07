@@ -1,6 +1,6 @@
 import { Segment, Slice } from '../../types'
 
-export const halfwayPointOfTriangleArea = 70.71
+export const halfwayPointOfTriangleArea = 70.710678
 
 let id = 0
 export const genFlatSeg = (

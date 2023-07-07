@@ -3,13 +3,10 @@
 .Navigation {
   position: relative;
   z-index: 100;
-  /* background-color: var(--cPrimary);
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px -1px,
-    rgba(0, 0, 0, 0.14) 0px 4px 5px 0px, rgba(0, 0, 0, 0.12) 0px 1px 10px 0px; */
-
-    /* V2 */
   padding: 8px 0;
   border-bottom: 8px solid var(--cSecondary);
+  /* non standard */
+  /* background-color: #faedb6;  */
 }
 
 .Navigation__body {
