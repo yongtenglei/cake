@@ -1,14 +1,6 @@
 import React, { useContext, useCallback, useState, useEffect } from 'react'
 import clamp from 'lodash.clamp'
-import { ScaleLinear } from 'd3'
-import {
-  height,
-  width,
-  margin,
-  innerHeight,
-  innerWidth,
-  defaultCakeSize,
-} from '../graphConstants'
+import { margin, getInnerWidth, getInnerHeight, defaultCakeSize } from '../graphConstants'
 import { getAgentColor } from '../../constants'
 import { GraphContext } from '../GraphContext'
 import { AxisLeft, AxisBottom } from './Axes'
@@ -18,7 +10,6 @@ import { Segments } from './Segments'
 import {
   useConvertSegToPixels,
   useConvertSegFromPixels,
-  roundValue,
   isDrawingComplete,
 } from '../graphUtils'
 import { HorizontalResizeHandles, VerticalResizeHandles } from './ResizeHandles'
@@ -46,10 +37,9 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
   const [isMouseDown, setIsMouseDown] = useState(false)
   const [yMovingId, setYMovingId] = useState<number | null>(null)
   const [xMovingId, setXMovingId] = useState<number | null>(null)
-  const [cornerMovingId, setCornerMovingId] = useState<[number, number] | null>(
-    null
-  )
-  const { xScale, yScale, currentAgent } = useContext(GraphContext)
+  const [cornerMovingId, setCornerMovingId] = useState<[number, number] | null>(null)
+  const { xScale, yScale, currentAgent, height, width } = useContext(GraphContext)
+
   const cakeSize = defaultCakeSize
   const isDrawing = !isDrawingComplete(segments)
 
@@ -68,8 +58,8 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
   const onMouseMove = (event: React.MouseEvent) => {
     const x = event.nativeEvent.offsetX - margin.left
     const y = event.nativeEvent.offsetY - margin.top
-    const constrainedX = clamp(x, 0, innerWidth)
-    const constrainedY = clamp(y, 0, innerHeight)
+    const constrainedX = clamp(x, 0, getInnerWidth(width))
+    const constrainedY = clamp(y, 0, getInnerHeight(height))
     setMouseX(constrainedX)
     setMouseY(constrainedY)
 
@@ -81,22 +71,11 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
         : segsWithDrawing
 
       segsWithDrawing = xMovingId
-        ? changeSegmentWidth(
-            segments,
-            xMovingId,
-            xScale,
-            constrainedX,
-            cakeSize
-          )
+        ? changeSegmentWidth(segments, xMovingId, xScale, constrainedX, cakeSize)
         : segsWithDrawing
 
       segsWithDrawing = cornerMovingId
-        ? changeSegmentCornerValue(
-            segments,
-            cornerMovingId,
-            yScale,
-            constrainedY
-          )
+        ? changeSegmentCornerValue(segments, cornerMovingId, yScale, constrainedY)
         : segsWithDrawing
       setSegments(segsWithDrawing)
     }
@@ -120,7 +99,6 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
     setYMovingId(null)
     setXMovingId(null)
     setCornerMovingId(null)
-    console.log('blur')
   }
 
   // keeping track of mouse down/up helps mouse and keyboard play nice with each other
@@ -175,10 +153,7 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
             <AxisBottom />
             <AxisLeft />
 
-            <Segments
-              segments={pixelSegs}
-              color={getAgentColor(currentAgent)}
-            />
+            <Segments segments={pixelSegs} color={getAgentColor(currentAgent)} />
 
             <HorizontalResizeHandles
               segments={pixelSegs}

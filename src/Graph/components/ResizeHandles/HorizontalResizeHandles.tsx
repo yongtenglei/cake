@@ -1,5 +1,7 @@
+import { useContext } from 'react'
 import { DrawnSegment } from '../../../types'
-import { innerHeight } from '../../graphConstants'
+import { GraphContext } from '../../GraphContext'
+import { getInnerHeight } from '../../graphConstants'
 import './ResizeHandles.css'
 
 interface HorizontalResizeHandlesProps {
@@ -13,6 +15,7 @@ export const HorizontalResizeHandles = ({
   setXMovingId,
   isDrawing,
 }: HorizontalResizeHandlesProps) => {
+  const { height } = useContext(GraphContext)
   return (
     <>
       {segments.map((seg, i) => {
@@ -27,7 +30,7 @@ export const HorizontalResizeHandles = ({
               key={seg.id}
               x1={seg.x2}
               x2={seg.x2}
-              y1={innerHeight}
+              y1={getInnerHeight(height)}
               y2={0}
               onMouseDown={onMouseDown}
               onFocus={onMouseDown}

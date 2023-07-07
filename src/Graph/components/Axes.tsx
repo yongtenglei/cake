@@ -1,8 +1,8 @@
 import { useContext } from 'react'
 import {
   tickOffset,
-  innerWidth,
-  innerHeight,
+  getInnerHeight,
+  getInnerWidth,
   xAxisLabelOffset,
   yAxisLabelOffset,
 } from '../graphConstants'
@@ -10,22 +10,24 @@ import { GraphContext } from '../GraphContext'
 
 const gridColor = '#999'
 const labelColor = 'black'
-const labelSize = '2.5em'
+const labelSize = '32px'
+
 export const AxisLeft = () => {
-  const { yScale } = useContext(GraphContext)
+  const { yScale, width, height } = useContext(GraphContext)
+  const innerHeight = getInnerHeight(height)
+  const innerWidth = getInnerWidth(width)
   return (
     <>
       <text
         className="axis-label"
         textAnchor="middle"
-        transform={`translate(${-yAxisLabelOffset},${
-          innerHeight / 2
-        }) rotate(-90)`}
+        transform={`translate(${-yAxisLabelOffset},${innerHeight / 2}) rotate(-90)`}
         fill={labelColor}
-        style={{fontSize: labelSize}}
+        style={{ fontSize: labelSize }}
       >
         Value
       </text>
+
       {yScale.ticks().map((tickValue) => (
         <g
           className="tick"
@@ -49,7 +51,9 @@ export const AxisLeft = () => {
 }
 
 export const AxisBottom = () => {
-  const { xScale } = useContext(GraphContext)
+  const { xScale, width, height } = useContext(GraphContext)
+  const innerHeight = getInnerHeight(height)
+  const innerWidth = getInnerWidth(width)
   return (
     <>
       <text
@@ -58,7 +62,7 @@ export const AxisBottom = () => {
         y={innerHeight + xAxisLabelOffset}
         textAnchor="middle"
         fill={labelColor}
-        style={{fontSize: labelSize}}
+        style={{ fontSize: labelSize }}
       >
         Portion
       </text>
@@ -68,13 +72,12 @@ export const AxisBottom = () => {
           key={tickValue}
           transform={`translate(${xScale(tickValue)},0)`}
         >
-          <line y2={innerHeight}  stroke={gridColor}  />
+          <line y2={innerHeight} stroke={gridColor} />
           <text
             style={{ textAnchor: 'middle' }}
             dy=".7em"
             y={innerHeight + tickOffset}
             fill={labelColor}
-
           >
             {tickValue}
           </text>

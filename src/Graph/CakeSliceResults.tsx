@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Tooltip, Box } from '@mui/material'
-import { Slice, Segment } from '../types'
-import { margin, innerWidth } from './graphConstants'
+import { Slice } from '../types'
+import { margin } from './graphConstants'
 import { GraphContext } from './GraphContext'
 import { getAgentColor } from '../constants'
 
@@ -18,7 +18,7 @@ export const CakeSliceResults = ({ results }: CakeSliceResultsProps) => {
     <Box
       sx={{
         position: 'relative',
-        width: innerWidth,
+        width: '100%',
         height: '50px',
         left: margin.left,
         cursor: 'pointer',

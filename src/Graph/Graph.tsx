@@ -8,7 +8,14 @@ import { SelectAlgoModal } from './components/SelectAlgoModal'
 import { Slice, Segment, Preferences } from '../types'
 import { GraphContext } from './GraphContext'
 import { isDrawingComplete } from './graphUtils'
-import { AlgoName, innerHeight, innerWidth, defaultCakeSize } from './graphConstants'
+import {
+  AlgoName,
+  height,
+  width,
+  getInnerWidth,
+  getInnerHeight,
+  defaultCakeSize,
+} from './graphConstants'
 import { runDivisionAlgorithm } from './algorithm/run'
 import { CakeSliceResults } from './CakeSliceResults'
 import { LoadingModal } from '../components/LoadingModal'
@@ -57,10 +64,14 @@ const temp: Preferences = [
 // }
 
 export const Graph = () => {
-  const yScale = scaleLinear().domain([0, 10]).range([innerHeight, 0]).nice()
+  const cakeSize = defaultCakeSize
+  const yScale = scaleLinear()
+    .domain([0, 10])
+    .range([getInnerHeight(height), 0])
+    .nice()
   const xScale = scaleLinear()
-    .domain([0, defaultCakeSize])
-    .range([0, innerWidth])
+    .domain([0, cakeSize])
+    .range([0, getInnerWidth(width)])
     .nice()
 
   const [algoResults, setAlgoResults] = useState<Slice[] | []>(null)
@@ -102,9 +113,9 @@ export const Graph = () => {
   const onClickRunAlgo = async (algo: AlgoName) => {
     setLoading(true)
     setAlgoModalOpen(false)
-    
-    setAlgoResults(await runDivisionAlgorithm(preferences, algo, defaultCakeSize))
-    
+
+    setAlgoResults(await runDivisionAlgorithm(preferences, algo, cakeSize))
+
     setLoading(false)
     setCompareMode(true)
   }
@@ -118,6 +129,8 @@ export const Graph = () => {
         yScale,
         xScale,
         currentAgent,
+        height,
+        width,
       }}
     >
       <Stack>
@@ -130,16 +143,13 @@ export const Graph = () => {
           onClickCreateAgent={onClickCreateAgent}
           onClickCompare={onClickCompare}
           compareMode={compareMode}
-          preferences={preferences} 
+          preferences={preferences}
           setNewData={setNewData}
         />
         {compareMode ? (
-          <CompareViewGraph preferences={preferences} />
+          <CompareViewGraph preferences={preferences} cakeSize={cakeSize} />
         ) : (
-          <DrawingLayer
-            segments={currentAgentPrefs}
-            setSegments={setCurrentAgentPrefs}
-          />
+          <DrawingLayer segments={currentAgentPrefs} setSegments={setCurrentAgentPrefs} />
         )}
 
         {algoResults ? <CakeSliceResults results={algoResults} /> : null}

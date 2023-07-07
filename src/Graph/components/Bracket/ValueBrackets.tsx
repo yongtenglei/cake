@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box } from '@mui/material'
-import { innerHeight as bottom, margin, innerWidth } from '../../graphConstants'
+import { margin } from '../../graphConstants'
 import { Segment } from '../../../types'
 import { EditableBracket } from './EditableBracket'
 import { BracketContainer } from './BracketContainer'
@@ -9,7 +9,6 @@ const styles = {
   position: 'relative',
   left: margin.left,
   top: 15 - margin.bottom,
-  width: innerWidth,
 }
 
 interface ValueBracketsProps {

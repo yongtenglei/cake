@@ -5,7 +5,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import CheckIcon from '@mui/icons-material/Check'
 import AssessmentIcon from '@mui/icons-material/Assessment'
 import EditIcon from '@mui/icons-material/Edit'
-import { MAX_AGENTS, margin, innerWidth } from '../../graphConstants'
+import { MAX_AGENTS, margin } from '../../graphConstants'
 import { getAgentColor } from '../../../constants'
 import { Preferences } from '../../../types'
 import { ExtraOptions } from './ExtraOptions'
@@ -43,7 +43,7 @@ export const GraphHeader = ({
       marginRight={margin.right + 'px'}
       spacing={1}
       alignContent="center"
-      maxWidth={innerWidth}
+      maxWidth={'100%'}
     >
       <SwitchAgent
         navigationDisabled={totalAgents < 2}

@@ -1,7 +1,8 @@
-import React from 'react'
-import { innerHeight as bottom } from '../graphConstants'
+import React, { useContext } from 'react'
+import { getInnerHeight } from '../graphConstants'
 import { DrawnSegment } from '../../types'
 import { shadeHexColor } from '../../utils/colorUtils'
+import { GraphContext } from '../GraphContext'
 
 interface SegmentsProps {
   segments: DrawnSegment[]
@@ -9,17 +10,18 @@ interface SegmentsProps {
   partial?: boolean
 }
 
-// const lineColor = "#333"
-
 export const Segments = ({
   segments,
   color,
   partial = false,
 }: SegmentsProps) => {
-  // These are drawn as: the top line, the shading under the line, the right line
-  // There is no bottom line and the left line comes from the previous segment.
+  const { height } = useContext(GraphContext)
+  const bottom = getInnerHeight(height)
 
-  // WIP
+  // These are drawn as: the top line, the shading under the line, the right line
+  // The left line comes from the previous segment.
+
+  // Still worth iterating on this
   const strokeWidth = 1 //partial ? 1.5 : 1
   return (
     <>
@@ -39,8 +41,6 @@ export const Segments = ({
               y1={y1}
               x2={x2}
               y2={y2}
-              // onClick={onMouseDown}
-              // onMouseMove={onMouseMove}
             />
 
             {/* fill */}
@@ -49,19 +49,6 @@ export const Segments = ({
               fillOpacity={0.5}
               d={`M${x1},${y1} L${x2},${y2} L${x2},${bottomFillRight} L${x1},${bottomFillLeft}`}
             />
-
-            {/* Grab handle */}
-            {/* <rect
-              className="vertGrabArea"
-              stroke="none"
-              fill="transparent"
-              x={x1}
-              y={(moving ? mouseY : y1) - 5}
-              width={x2 - x1}
-              height={10}
-              onMouseDown={() => onMouseDown(id)}
-              onMouseUp={() => setMovingId(null)}
-            /> */}
 
             {/* version of right line that extends to the top */}
             {/* <line stroke={vertLineColor} x1={x2} y1={0} x2={x2} y2={bottom} /> */}

@@ -8,11 +8,11 @@ export const height = 500
 export const margin = { top: 20, right: 15, bottom: 120, left: 100 }
 export const xAxisLabelOffset = 118
 export const yAxisLabelOffset = 50
-export const innerHeight = height - margin.top - margin.bottom
-export const innerWidth = width - margin.left - margin.right
+export const getInnerWidth = (height: number) => height - margin.top - margin.bottom
+export const getInnerHeight = (width: number) => width - margin.left - margin.right
+
 export const tickOffset = 7
 export const defaultCakeSize = 100
-
 
 // Algorithms
 export type AlgoName = 'cutAndChoose' | 'selfridgeConway'
@@ -34,7 +34,8 @@ export const Algorithms: Record<AlgoName, Algorithm> = {
     numAgentsText: '2 people',
     minAgents: 2,
     maxAgents: 2,
-    shortDescription: 'A simple method for envy-free division between two people. One divides, the other chooses.',
+    shortDescription:
+      'A simple method for envy-free division between two people. One divides, the other chooses.',
     link: 'https://en.wikipedia.org/wiki/Divide_and_choose',
   },
   selfridgeConway: {
@@ -43,7 +44,8 @@ export const Algorithms: Record<AlgoName, Algorithm> = {
     numAgentsText: '3 people',
     minAgents: 3,
     maxAgents: 3,
-    shortDescription: 'A method for envy-free division between three people. Maximum of five cucts.',
+    shortDescription:
+      'A method for envy-free division between three people. Maximum of five cucts.',
     link: 'https://en.wikipedia.org/wiki/Selfridge%E2%80%93Conway_procedure',
   },
 }
