@@ -1,7 +1,7 @@
 import { cutAndChoose } from './cutAndChoose'
 import {
   genFlatSeg,
-  genSlopeSeg,
+  genSlopedSeg,
   testIfEnvyFree,
   halfwayPointOfTriangleArea,
 } from './testUtil'
@@ -37,8 +37,8 @@ test('splits a seesaw-like graph in an envy-free way', () => {
 })
 
 test('splits a seesaw-like sloped graph in an envy-free way', () => {
-  const person1 = [genSlopeSeg(0, 100, 10, 0)] // 500, halfway point is ~30%
-  const person2 = [genSlopeSeg(0, 100, 0, 10)] // 500, halfway point is ~70%
+  const person1 = [genSlopedSeg(0, 100, 10, 0)] // 500, halfway point is ~30%
+  const person2 = [genSlopedSeg(0, 100, 0, 10)] // 500, halfway point is ~70%
   const result = cutAndChoose([person1, person2])
   expect(result).toHaveLength(2)
   // We get a weird `TypeError: val.toAsymmetricMatcher is not a function` bug when testing
@@ -72,8 +72,8 @@ test('splits a tricky case in an envy-free way', () => {
 
 // This case fails if we only slice on whole numbers
 test('splits a tricky sloped case in an envy-free way', () => {
-  const person1 = [genFlatSeg(0, 45, 3.5), genSlopeSeg(45, 100, 7.5, 6.5)]
-  const person2 = [genSlopeSeg(0, 60, 8, 9.5), genSlopeSeg(60, 100, 2.5, 5.5)]
+  const person1 = [genFlatSeg(0, 45, 3.5), genSlopedSeg(45, 100, 7.5, 6.5)]
+  const person2 = [genSlopedSeg(0, 60, 8, 9.5), genSlopedSeg(60, 100, 2.5, 5.5)]
   const result = cutAndChoose([person1, person2])
   expect(result).toHaveLength(2)
   testIfEnvyFree(2, result)

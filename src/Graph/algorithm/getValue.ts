@@ -1,18 +1,23 @@
 import { Segment } from '../../types'
 
+type BoundaryOptions = { startBound: number; endBound: number }
+
 export const findCutLineByPercent = (
   segments: Segment[],
-  targetPercentVal: number
+  targetPercentVal: number,
+  options?: BoundaryOptions
 ) => {
-  const totalCakeValue = getTotalValue(segments)
+  const start = options?.startBound ?? 0
+  const end = options?.endBound ?? Infinity
+  const totalCakeValue = getValueForInterval(segments, start, end)
   const targetValue = totalCakeValue * targetPercentVal
-  return findCutLineByValue(segments, targetValue)
+  return findCutLineByValue(segments, targetValue, options)
 }
 
 export const findCutLineByValue = (
   segments: Segment[],
   targetValue: number,
-  options?: { startBound: number; endBound: number }
+  options?: BoundaryOptions
 ): number => {
   let runningTotal = 0
   for (const seg of segments) {
@@ -36,7 +41,7 @@ export const findCutLineByValue = (
 const findSegmentCutline = (
   seg: Segment,
   targetArea: number,
-  options?: { startBound: number; endBound: number }
+  options?: BoundaryOptions
 ): number => {
   // sanity check so we don't expand the scope of the segment
   if (options) {
@@ -81,7 +86,6 @@ const findSegmentCutline = (
   }
 }
 
-// could wrap this with lodash's `memorize` to cache results
 export const getTotalValue = (segments: Segment[]): number =>
   getValueForInterval(segments, 0, Infinity)
 
@@ -115,8 +119,13 @@ const measurePartialSegment = (seg: Segment, start: number, end: number) => {
   const endCap = Math.min(end, seg.end)
   const measuringWidth = endCap - startCap
 
-  if (measuringWidth < 0) {
-    throw `Negative width in measurePartialSegment in segment ${seg} with start ${start} end ${end}`
+  if (measuringWidth <= 0) {
+    // Nothing to measure
+    return 0
+    // console.trace()
+    // throw `Negative width in measurePartialSegment in segment ${JSON.stringify(
+    //   seg
+    // )} with start ${start} end ${end}`
   }
   // flat section
   if (seg.startValue === seg.endValue) {

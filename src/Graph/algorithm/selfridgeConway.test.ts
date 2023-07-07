@@ -1,7 +1,11 @@
 import { selfridgeConway } from './selfridgeConway'
-import { genFlatSeg, genSlopeSeg } from './testUtil'
-import { getValueForInterval } from './getValue'
-import { testIfEnvyFree } from './testUtil'
+import {
+  genFlatSeg,
+  genSlopedSeg,
+  testIfEnvyFree,
+  genRandomSegs,
+} from './testUtil'
+import { defaultCakeSize } from '../graphConstants'
 
 test('splits a "no trimming needed" uniform evaluation cake into even (almost) thirds', () => {
   // Use a cake size of 90 so it's evenly divisible into thirds.
@@ -56,5 +60,64 @@ test('splits a simple "trimming needed" cake fairly', () => {
   const person2 = [genFlatSeg(0, 60, 5), genFlatSeg(60, 90, 10)]
   const result = selfridgeConway([person0, person1, person2], 90)
 
+  testIfEnvyFree(3, result)
+})
+
+/* Walkthrough of above example. There are a lot of ties in this example
+  so feel free to make a better one.
+
+  initial cut, post-sorting by P1
+  [
+    { end: 65, start: 25, values: [250, 400, 225] },
+    { end: 25, start: 0,  values: [250, 250, 125] },
+    { end: 90, start: 65, values: [250, 250, 250] }
+  ]
+
+  P1 post trimming (slice 0 trimmed down, see the hole from 25-40)
+  [
+    { end: 65, start: 40, values: [150, 250, 150] },
+    { end: 25, start: 0, values: [250, 250, 125] },
+  ]
+
+  P2 chooses { end: 90, start: 65, values: [250, 250, 250] },
+  leaves the following
+  [
+    { end: 65, start: 40, values: [150, 250, 150] },
+    { end: 25, start: 0, values: [250, 250, 125] }
+  ]
+
+  P1 must choose the piece they trimmed,
+  so takes { end: 65, start: 40, values: [150, 250, 150] },
+  and leaves the following
+  [{ end: 65, start: 40, values: [150, 250, 150] }]
+
+  P0 takes the last piece
+
+  then the trimmings are split by P2 (the non-trimmed piece picker)
+  [
+    { end: 30, start: 25, values: [50, 50, 25] },
+    { end: 35, start: 30, values: [25, 50, 25] },
+    { end: 40, start: 35, values: [25, 50, 25] }
+  ]
+
+  P1 takes a slice
+  { start: 25, end: 30, values: [50, 50, 25]}
+  
+  Then P0
+  { start: 30, end: 35, values: [25, 50, 25] }
+  
+  P2 gets the remaining
+  { end: 40, start: 35, values: [25, 50, 25] }
+*/
+
+// This test is non-probablistic, so run it many times 
+// to ensure edge cases are (probably) covered.
+test('splits randomly generated preferences fairly', () => {
+  const segs = [
+    genRandomSegs(defaultCakeSize),
+    genRandomSegs(defaultCakeSize),
+    genRandomSegs(defaultCakeSize),
+  ]
+  const result = selfridgeConway(segs, defaultCakeSize)
   testIfEnvyFree(3, result)
 })

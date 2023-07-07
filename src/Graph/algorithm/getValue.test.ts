@@ -4,7 +4,7 @@ import {
   findCutLineByValue,
 } from './getValue'
 import { Segment } from '../../types'
-import { genFlatSeg, genSlopeSeg, halfwayPointOfTriangleArea } from './testUtil'
+import { genFlatSeg, genSlopedSeg, halfwayPointOfTriangleArea } from './testUtil'
 
 describe('flat segments', () => {
   test('gets the value for a single flat interval', () => {
@@ -43,22 +43,22 @@ describe('flat segments', () => {
 describe('sloped segments', () => {
   test('gets the value of a sloped segment', () => {
     const segments: Segment[] = [
-      genSlopeSeg(0, 100, 0, 10), // 500
+      genSlopedSeg(0, 100, 0, 10), // 500
     ]
     expect(getValueForInterval(segments, 0, 100)).toBe(500)
   })
   test('gets the middle value in a sloped segment', () => {
     const segments: Segment[] = [
-      genSlopeSeg(0, 100, 0, 10), // 500
+      genSlopedSeg(0, 100, 0, 10), // 500
     ]
     expect(getValueForInterval(segments, 40, 60)).toBe(100)
   })
 
   test('gets the middle value in a series of sloped and flat segments', () => {
     const segments: Segment[] = [
-      genSlopeSeg(0, 40, 0, 10),
+      genSlopedSeg(0, 40, 0, 10),
       genFlatSeg(40, 60, 10), // 200
-      genSlopeSeg(60, 100, 10, 0),
+      genSlopedSeg(60, 100, 10, 0),
     ]
     expect(getValueForInterval(segments, 20, 80)).toBe(150 + 200 + 150)
   })
@@ -90,14 +90,14 @@ describe('findCutLineByPercent', () => {
   })
 
   test('finds the middle line on a positive slope single segment', () => {
-    const segments: Segment[] = [genSlopeSeg(0, 100, 0, 10)] // 500
+    const segments: Segment[] = [genSlopedSeg(0, 100, 0, 10)] // 500
     const line = findCutLineByPercent(segments, 0.5)
     expect(getValueForInterval(segments, 0, line)).toBeCloseTo(250)
     expect(line).toBeCloseTo(halfwayPointOfTriangleArea)
   })
 
   test('finds the middle line on a negative slope single segment', () => {
-    const segments: Segment[] = [genSlopeSeg(0, 100, 10, 0)] // 500
+    const segments: Segment[] = [genSlopedSeg(0, 100, 10, 0)] // 500
     const line = findCutLineByPercent(segments, 0.5)
     expect(getValueForInterval(segments, 0, line)).toBeCloseTo(250)
     expect(line).toBeCloseTo(100 - halfwayPointOfTriangleArea)
@@ -106,7 +106,7 @@ describe('findCutLineByPercent', () => {
   test('finds the middle line on a sloped segment between two flat ones', () => {
     const segments: Segment[] = [
       genFlatSeg(0, 25, 10), // 250
-      genSlopeSeg(25, 75, 0, 10), // 250
+      genSlopedSeg(25, 75, 0, 10), // 250
       genFlatSeg(75, 100, 10), // 250
     ]
     const line = findCutLineByPercent(segments, 0.5)
@@ -132,7 +132,7 @@ describe('findCutLineByValue', () => {
   })
 
   test('finds the middle line in a slope', () => {
-    const segments: Segment[] = [genSlopeSeg(0, 100, 0, 10)] // 500
+    const segments: Segment[] = [genSlopedSeg(0, 100, 0, 10)] // 500
 
     const line = findCutLineByValue(segments, 250)
 
@@ -140,7 +140,7 @@ describe('findCutLineByValue', () => {
   })
   
   test('finds the middle line in a slope when given boundary constraints', () => {
-    const segments: Segment[] = [genSlopeSeg(0, 100, 0, 10)] // 500
+    const segments: Segment[] = [genSlopedSeg(0, 100, 0, 10)] // 500
     const areaFrom50To70 = 120
 
     const line = findCutLineByValue(segments, areaFrom50To70 / 2, {

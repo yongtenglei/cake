@@ -12,6 +12,12 @@ export const cutSlice = (
   start: number,
   end: number
 ): Readonly<UnassignedSlice> => {
+  if (start >= end) {
+    console.trace()
+    throw `Start cannot be before end. Start ${start}, end ${end}, preferences ${JSON.stringify(
+      preferences
+    )}`
+  }
   // Getting and saving every agent's evaluations for this slice makes later calculation much simpler
   const allEvaluationsForSlice = preferences.map((segments) =>
     getValueForInterval(segments, start, end)
@@ -72,6 +78,7 @@ export const removeSlice = (
 /**
  * Returns an array of two items.
  * The best slice for the given agent and the remaining slices
+ * [bestSlice, remainingSlices]
  */
 export const removeBestSlice = (agent: number, slices: UnassignedSlice[]) => {
   return removeSlice(findBestSlice(agent, slices), slices)
