@@ -122,10 +122,6 @@ const measurePartialSegment = (seg: Segment, start: number, end: number) => {
   if (measuringWidth <= 0) {
     // Nothing to measure
     return 0
-    // console.trace()
-    // throw `Negative width in measurePartialSegment in segment ${JSON.stringify(
-    //   seg
-    // )} with start ${start} end ${end}`
   }
   // flat section
   if (seg.startValue === seg.endValue) {
@@ -143,4 +139,17 @@ const measurePartialSegment = (seg: Segment, start: number, end: number) => {
 
 export const measureSegment = (seg: Segment) => {
   return measurePartialSegment(seg, seg.start, seg.end)
+}
+
+export const getValueAtPoint = (segments: Segment[], x: number) => {
+  for (const seg of segments) {
+    if (seg.end <= x || seg.start >= x) {
+      continue
+    }
+    if(seg.startValue === seg.endValue) {
+      return seg.startValue
+    } else {
+      return 0
+    }
+  }
 }

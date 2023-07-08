@@ -15,7 +15,7 @@ interface AxisProps {
   simple?: boolean
 }
 
-export const AxisLeft = ({simple = false}: AxisProps) => {
+export const AxisLeft = ({ simple = false }: AxisProps) => {
   const { yScale, width, height } = useContext(GraphContext)
   const innerHeight = getInnerHeight(height)
   const innerWidth = getInnerWidth(width)
@@ -53,7 +53,7 @@ export const AxisLeft = ({simple = false}: AxisProps) => {
   )
 }
 
-export const AxisBottom = ({simple = false}: AxisProps)  => {
+export const AxisBottom = ({ simple = false }: AxisProps) => {
   const { xScale, width, height } = useContext(GraphContext)
   const innerHeight = getInnerHeight(height)
   const innerWidth = getInnerWidth(width)

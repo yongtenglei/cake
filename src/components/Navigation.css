@@ -33,15 +33,17 @@ a.Navigation__link:visited {
   color: black;
 }
 
+/* May want to revisit the bottom border issue later, but right now it looks bad */
 a.Navigation__link:hover,
 a.Navigation__link:focus {
-  border-bottom-color: var(--cSecondary);
+  background-color: white;
+  /* border-bottom-color: var(--cSecondary); */
   text-decoration: none;
 }
 
-a.Navigation__link.active {
+/* a.Navigation__link.active {
   border-bottom-color: var(--cSecondary);
-}
+} */
 
 .Navigation__homeIcon {
   color: white;
