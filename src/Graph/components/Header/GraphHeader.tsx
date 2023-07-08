@@ -31,7 +31,9 @@ interface GraphHeaderProps {
 
 const ButtonText = ({ children }) => (
   <FormHelperText>
-    <Stack alignItems="center" sx={{ textTransform: 'uppercase' }}>{children}</Stack>
+    <Stack alignItems="center" sx={{ textTransform: 'uppercase', minWidth: 40 }}>
+      {children}
+    </Stack>
   </FormHelperText>
 )
 
@@ -65,7 +67,7 @@ export const GraphHeader = ({
         paddingY: 1,
       }}
     >
-      <Stack gap={10} justifyContent={"space-between"} direction="row" paddingX={2}>
+      <Stack gap={10} justifyContent={'space-between'} direction="row" paddingX={2}>
         <SwitchAgent
           navigationDisabled={totalAgents < 2}
           onChangeIndex={onChangeIndex}
