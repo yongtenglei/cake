@@ -1,9 +1,11 @@
+import { defaultCakeSize } from '../graphConstants'
 import { cutAndChoose } from './cutAndChoose'
 import {
   genFlatSeg,
   genSlopedSeg,
   testIfEnvyFree,
   halfwayPointOfTriangleArea,
+  genRandomSegs,
 } from './testUtil'
 
 test('splits a uniform flat value graph evenly in half', () => {
@@ -76,5 +78,14 @@ test('splits a tricky sloped case in an envy-free way', () => {
   const person2 = [genSlopedSeg(0, 60, 8, 9.5), genSlopedSeg(60, 100, 2.5, 5.5)]
   const result = cutAndChoose([person1, person2])
   expect(result).toHaveLength(2)
+  testIfEnvyFree(2, result)
+})
+
+test('splits randomly generated preferences fairly', () => {
+  const segs = [
+    genRandomSegs(defaultCakeSize),
+    genRandomSegs(defaultCakeSize),
+  ]
+  const result = cutAndChoose(segs, defaultCakeSize)
   testIfEnvyFree(2, result)
 })

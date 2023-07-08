@@ -29,7 +29,7 @@ export const Segments = ({
         // when `partial` is true, don't fill the area, just "underline" the top line
         const bottomFillLeft = partial ? Math.min(bottom, y1 + 15) : bottom
         const bottomFillRight = partial ? Math.min(bottom, y2 + 15) : bottom
-        const lineColor = shadeHexColor(color, -0.4) // : lineColor
+        const lineColor = shadeHexColor(color, -0.5) // : lineColor
 
         return (
           <React.Fragment key={id}>

@@ -8,7 +8,7 @@ import {
 import { GraphContext } from '../GraphContext'
 
 const gridColor = '#ddd'
-const labelColor = 'black'
+const labelColor = '#333'
 const labelSize = '24px'
 
 interface AxisProps {
