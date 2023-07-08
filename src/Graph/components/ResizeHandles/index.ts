@@ -1,2 +1,2 @@
-export { ValueBubbles, VerticalResizeHandles } from './VerticalResizeHandles'
+export { ValueBubbles, VerticalResizeBubbles } from './VerticalResizeHandles'
 export { HorizontalResizeHandles } from './HorizontalResizeHandles'

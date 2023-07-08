@@ -7,11 +7,15 @@ import {
 } from '../graphConstants'
 import { GraphContext } from '../GraphContext'
 
-const gridColor = '#999'
+const gridColor = '#ddd'
 const labelColor = 'black'
 const labelSize = '24px'
 
-export const AxisLeft = () => {
+interface AxisProps {
+  simple?: boolean
+}
+
+export const AxisLeft = ({simple = false}: AxisProps) => {
   const { yScale, width, height } = useContext(GraphContext)
   const innerHeight = getInnerHeight(height)
   const innerWidth = getInnerWidth(width)
@@ -27,7 +31,7 @@ export const AxisLeft = () => {
         Value
       </text>
 
-      {yScale.ticks().map((tickValue) => (
+      {yScale.ticks(simple ? 5 : 10).map((tickValue) => (
         <g
           className="tick"
           transform={`translate(0, ${yScale(tickValue)})`}
@@ -49,7 +53,7 @@ export const AxisLeft = () => {
   )
 }
 
-export const AxisBottom = () => {
+export const AxisBottom = ({simple = false}: AxisProps)  => {
   const { xScale, width, height } = useContext(GraphContext)
   const innerHeight = getInnerHeight(height)
   const innerWidth = getInnerWidth(width)
@@ -65,7 +69,7 @@ export const AxisBottom = () => {
       >
         Portion
       </text> */}
-      {xScale.ticks().map((tickValue) => (
+      {xScale.ticks(simple ? 5 : 10).map((tickValue) => (
         <g
           className="tick"
           key={tickValue}

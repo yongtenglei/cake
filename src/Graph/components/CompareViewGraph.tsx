@@ -1,11 +1,10 @@
 import React, { useContext, useState } from 'react'
 import { Stack, Box } from '@mui/material'
-import { scaleLinear } from 'd3'
-import { getInnerWidth, defaultGraphWidth, margin } from '../graphConstants'
+import { margin } from '../graphConstants'
 import { getAgentColor } from '../../constants'
 import { AxisLeft, AxisBottom } from './Axes'
 import { Segments } from './Segments'
-import { useConvertSegToPixels } from '../graphUtils'
+import { createScales, useConvertSegToPixels } from '../graphUtils'
 import { Preferences } from '../../types'
 import { ValueBrackets } from './Bracket/ValueBrackets'
 import { ValueBubbles } from './ResizeHandles'
@@ -13,26 +12,22 @@ import { GraphContext } from '../GraphContext'
 import { Segment } from '../../types'
 
 const graphHeight = 300
+const graphWidth = 560
 
 interface CompareViewGraphProps {
   preferences: Preferences
   cakeSize: number
 }
 
-export const CompareViewGraph = ({
-  preferences,
-  cakeSize,
-}: CompareViewGraphProps) => {
-  const yScale = scaleLinear().domain([0, 10]).range([graphHeight, 0]).nice()
-  const xScale = scaleLinear()
-    .domain([0, cakeSize])
-    .range([0, getInnerWidth(defaultGraphWidth)])
-    .nice()
-
+export const CompareViewGraph = ({ preferences, cakeSize }: CompareViewGraphProps) => {
+  const { yScale, xScale } = createScales({
+    width: graphWidth,
+    height: graphHeight,
+    cakeSize,
+  })
   return (
-    <Stack direction="row" spacing={1}>
+    <Stack direction="row" flexWrap="wrap" spacing={1}>
       {preferences.map((segments, i) => {
-        if (i > 0) return null
         return (
           <GraphContext.Provider
             key={i}
@@ -41,7 +36,7 @@ export const CompareViewGraph = ({
               xScale,
               currentAgent: i,
               height: graphHeight,
-              width: 960,
+              width: graphWidth,
             }}
           >
             <SmallGraph segments={segments} agent={i} />
@@ -61,23 +56,19 @@ const SmallGraph = ({ segments, agent }: SmallGraphProps) => {
   const convertToPixels = useConvertSegToPixels()
   const pixelSegs = segments.map(convertToPixels)
   return (
-    <div>
+    <Stack alignItems={'center'}>
+      <h3 style={{ marginBottom: 0 }}>Person {agent + 1}</h3>
       <svg width={width} height={height}>
         <g transform={`translate(${margin.left},${margin.top})`}>
-          <AxisBottom />
-          <AxisLeft />
+          <AxisBottom simple />
+          <AxisLeft simple />
 
-          <Segments
-            key={agent}
-            segments={pixelSegs}
-            color={getAgentColor(agent)}
-            partial
-          />
+          <Segments key={agent} segments={pixelSegs} color={getAgentColor(agent)} />
 
           <ValueBubbles segments={pixelSegs} />
         </g>
       </svg>
       <ValueBrackets segments={segments} />
-    </div>
+    </Stack>
   )
 }

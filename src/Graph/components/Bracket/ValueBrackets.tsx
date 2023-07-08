@@ -8,8 +8,7 @@ import { BracketContainer } from './BracketContainer'
 const styles = {
   position: 'relative',
   left: margin.left,
-  bottom: 5,
-  width: 'fit-content',
+  width: '100%',
   height: 62
 }
 

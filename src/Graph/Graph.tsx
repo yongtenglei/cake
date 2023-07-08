@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
-import { scaleLinear } from 'd3'
-import { Stack } from '@mui/material'
+import { Stack, Box } from '@mui/material'
 import { DrawingLayer } from './components/DrawingLayer'
 import { GraphHeader } from './components/Header/GraphHeader'
 import { CompareViewGraph } from './components/CompareViewGraph'
 import { SelectAlgoModal } from './components/SelectAlgoModal'
 import { Slice, Segment, Preferences } from '../types'
 import { GraphContext } from './GraphContext'
-import { isDrawingComplete } from './graphUtils'
+import { createScales, isDrawingComplete } from './graphUtils'
 import {
   AlgoName,
   defaultGraphHeight,
@@ -65,14 +64,11 @@ const temp: Preferences = [
 
 export const Graph = () => {
   const cakeSize = defaultCakeSize
-  const yScale = scaleLinear()
-    .domain([0, 10])
-    .range([getInnerHeight(defaultGraphHeight), 0])
-    .nice()
-  const xScale = scaleLinear()
-    .domain([0, cakeSize])
-    .range([0, getInnerWidth(defaultGraphWidth)])
-    .nice()
+  const { yScale, xScale } = createScales({
+    width: defaultGraphWidth,
+    height: defaultGraphHeight,
+    cakeSize,
+  })
 
   const [algoResults, setAlgoResults] = useState<Slice[] | []>(null)
   const [preferences, setPreferences] = useState<Preferences>(temp)
@@ -133,27 +129,33 @@ export const Graph = () => {
         width: defaultGraphWidth,
       }}
     >
-      <Stack sx={{ width: defaultGraphWidth, position:'relative', zIndex: 1 }}>
-        <GraphHeader
-          totalAgents={preferences.length}
-          isComplete={isComplete}
-          currentAgent={currentAgent}
-          onClickDone={onClickDone}
-          onChangeIndex={onChangeIndex}
-          onClickCreateAgent={onClickCreateAgent}
-          onClickCompare={onClickCompare}
-          compareMode={compareMode}
-          preferences={preferences}
-          setNewData={setNewData}
-        />
-        {compareMode ? (
-          <CompareViewGraph preferences={preferences} cakeSize={cakeSize} />
-        ) : (
-          <DrawingLayer segments={currentAgentPrefs} setSegments={setCurrentAgentPrefs} />
-        )}
-
+      <div>
+        <Box sx={{ width: defaultGraphWidth }}>
+          <GraphHeader
+            totalAgents={preferences.length}
+            isComplete={isComplete}
+            currentAgent={currentAgent}
+            onClickDone={onClickDone}
+            onChangeIndex={onChangeIndex}
+            onClickCreateAgent={onClickCreateAgent}
+            onClickCompare={onClickCompare}
+            compareMode={compareMode}
+            preferences={preferences}
+            setNewData={setNewData}
+          />
+        </Box>
+        <Box sx={{ position: 'relative', zIndex: 1 }}>
+          {compareMode ? (
+            <CompareViewGraph preferences={preferences} cakeSize={cakeSize} />
+          ) : (
+            <DrawingLayer
+              segments={currentAgentPrefs}
+              setSegments={setCurrentAgentPrefs}
+            />
+          )}
+        </Box>
         {algoResults ? <CakeSliceResults results={algoResults} /> : null}
-      </Stack>
+      </div>
       <SelectAlgoModal
         open={algoModalOpen}
         onCancel={() => setAlgoModalOpen(false)}

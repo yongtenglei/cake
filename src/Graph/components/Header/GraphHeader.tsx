@@ -30,7 +30,7 @@ interface GraphHeaderProps {
 // grid-gap: 10px;
 
 const ButtonText = ({ children }) => (
-  <FormHelperText>
+  <FormHelperText component="div">
     <Stack alignItems="center" sx={{ textTransform: 'uppercase', minWidth: 40 }}>
       {children}
     </Stack>
@@ -51,20 +51,21 @@ export const GraphHeader = ({
 }: GraphHeaderProps) => {
   const cantAddMoreAgents = totalAgents === MAX_AGENTS
 
+  // Messy, can clean this up a bit
   return (
     <Stack
       marginLeft={margin.left + 'px'}
       marginRight={margin.right + 'px'}
+      paddingY={1}
       spacing={1}
       alignContent="center"
-      maxWidth={'100%'}
+      maxWidth="100%"
       sx={{
         backgroundColor: compareMode ? '#d5d5d5' : getAgentColor(currentAgent),
         position: 'relative',
         bottom: -20,
         borderTopLeftRadius: 8,
         borderTopRightRadius: 8,
-        paddingY: 1,
       }}
     >
       <Stack gap={10} justifyContent={'space-between'} direction="row" paddingX={2}>

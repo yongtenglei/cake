@@ -12,7 +12,7 @@ import {
   useConvertSegFromPixels,
   isDrawingComplete,
 } from '../graphUtils'
-import { HorizontalResizeHandles, VerticalResizeHandles } from './ResizeHandles'
+import { HorizontalResizeHandles, VerticalResizeBubbles } from './ResizeHandles'
 import {
   changeSegmentFlatValue,
   changeSegmentWidth,
@@ -21,7 +21,7 @@ import {
   changeSegmentWithKeyboard,
 } from './adjustSegments'
 
-// ids starting at 0. To make these unique, increment the number each time you use one.
+// Simple unique ids. Increment the number on each use.
 let id = 0
 
 interface DrawingLayerProps {
@@ -161,12 +161,11 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
               isDrawing={isDrawing}
             />
 
-            <VerticalResizeHandles
+            <VerticalResizeBubbles
               segments={pixelSegs}
               setCornerMovingId={setCornerMovingId}
               setYMovingId={setYMovingId}
               isDrawing={isDrawing}
-              editable
             />
           </g>
         </svg>

@@ -1,7 +1,25 @@
 import { useContext } from 'react'
 import { GraphContext } from './GraphContext'
 import { Segment, DrawnSegment } from '../types'
-import { defaultCakeSize } from './graphConstants'
+import { defaultCakeSize, getInnerHeight, getInnerWidth } from './graphConstants'
+import { scaleLinear } from 'd3'
+
+interface createScalesParams {
+  width: number
+  height: number
+  cakeSize: number
+}
+export const createScales = ({ width, height, cakeSize }: createScalesParams) => {
+  const yScale = scaleLinear()
+    .domain([0, 10])
+    .range([getInnerHeight(height), 0])
+    .nice()
+  const xScale = scaleLinear()
+    .domain([0, cakeSize])
+    .range([0, getInnerWidth(width)])
+    .nice()
+  return { yScale, xScale }
+}
 
 export const useConvertSegToPixels = () => {
   const { xScale, yScale } = useContext(GraphContext)
@@ -29,7 +47,7 @@ export const useConvertSegFromPixels = () => {
       startValue: roundValue(yScale.invert(y1)),
       end: Math.round(xScale.invert(x2)),
       endValue: roundValue(yScale.invert(y2)),
-      id
+      id,
     }
   }
 }

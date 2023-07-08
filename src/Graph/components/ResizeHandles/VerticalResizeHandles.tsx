@@ -1,22 +1,25 @@
 import React from 'react'
 import { DrawnSegment } from '../../../types'
-import { ValueBubble } from './ValueBubble'
+import { ValueBubble, MovableValueBubble } from './ValueBubble'
 import './ResizeHandles.css'
-
-const noop = () => {}
 
 interface ValueBubblesProps {
   segments: DrawnSegment[]
 }
-// Just a wrappper around VerticalResizeHandles which removes the interactivity
+
 export const ValueBubbles = ({ segments }: ValueBubblesProps) => (
-  <VerticalResizeHandles
-    segments={segments}
-    setCornerMovingId={noop}
-    setYMovingId={noop}
-    isDrawing={false}
-    editable={false}
-  />
+  <>
+    {segments.map(({ id, x1, x2, y1, y2 }, i) => {
+      const sloped = y1 !== y2
+      return (
+        <React.Fragment key={id}>
+          {sloped ? <ValueBubble x={x1} y={y1} /> : null}
+          {sloped ? null : <ValueBubble x={x1 + (x2 - x1) / 2} y={y1} />}
+          {sloped ? <ValueBubble x={x2} y={y2} /> : null}
+        </React.Fragment>
+      )
+    })}
+  </>
 )
 
 interface VerticalResizeHandlesProps {
@@ -24,15 +27,13 @@ interface VerticalResizeHandlesProps {
   setCornerMovingId: (corner: [number, number]) => void
   setYMovingId: (id: number) => void
   isDrawing: boolean
-  editable: boolean
 }
 
-export const VerticalResizeHandles = ({
+export const VerticalResizeBubbles = ({
   segments,
   setCornerMovingId,
   setYMovingId,
   isDrawing,
-  editable,
 }: VerticalResizeHandlesProps) => {
   return (
     <>
@@ -45,25 +46,22 @@ export const VerticalResizeHandles = ({
         const cornerClass = 'ResizeCornerHandle' + (sloped ? ' visible' : '')
         return (
           <React.Fragment key={id}>
-            <ValueBubble
+            <MovableValueBubble
               className={cornerClass}
-              editable={editable}
               onMouseDown={() => setCornerMovingId([id, 1])}
               x={x1}
               y={y1}
             />
             {sloped ? null : (
-              <ValueBubble
+              <MovableValueBubble
                 className="ResizeVerticalHandle"
-                editable={editable}
                 onMouseDown={() => setYMovingId(id)}
                 x={x1 + (x2 - x1) / 2}
                 y={y1}
               />
             )}
-            <ValueBubble
+            <MovableValueBubble
               className={cornerClass}
-              editable={editable}
               onMouseDown={() => setCornerMovingId([id, 2])}
               x={x2}
               y={y2}

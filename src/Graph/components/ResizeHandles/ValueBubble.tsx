@@ -2,36 +2,52 @@ import { useContext } from 'react'
 import { GraphContext } from '../../GraphContext'
 import { roundValue } from '../../graphUtils'
 
+interface BubbleProps {
+  y: number
+}
+const Bubble = ({ y }: BubbleProps) => {
+  const { yScale } = useContext(GraphContext)
+  return (
+    <>
+      <circle r={15} fill="#ccc" stroke="black" />
+      <text dominantBaseline="middle" textAnchor="middle">
+        {roundValue(yScale.invert(y))}
+      </text>
+    </>
+  )
+}
+
 interface ValueBubbleProps {
-  editable: boolean
-  onMouseDown: VoidFunction | null
   x: number
   y: number
+}
+
+export const ValueBubble = ({ x, y }: ValueBubbleProps) => (
+  <g transform={`translate(${x} ${y})`}>
+    <Bubble y={y} />
+  </g>
+)
+
+interface MovableValueBubbleProps {
+  x: number
+  y: number
+  onMouseDown: VoidFunction
   className?: string
 }
 
-export const ValueBubble = ({
-  editable,
-  onMouseDown,
+export const MovableValueBubble = ({
   x,
   y,
+  onMouseDown,
   className,
-}: ValueBubbleProps) => {
-  const { yScale } = useContext(GraphContext)
-  const formatValue = (val: number) => roundValue(yScale.invert(val))
-
-  return (
-    <g
-      transform={`translate(${x} ${y})`}
-      onFocus={onMouseDown}
-      onMouseDown={onMouseDown}
-      className={className}
-      tabIndex={editable ? 0 : null}
-    >
-      <circle r={15} fill="#ccc" stroke="black" />
-      <text dominantBaseline="middle" textAnchor="middle">
-        {formatValue(y)}
-      </text>
-    </g>
-  )
-}
+}: MovableValueBubbleProps) => (
+  <g
+    transform={`translate(${x} ${y})`}
+    onFocus={onMouseDown}
+    onMouseDown={onMouseDown}
+    className={className}
+    tabIndex={0}
+  >
+    <Bubble y={y} />
+  </g>
+)
