@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Stack, Box } from '@mui/material'
 import { DrawingLayer } from './components/DrawingLayer'
 import { GraphHeader } from './components/Header/GraphHeader'
+import { GraphDrawingButtons } from './components/Header/GraphDrawingButtons'
 import { CompareViewGraph } from './components/CompareViewGraph'
 import { SelectAlgoModal } from './components/SelectAlgoModal'
 import { Slice, Segment, Preferences } from '../types'
@@ -133,15 +134,21 @@ export const Graph = () => {
         <Box sx={{ width: defaultGraphWidth }}>
           <GraphHeader
             totalAgents={preferences.length}
-            isComplete={isComplete}
             currentAgent={currentAgent}
-            onClickDone={onClickDone}
             onChangeIndex={onChangeIndex}
-            onClickCreateAgent={onClickCreateAgent}
-            onClickCompare={onClickCompare}
             compareMode={compareMode}
-            preferences={preferences}
-            setNewData={setNewData}
+            buttons={
+              <GraphDrawingButtons
+                totalAgents={preferences.length}
+                isComplete={isComplete}
+                onClickCreateAgent={onClickCreateAgent}
+                onClickCompare={onClickCompare}
+                onClickDone={onClickDone}
+                compareMode={compareMode}
+                preferences={preferences}
+                setNewData={setNewData}
+              />
+            }
           />
         </Box>
         <Box sx={{ position: 'relative', zIndex: 1 }}>

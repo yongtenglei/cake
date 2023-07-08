@@ -1,133 +1,61 @@
-import { Button, Stack, Tooltip, IconButton, Box, FormHelperText } from '@mui/material'
+import { ReactNode } from 'react'
+import { Stack, Tooltip, IconButton, Box, FormHelperText } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBackIos'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForwardIos'
-import PersonAddIcon from '@mui/icons-material/PersonAdd'
-import CheckIcon from '@mui/icons-material/Check'
-import AssessmentIcon from '@mui/icons-material/Assessment'
-import CompareIcon from '@mui/icons-material/Compare'
-import EditIcon from '@mui/icons-material/Edit'
-import { MAX_AGENTS, margin } from '../../graphConstants'
+import { margin } from '../../graphConstants'
 import { getAgentColor } from '../../../constants'
-import { Preferences } from '../../../types'
-import { ExtraOptions } from './ExtraOptions'
 
 interface GraphHeaderProps {
-  isComplete: boolean
   currentAgent: number
   totalAgents: number
-  onClickDone: VoidFunction
   onChangeIndex: (i: number) => void
-  onClickCreateAgent: VoidFunction
-  onClickCompare: VoidFunction
   compareMode: boolean
-  setNewData: (pref: Preferences) => void
-  preferences: Preferences
+  buttons: ReactNode
 }
 
-const ButtonText = ({ children }) => (
-  <Stack
-    alignItems="center"
-    sx={{ fontSize: 12, textTransform: 'uppercase', minWidth: 40 }}
-  >
-    {children}
-  </Stack>
-)
-
 export const GraphHeader = ({
-  isComplete,
   currentAgent,
   totalAgents,
-  onClickDone,
   onChangeIndex,
-  onClickCreateAgent,
-  onClickCompare,
   compareMode,
-  setNewData,
-  preferences,
+  buttons,
 }: GraphHeaderProps) => {
-  const cantAddMoreAgents = totalAgents === MAX_AGENTS
-
-  // Messy, can clean this up a bit
   return (
     <Stack
       marginLeft={margin.left + 'px'}
       marginRight={margin.right + 'px'}
       paddingY={1}
+      paddingX={2}
       spacing={1}
       alignContent="center"
+      direction="row"
       maxWidth="100%"
+      justifyContent="space-between"
+      gap={10}
       sx={{
         backgroundColor: compareMode ? '#d5d5d5' : getAgentColor(currentAgent),
         position: 'relative',
         bottom: -20,
         borderTopLeftRadius: 8,
         borderTopRightRadius: 8,
+        height: 70,
       }}
     >
-      <Stack gap={10} justifyContent={'space-between'} direction="row" paddingX={2}>
-        <SwitchAgent
-          navigationDisabled={totalAgents < 2}
-          onChangeIndex={onChangeIndex}
-          currentAgent={currentAgent}
-          compareMode={compareMode}
-        />
-        <Stack justifyContent="flex-end" alignItems="center" direction={'row'}>
-          <Stack spacing={1} paddingRight={1} direction="row">
-            <div>
-              <Tooltip
-                title={
-                  cantAddMoreAgents
-                    ? `This tool supports up to ${MAX_AGENTS} people`
-                    : 'Add Person'
-                }
-              >
-                <span>
-                  <IconButton
-                    aria-label="add person"
-                    disabled={!isComplete || cantAddMoreAgents}
-                    onClick={() => {
-                      if (compareMode) {
-                        onClickCompare()
-                      }
-                      onClickCreateAgent()
-                    }}
-                  >
-                    <ButtonText>
-                      <PersonAddIcon />
-                      Add Person
-                    </ButtonText>
-                  </IconButton>
-                </span>
-              </Tooltip>
-            </div>
-            <div>
-              <IconButton
-                aria-label={compareMode ? 'Edit' : 'Compare'}
-                disabled={!isComplete || totalAgents < 2}
-                onClick={onClickCompare}
-              >
-                <ButtonText>
-                  {compareMode ? <EditIcon /> : <CompareIcon />}
-                  {compareMode ? 'Edit' : 'Compare'}
-                </ButtonText>
-              </IconButton>
-            </div>
+      <SwitchAgent
+        navigationDisabled={totalAgents < 2}
+        onChangeIndex={onChangeIndex}
+        currentAgent={currentAgent}
+        compareMode={compareMode}
+      />
 
-            <div>
-              <IconButton
-                aria-label={'Done'}
-                disabled={!isComplete || totalAgents < 2}
-                onClick={onClickDone}
-              >
-                <ButtonText>
-                  <CheckIcon />
-                  Done
-                </ButtonText>
-              </IconButton>
-            </div>
-          </Stack>
-          <ExtraOptions setNewData={setNewData} preferences={preferences} />
-        </Stack>
+      <Stack
+        justifyContent="flex-end"
+        alignItems="center"
+        spacing={1}
+        paddingRight={1}
+        direction="row"
+      >
+        {buttons}
       </Stack>
     </Stack>
   )
@@ -153,14 +81,8 @@ const SwitchAgent = ({
         justifyContent="center"
         alignItems="center"
         direction="row"
-        sx={{
-          backgroundColor: compareMode ? '#d5d5d5' : getAgentColor(currentAgent),
-          paddingY: 1,
-          paddingX: 2,
-          borderRadius: '4px',
-          margin: 'auto',
-          height: 60,
-        }}
+        paddingY={1}
+        paddingX={2}
       >
         {compareMode ? null : (
           <Tooltip title="Previous person">
@@ -177,6 +99,7 @@ const SwitchAgent = ({
         )}
 
         <h2>{compareMode ? 'Compare View' : `Person ${currentAgent + 1}`}</h2>
+        
         {compareMode ? null : (
           <Tooltip title="Next person">
             <span>
