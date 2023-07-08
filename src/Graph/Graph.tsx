@@ -133,7 +133,7 @@ export const Graph = () => {
         width: defaultGraphWidth,
       }}
     >
-      <Stack sx={{ width: defaultGraphWidth }}>
+      <Stack sx={{ width: defaultGraphWidth, position:'relative', zIndex: 1 }}>
         <GraphHeader
           totalAgents={preferences.length}
           isComplete={isComplete}
