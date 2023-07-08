@@ -10,8 +10,8 @@ import { GraphContext } from './GraphContext'
 import { isDrawingComplete } from './graphUtils'
 import {
   AlgoName,
-  height,
-  width,
+  defaultGraphHeight,
+  defaultGraphWidth,
   getInnerWidth,
   getInnerHeight,
   defaultCakeSize,
@@ -67,16 +67,16 @@ export const Graph = () => {
   const cakeSize = defaultCakeSize
   const yScale = scaleLinear()
     .domain([0, 10])
-    .range([getInnerHeight(height), 0])
+    .range([getInnerHeight(defaultGraphHeight), 0])
     .nice()
   const xScale = scaleLinear()
     .domain([0, cakeSize])
-    .range([0, getInnerWidth(width)])
+    .range([0, getInnerWidth(defaultGraphWidth)])
     .nice()
 
   const [algoResults, setAlgoResults] = useState<Slice[] | []>(null)
-  // const [preferences, setPreferences] = useState<Preferences>(temp)
-  const [preferences, setPreferences] = useState<Preferences>([[]])
+  const [preferences, setPreferences] = useState<Preferences>(temp)
+  // const [preferences, setPreferences] = useState<Preferences>([[]])
   const setNewData = (pref: Preferences) => {
     setPreferences(pref)
     setCurrentAgent(1)
@@ -129,11 +129,11 @@ export const Graph = () => {
         yScale,
         xScale,
         currentAgent,
-        height,
-        width,
+        height: defaultGraphHeight,
+        width: defaultGraphWidth,
       }}
     >
-      <Stack>
+      <Stack sx={{ width: defaultGraphWidth }}>
         <GraphHeader
           totalAgents={preferences.length}
           isComplete={isComplete}

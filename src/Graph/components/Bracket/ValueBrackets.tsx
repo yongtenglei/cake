@@ -8,7 +8,8 @@ import { BracketContainer } from './BracketContainer'
 const styles = {
   position: 'relative',
   left: margin.left,
-  top: 15 - margin.bottom,
+  bottom: 5,
+  width: 'fit-content',
 }
 
 interface ValueBracketsProps {

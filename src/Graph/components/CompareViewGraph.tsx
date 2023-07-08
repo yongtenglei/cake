@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { Stack, Box } from '@mui/material'
 import { scaleLinear } from 'd3'
-import { getInnerWidth, width, margin } from '../graphConstants'
+import { getInnerWidth, defaultGraphWidth, margin } from '../graphConstants'
 import { getAgentColor } from '../../constants'
 import { AxisLeft, AxisBottom } from './Axes'
 import { Segments } from './Segments'
@@ -26,7 +26,7 @@ export const CompareViewGraph = ({
   const yScale = scaleLinear().domain([0, 10]).range([graphHeight, 0]).nice()
   const xScale = scaleLinear()
     .domain([0, cakeSize])
-    .range([0, getInnerWidth(width)])
+    .range([0, getInnerWidth(defaultGraphWidth)])
     .nice()
 
   return (

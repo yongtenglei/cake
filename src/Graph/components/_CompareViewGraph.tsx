@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Stack, Box } from '@mui/material'
-import { height, width, margin } from '../graphConstants'
+import { defaultGraphHeight, defaultGraphWidth, margin } from '../graphConstants'
 import { getAgentColor } from '../../constants'
 import { AxisLeft, AxisBottom } from './Axes'
 import { Segments } from './Segments'
@@ -23,7 +23,7 @@ export const CompareViewGraph = ({ preferences }: CompareViewGraphProps) => {
   return (
     <Stack direction="row" spacing={1}>
       <div>
-        <svg width={width} height={height}>
+        <svg width={defaultGraphWidth} height={defaultGraphHeight}>
           <g transform={`translate(${margin.left},${margin.top})`}>
             <AxisBottom />
             <AxisLeft />

@@ -1,6 +1,6 @@
 import { createContext } from 'react'
 import { ScaleLinear, scaleLinear } from 'd3'
-import { height, width } from './graphConstants'
+import { defaultGraphHeight, defaultGraphWidth } from './graphConstants'
 
 interface Graph {
   yScale: ScaleLinear<number, number, never>
@@ -14,6 +14,6 @@ export const GraphContext = createContext<Graph>({
   yScale: scaleLinear(),
   xScale: scaleLinear(),
   currentAgent: 0,
-  height: height,
-  width: width,
+  height: defaultGraphHeight,
+  width: defaultGraphWidth,
 })

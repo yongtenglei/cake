@@ -3,14 +3,13 @@ import {
   tickOffset,
   getInnerHeight,
   getInnerWidth,
-  xAxisLabelOffset,
   yAxisLabelOffset,
 } from '../graphConstants'
 import { GraphContext } from '../GraphContext'
 
 const gridColor = '#999'
 const labelColor = 'black'
-const labelSize = '32px'
+const labelSize = '24px'
 
 export const AxisLeft = () => {
   const { yScale, width, height } = useContext(GraphContext)
@@ -56,7 +55,7 @@ export const AxisBottom = () => {
   const innerWidth = getInnerWidth(width)
   return (
     <>
-      <text
+      {/* <text
         className="axis-label"
         x={innerWidth / 2}
         y={innerHeight + xAxisLabelOffset}
@@ -65,7 +64,7 @@ export const AxisBottom = () => {
         style={{ fontSize: labelSize }}
       >
         Portion
-      </text>
+      </text> */}
       {xScale.ticks().map((tickValue) => (
         <g
           className="tick"
@@ -79,7 +78,7 @@ export const AxisBottom = () => {
             y={innerHeight + tickOffset}
             fill={labelColor}
           >
-            {tickValue}
+            {tickValue}%
           </text>
         </g>
       ))}
