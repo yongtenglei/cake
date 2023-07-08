@@ -24,17 +24,13 @@ interface GraphHeaderProps {
   preferences: Preferences
 }
 
-// align-items: center;
-// display: grid;
-// grid-template-columns: 6fr 1fr auto;
-// grid-gap: 10px;
-
 const ButtonText = ({ children }) => (
-  <FormHelperText component="div">
-    <Stack alignItems="center" sx={{ textTransform: 'uppercase', minWidth: 40 }}>
-      {children}
-    </Stack>
-  </FormHelperText>
+  <Stack
+    alignItems="center"
+    sx={{ fontSize: 12, textTransform: 'uppercase', minWidth: 40 }}
+  >
+    {children}
+  </Stack>
 )
 
 export const GraphHeader = ({
@@ -77,40 +73,6 @@ export const GraphHeader = ({
         />
         <Stack justifyContent="flex-end" alignItems="center" direction={'row'}>
           <Stack spacing={1} paddingRight={1} direction="row">
-            {compareMode ? null : (
-              <Tooltip title="Previous person">
-                <span>
-                  <IconButton
-                    aria-label="Previous person"
-                    onClick={() => onChangeIndex(-1)}
-                    disabled={totalAgents < 2}
-                    sx={{ color: 'black' }}
-                  >
-                    <ButtonText>
-                      <ArrowBackIcon />
-                      Previous
-                    </ButtonText>
-                  </IconButton>
-                </span>
-              </Tooltip>
-            )}
-            {compareMode ? null : (
-              <Tooltip title="Next person">
-                <span>
-                  <IconButton
-                    aria-label="Next person"
-                    onClick={() => onChangeIndex(1)}
-                    disabled={totalAgents < 2}
-                    sx={{ color: 'black' }}
-                  >
-                    <ButtonText>
-                      <ArrowForwardIcon />
-                      Next
-                    </ButtonText>
-                  </IconButton>
-                </span>
-              </Tooltip>
-            )}
             <div>
               <Tooltip
                 title={
@@ -200,7 +162,34 @@ const SwitchAgent = ({
           height: 60,
         }}
       >
+        {compareMode ? null : (
+          <Tooltip title="Previous person">
+            <span>
+              <IconButton
+                aria-label="Previous person"
+                onClick={() => onChangeIndex(-1)}
+                disabled={navigationDisabled}
+              >
+                <ArrowBackIcon />
+              </IconButton>
+            </span>
+          </Tooltip>
+        )}
+
         <h2>{compareMode ? 'Compare View' : `Person ${currentAgent + 1}`}</h2>
+        {compareMode ? null : (
+          <Tooltip title="Next person">
+            <span>
+              <IconButton
+                aria-label="Next person"
+                onClick={() => onChangeIndex(1)}
+                disabled={navigationDisabled}
+              >
+                <ArrowForwardIcon />
+              </IconButton>
+            </span>
+          </Tooltip>
+        )}
       </Stack>
     </Stack>
   )
