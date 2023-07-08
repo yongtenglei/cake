@@ -10,6 +10,7 @@ const styles = {
   left: margin.left,
   bottom: 5,
   width: 'fit-content',
+  height: 62
 }
 
 interface ValueBracketsProps {
