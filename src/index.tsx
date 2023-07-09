@@ -1,14 +1,15 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { CssBaseline }from '@mui/material'
+import { Outlet } from 'react-router-dom'
+import { CssBaseline } from '@mui/material'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { PageLayout } from './Layouts'
 import { ErrorPage } from './Pages/ErrorPage'
-import { MainLayout } from './Layouts'
-import { Graph } from './Graph/Graph'
 import { PrivacyPolicyPage } from './Pages/PrivacyPolicyPage'
 import { TutorialPage } from './Pages/TutorialPage'
 import { LandingPage } from './Pages/LandingPage'
+import { GraphPage } from './Pages/GraphPage'
 import './index.css'
 
 const theme = createTheme({
@@ -30,11 +31,15 @@ const theme = createTheme({
 })
 
 export const router = createBrowserRouter([
-  // Landing page doesn't use the main layout
-  { path: '/', element: <LandingPage />,     errorElement: <ErrorPage /> },
+  // Landing page uses a custom `PageLayout`
+  { path: '/', element: <LandingPage />, errorElement: <ErrorPage /> },
   {
     path: '/',
-    element: <MainLayout />,
+    element: (
+      <PageLayout>
+        <Outlet />
+      </PageLayout>
+    ),
     errorElement: <ErrorPage />,
     children: [
       {
@@ -43,10 +48,10 @@ export const router = createBrowserRouter([
       },
       {
         path: '/graph',
-        element: <Graph />,
+        element: <GraphPage />,
       },
       {
-        path: '/tutorial',
+        path: '/learn',
         element: <TutorialPage />,
       },
       {

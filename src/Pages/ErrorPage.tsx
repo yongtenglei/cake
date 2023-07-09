@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material'
 import { ReactSVG } from 'react-svg'
 import { useRouteError, isRouteErrorResponse } from 'react-router-dom'
-import { LayoutBase } from '../Layouts'
+import { PageLayout } from '../Layouts'
 import cakeOutline from '../images/cake_outline.svg'
 
 import './ErrorPage.css'
@@ -25,7 +25,7 @@ export const ErrorPage = () => {
   }
 
   return (
-    <LayoutBase>
+    <PageLayout>
       <Stack component="main" alignItems="center" padding={4}>
         <h1>Sorry, it's not always a piece of cake</h1>
         <ReactSVG src={cakeOutline}  className="ErrorCake" />
@@ -38,6 +38,6 @@ export const ErrorPage = () => {
           <i>{errorMessage}</i>
         </p>
       </Stack>
-    </LayoutBase>
+    </PageLayout>
   )
 }

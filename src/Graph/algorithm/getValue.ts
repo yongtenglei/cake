@@ -64,9 +64,7 @@ const findSegmentCutline = (
     // Sloped segment
     let startVal = seg.startValue
     if (options?.startBound) {
-      startVal += options.startBound
-        ? (options.startBound - seg.start) * slope
-        : 0
+      startVal += options.startBound ? (options.startBound - seg.start) * slope : 0
     }
     // Thanks to Bence Szilágyi for help with the math here.
     // The formula is the result of adding a triangle and rectangle together,
@@ -141,15 +139,16 @@ export const measureSegment = (seg: Segment) => {
   return measurePartialSegment(seg, seg.start, seg.end)
 }
 
-export const getValueAtPoint = (segments: Segment[], x: number) => {
+export const getValueAtPoint = (segments: Segment[], point: number) => {
   for (const seg of segments) {
-    if (seg.end <= x || seg.start >= x) {
+    if (seg.end <= point || seg.start >= point) {
       continue
     }
-    if(seg.startValue === seg.endValue) {
+    if (seg.startValue === seg.endValue) {
       return seg.startValue
     } else {
-      return 0
+      const slope = (seg.endValue - seg.startValue) / (seg.end - seg.start)
+      return seg.startValue + slope * (point - seg.start)
     }
   }
 }

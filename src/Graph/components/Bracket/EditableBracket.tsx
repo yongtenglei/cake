@@ -36,43 +36,41 @@ export const EditableBracket = ({
   const exitEditing = () => setEditing(false)
   return (
     <BracketContainer focused={editing} segment={segment}>
-      <Box sx={{ textAlign: 'center' }}>
-        <Box
-          sx={{
-            maxWidth: '70px',
-            backgroundColor: 'white',
-            display: 'inline-block',
-            marginTop: '5px',
-          }}
-        >
-          {editing ? (
-            <TextField
-              label={`Part ${segNumber}`}
-              type="number"
-              autoFocus
-              value={slicesize}
-              // onBlur={exitEditing}
-              onKeyDown={handleKeyPress}
-              // this prevents clicks from also generating new sections.
-              // scoping clicks to the right areas is a better solution than this
-              onClick={(e) => e.stopPropagation()}
-              onChange={onChange}
-              variant="outlined"
-              size="small"
-              autoComplete="off"
-              InputLabelProps={{ shrink: true }}
-              InputProps={{ className: 'Bracket_inputBox' }}
-            />
-          ) : (
-            <Button
-              onClick={() => setEditing(true)}
-              variant="outlined"
-              aria-label={`Segment ${segNumber} has width ${slicesize}%, click to edit`}
-            >
-              {slicesize} %
-            </Button>
-          )}
-        </Box>
+      <Box
+        sx={{
+          maxWidth: '70px',
+          backgroundColor: 'white',
+          display: 'inline-block',
+          marginTop: '5px',
+        }}
+      >
+        {editing ? (
+          <TextField
+            label={`Part ${segNumber}`}
+            type="number"
+            autoFocus
+            value={slicesize}
+            // onBlur={exitEditing}
+            onKeyDown={handleKeyPress}
+            // this prevents clicks from also generating new sections.
+            // scoping clicks to the right areas is a better solution than this
+            onClick={(e) => e.stopPropagation()}
+            onChange={onChange}
+            variant="outlined"
+            size="small"
+            autoComplete="off"
+            InputLabelProps={{ shrink: true }}
+            InputProps={{ className: 'Bracket_inputBox' }}
+          />
+        ) : (
+          <Button
+            onClick={() => setEditing(true)}
+            variant="outlined"
+            aria-label={`Segment ${segNumber} has width ${slicesize}%, click to edit`}
+          >
+            {slicesize} %
+          </Button>
+        )}
       </Box>
     </BracketContainer>
   )

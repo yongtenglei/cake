@@ -22,7 +22,7 @@ export const Segments = ({
   // The left line comes from the previous segment.
 
   // Still worth iterating on this
-  const strokeWidth = 1 //partial ? 1.5 : 1
+  const strokeWidth = 1.5
   return (
     <>
       {segments.map(({ x1, y1, x2, y2, id }, i) => {

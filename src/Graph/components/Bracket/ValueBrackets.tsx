@@ -8,8 +8,8 @@ import { BracketContainer } from './BracketContainer'
 const styles = {
   position: 'relative',
   left: margin.left,
-  width: '100%',
-  height: 62
+  width: 0, // doesn't matter as everything is pos absolute inside of it.
+  height: 62,
 }
 
 interface ValueBracketsProps {
@@ -21,13 +21,7 @@ export const ValueBrackets = ({ segments }: ValueBracketsProps) => {
     <Box sx={styles}>
       {segments.map((seg, i) => (
         <BracketContainer focused={false} segment={seg} key={i}>
-          <Box
-            sx={{
-              textAlign: 'center',
-            }}
-          >
-            {seg.end - seg.start} %
-          </Box>
+          {seg.end - seg.start} %
         </BracketContainer>
       ))}
     </Box>

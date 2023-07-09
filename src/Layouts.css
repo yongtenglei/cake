@@ -14,10 +14,23 @@
   background-color: #eee;
 }
 
-.bodyContainer {
+.layoutContainer {
   margin: 0 auto;
-  padding: 32px;
-  width: 100%;
   max-width: var(--bodyMaxWidth);
+  width: 100%;
+  padding: 0 16px;
+  /* display:flex */
+}
+
+.bodyContainer {
+  margin-top: 16px;
+  margin-bottom: 16px;
   background-color: white;
+}
+
+@media all and (min-width: 600px) {
+  .layoutContainer {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
 }

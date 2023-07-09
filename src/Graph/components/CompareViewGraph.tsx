@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import clamp from 'lodash.clamp'
-import { Stack, Box } from '@mui/material'
+import { Stack, Box, IconButton, Tooltip } from '@mui/material'
+import EditIcon from '@mui/icons-material/Edit'
 import { getInnerHeight, getInnerWidth, margin } from '../graphConstants'
 import { getAgentColor } from '../../constants'
 import { AxisLeft, AxisBottom } from './Axes'
@@ -20,9 +21,14 @@ const graphWidth = 560
 interface CompareViewGraphProps {
   preferences: Preferences
   cakeSize: number
+  onClickEdit: (agent: number) => void
 }
 
-export const CompareViewGraph = ({ preferences, cakeSize }: CompareViewGraphProps) => {
+export const CompareViewGraph = ({
+  preferences,
+  cakeSize,
+  onClickEdit,
+}: CompareViewGraphProps) => {
   const { yScale, xScale } = createScales({
     width: graphWidth,
     height: graphHeight,
@@ -59,6 +65,7 @@ export const CompareViewGraph = ({ preferences, cakeSize }: CompareViewGraphProp
               onClick={onMouseMove}
               onMouseLeave={onMouseLeave}
               x={mouseX}
+              onClickEdit={onClickEdit}
             />
           </GraphContext.Provider>
         )
@@ -73,6 +80,7 @@ interface SmallGraphProps {
   onMouseMove: (event: React.MouseEvent) => void
   onClick: (event: React.MouseEvent) => void
   onMouseLeave: VoidFunction
+  onClickEdit: (agent: number) => void
   x: number | null
 }
 const SmallGraph = ({
@@ -81,6 +89,7 @@ const SmallGraph = ({
   onMouseMove,
   onMouseLeave,
   onClick,
+  onClickEdit,
   x,
 }: SmallGraphProps) => {
   const { height, width, yScale, xScale } = useContext(GraphContext)
@@ -91,7 +100,24 @@ const SmallGraph = ({
 
   return (
     <Stack alignItems={'center'}>
-      <h3 style={{ marginBottom: 0 }}>Person {agent + 1}</h3>
+      <Stack
+        direction="row"
+        justifyContent={'center'}
+        alignItems="center"
+        marginLeft={margin.left+'px'}
+      >
+        <h3 style={{ margin: 0 }}>Person {agent + 1}</h3>
+        <Tooltip title="Edit">
+          <span>
+            <IconButton
+              aria-label={`Edit Person ${agent + 1}`}
+              onClick={() => onClickEdit(agent)}
+            >
+              <EditIcon fontSize="small" />
+            </IconButton>
+          </span>
+        </Tooltip>
+      </Stack>
 
       {/* Track mouse to show comparison line. `onClick` is for touch users who have no move event */}
       <div onMouseMove={onMouseMove} onMouseLeave={onMouseLeave} onClick={onClick}>

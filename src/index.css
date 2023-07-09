@@ -21,11 +21,3 @@ body {
 * {
   box-sizing: border-box;
 }
-
-.LayoutBody {
-  margin: 0 auto;
-  max-width: var(--bodyMaxWidth);
-  width: 100%;
-  padding: 0 16px;
-  display: flex;
-}

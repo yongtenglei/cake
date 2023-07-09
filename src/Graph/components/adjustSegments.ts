@@ -46,6 +46,9 @@ export const changeSegmentWidth = (
   cakeSize: number
 ) => {
   const changingSeg = segments.find((seg) => seg.id === id)
+  if(changingSeg === undefined) {
+    return segments
+  }
   const constrainedXValue = Math.max(xScale.invert(mouseX), changingSeg.start)
   const newEndpoint = Math.round(constrainedXValue)
   return changeSegmentWidthNumerically(segments, id, newEndpoint, cakeSize)
@@ -57,6 +60,9 @@ export const changeSegmentWidthNumerically = (
   cakeSize: number
 ) => {
   const changedIndex = segments.findIndex((seg) => seg.id === id)
+  if(changedIndex === undefined) {
+    return segments
+  }
   const newSegs = segments.map((seg, i) => {
     // set the new end value for changed segment
     const end = i === changedIndex ? Math.min(newEnd, cakeSize) : seg.end
@@ -95,6 +101,9 @@ export const changeSegmentWithKeyboard = (
       return
     }
     const seg = segments.find((seg) => seg.id === xMovingId)
+    if(seg === undefined) {
+      return segments
+    }
     const newEnd = seg.end + val
     return changeSegmentWidthNumerically(segments, xMovingId, newEnd, cakeSize)
   }
@@ -137,4 +146,5 @@ export const changeSegmentWithKeyboard = (
       })
     }
   }
+  return null
 }

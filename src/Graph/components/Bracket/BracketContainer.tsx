@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import { Box } from '@mui/material'
 import { GraphContext } from '../../GraphContext'
 import { Segment } from '../../../types'
 import { Bracket } from './Bracket'
@@ -26,7 +27,13 @@ export const BracketContainer = ({
       }}
     >
       <Bracket width={xScale(slicesize)} />
-      {children}
+      <Box
+        sx={{
+          textAlign: 'center',
+        }}
+      >
+        {children}
+      </Box>
     </div>
   )
 }

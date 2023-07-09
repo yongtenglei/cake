@@ -67,16 +67,17 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
     if (isMouseDown) {
       let segsWithDrawing = [...segments]
       segsWithDrawing = yMovingId
-        ? changeSegmentFlatValue(segments, yMovingId, yScale, constrainedY)
+        ? changeSegmentFlatValue(segsWithDrawing, yMovingId, yScale, constrainedY)
         : segsWithDrawing
 
       segsWithDrawing = xMovingId
-        ? changeSegmentWidth(segments, xMovingId, xScale, constrainedX, cakeSize)
+        ? changeSegmentWidth(segsWithDrawing, xMovingId, xScale, constrainedX, cakeSize)
         : segsWithDrawing
 
       segsWithDrawing = cornerMovingId
-        ? changeSegmentCornerValue(segments, cornerMovingId, yScale, constrainedY)
+        ? changeSegmentCornerValue(segsWithDrawing, cornerMovingId, yScale, constrainedY)
         : segsWithDrawing
+
       setSegments(segsWithDrawing)
     }
   }

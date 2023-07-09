@@ -16,18 +16,21 @@ const ButtonText = ({ children }) => (
   </Stack>
 )
 
-interface GraphDrawingButtonsProps {
-  isComplete: boolean
-  totalAgents: number
-  onClickDone: VoidFunction
-  onClickCreateAgent: VoidFunction
+interface SharedProps {
   onClickCompare: VoidFunction
-  compareMode: boolean
+  onClickDone: VoidFunction
   preferences: Preferences
   setNewData: (pref: Preferences) => void
+  totalAgents: number
+  isComplete: boolean
 }
 
-export const GraphDrawingButtons = ({
+type DrawingHeaderButtonsProps = SharedProps & {
+  onClickCreateAgent: VoidFunction
+  compareMode: boolean
+}
+
+export const DrawingHeaderButtons = ({
   onClickDone,
   onClickCreateAgent,
   onClickCompare,
@@ -36,7 +39,7 @@ export const GraphDrawingButtons = ({
   isComplete,
   preferences,
   setNewData,
-}: GraphDrawingButtonsProps) => {
+}: DrawingHeaderButtonsProps) => {
   const cantAddMoreAgents = totalAgents === MAX_AGENTS
 
   return (
@@ -82,6 +85,41 @@ export const GraphDrawingButtons = ({
         aria-label={'Done'}
         disabled={!isComplete || totalAgents < 2}
         onClick={onClickDone}
+      >
+        <ButtonText>
+          <CheckIcon />
+          Done
+        </ButtonText>
+      </IconButton>
+
+      <ExtraOptions setNewData={setNewData} preferences={preferences} />
+    </>
+  )
+}
+
+type CompareHeaderButtonsProps = SharedProps
+
+export const CompareHeaderButtons = ({
+  onClickCompare,
+  onClickDone,
+  setNewData,
+  preferences,
+  totalAgents,
+  isComplete,
+}: CompareHeaderButtonsProps) => {
+  return (
+    <>
+      <IconButton aria-label={'Edit'} onClick={onClickCompare}>
+        <ButtonText>
+          <EditIcon />
+          Edit
+        </ButtonText>
+      </IconButton>
+
+      <IconButton
+        aria-label={'Done'}
+        onClick={onClickDone}
+        disabled={!isComplete || totalAgents < 2}
       >
         <ButtonText>
           <CheckIcon />
