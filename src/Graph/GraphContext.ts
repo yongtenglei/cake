@@ -1,6 +1,7 @@
 import { createContext } from 'react'
 import { ScaleLinear, scaleLinear } from 'd3'
-import { defaultGraphHeight, defaultGraphWidth } from './graphConstants'
+import { defaultCakeSize, defaultGraphHeight, defaultGraphWidth } from './graphConstants'
+import { SectionLabel } from '../types'
 
 interface Graph {
   yScale: ScaleLinear<number, number, never>
@@ -8,6 +9,8 @@ interface Graph {
   currentAgent: number
   height: number
   width: number
+  labels: SectionLabel[]
+  cakeSize: number
 }
 
 export const GraphContext = createContext<Graph>({
@@ -16,4 +19,6 @@ export const GraphContext = createContext<Graph>({
   currentAgent: 0,
   height: defaultGraphHeight,
   width: defaultGraphWidth,
+  labels: [],
+  cakeSize: defaultCakeSize
 })

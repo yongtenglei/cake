@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, memo } from 'react'
 import memoize from 'lodash.memoize'
 import { getInnerHeight } from '../graphConstants'
 import { DrawnSegment } from '../../types'
@@ -21,7 +21,8 @@ export const Segments = ({ segments, color, partial = false }: SegmentsProps) =>
   // The math with y coordinates is tricky because 0 means top, positive numbers mean further down.
   return (
     <>
-      {segments.map(({ x1, y1, x2, y2, id }, i) => {
+      {segments.map((seg, i) => {
+        const { x1, y1, x2, y2, id } = seg
         // when `partial` is true, don't fill the area, just "underline" the top line
         const bottomFillLeft = partial ? Math.min(height, y1 + 15) : height
         const bottomFillRight = partial ? Math.min(height, y2 + 15) : height
@@ -68,7 +69,7 @@ export const Segments = ({ segments, color, partial = false }: SegmentsProps) =>
             />
 
             {/* width measuring lines */}
-            <WidthDisplay x1={x1} y1={y1} x2={x2} y2={y2} height={height} />
+            <WidthDisplay {...seg} height={height} />
           </React.Fragment>
         )
       })}
@@ -76,8 +77,10 @@ export const Segments = ({ segments, color, partial = false }: SegmentsProps) =>
   )
 }
 
-const WidthDisplay = ({ x1, y1, x2, y2, height }) => {
-  const { xScale } = useContext(GraphContext)
+type WidthDisplayProps = DrawnSegment & { height: number }
+
+const WidthDisplay = memo<WidthDisplayProps>(({ x1, y1, x2, y2, height }) => {
+  const { xScale, cakeSize } = useContext(GraphContext)
   const width = x2 - x1
   if (width < 50) {
     return null
@@ -85,6 +88,7 @@ const WidthDisplay = ({ x1, y1, x2, y2, height }) => {
 
   const textPadding = 20
   const widthLineHeight = getWidthDisplayHeight(y1, y2, height)
+  const percent = Math.round((100 * xScale.invert(width)) / cakeSize)
   return (
     <g transform={`translate(${x1},${widthLineHeight})`}>
       <line
@@ -99,8 +103,8 @@ const WidthDisplay = ({ x1, y1, x2, y2, height }) => {
         x1={width / 2 + textPadding}
         x2={width - 2}
       />
-      <text x={width / 2} dominant-baseline="middle" text-anchor="middle">
-        {Math.round(xScale.invert(width))}%
+      <text x={width / 2} dominantBaseline="middle" textAnchor="middle">
+        {percent}%
       </text>
 
       <polygon fill={arrowColor} transform={`scale(-1 1)`} points={arrowShape} />
@@ -112,12 +116,12 @@ const WidthDisplay = ({ x1, y1, x2, y2, height }) => {
       />
     </g>
   )
-}
+})
 // Prevent width measuring bar from overlapping with other things.
-const getWidthDisplayHeight = memoize((y1: number, y2: number, height: number) => {
+const getWidthDisplayHeight = (y1: number, y2: number, height: number) => {
   if (y1 > height - 50 && y2 > height - 50) {
     return height / 2
   }
   const yMiddle = (height + Math.max(y1, y2)) / 2
   return Math.min(yMiddle, height - 20)
-})
+}

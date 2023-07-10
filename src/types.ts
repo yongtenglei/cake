@@ -44,3 +44,11 @@ export type Slice = {
   valuePercent: number
   values: number[]
 }
+
+export type SectionLabel = {
+  id: number
+  name: string
+  start: number
+  end: number
+  color: string
+}

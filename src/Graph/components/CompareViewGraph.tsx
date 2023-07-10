@@ -14,21 +14,18 @@ import { GraphContext } from '../GraphContext'
 import { Segment } from '../../types'
 import { getValueAtPoint } from '../algorithm/getValue'
 import { ValueBubble } from './ResizeHandles/ValueBubble'
+import { SectionLabels } from './SectionLabels'
 
 const graphHeight = 300
-const graphWidth = 560
+const graphWidth = 532 // just wide enough to display two side-by-side on desktop
 
 interface CompareViewGraphProps {
   preferences: Preferences
-  cakeSize: number
   onClickEdit: (agent: number) => void
 }
 
-export const CompareViewGraph = ({
-  preferences,
-  cakeSize,
-  onClickEdit,
-}: CompareViewGraphProps) => {
+export const CompareViewGraph = ({ preferences, onClickEdit }: CompareViewGraphProps) => {
+  const { labels, cakeSize } = useContext(GraphContext)
   const { yScale, xScale } = createScales({
     width: graphWidth,
     height: graphHeight,
@@ -56,6 +53,8 @@ export const CompareViewGraph = ({
               currentAgent: i,
               height: graphHeight,
               width: graphWidth,
+              labels,
+              cakeSize,
             }}
           >
             <SmallGraph
@@ -123,6 +122,8 @@ const SmallGraph = ({
       <div onMouseMove={onMouseMove} onMouseLeave={onMouseLeave} onClick={onClick}>
         <svg width={width} height={height}>
           <g transform={`translate(${margin.left},${margin.top})`}>
+            <SectionLabels />
+
             <AxisBottom simple />
             <AxisLeft simple />
 

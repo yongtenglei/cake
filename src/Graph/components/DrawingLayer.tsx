@@ -4,7 +4,6 @@ import { margin, getInnerWidth, getInnerHeight, defaultCakeSize } from '../graph
 import { getAgentColor } from '../../constants'
 import { GraphContext } from '../GraphContext'
 import { AxisLeft, AxisBottom } from './Axes'
-import { EditableValueBrackets } from './Bracket/ValueBrackets'
 import { Segment, DrawnSegment } from '../../types'
 import { Segments } from './Segments'
 import {
@@ -20,6 +19,7 @@ import {
   changeSegmentCornerValue,
   changeSegmentWithKeyboard,
 } from './adjustSegments'
+import { SectionLabels } from './SectionLabels'
 
 // Simple unique ids. Increment the number on each use.
 let id = 0
@@ -38,9 +38,9 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
   const [yMovingId, setYMovingId] = useState<number | null>(null)
   const [xMovingId, setXMovingId] = useState<number | null>(null)
   const [cornerMovingId, setCornerMovingId] = useState<[number, number] | null>(null)
-  const { xScale, yScale, currentAgent, height, width } = useContext(GraphContext)
+  const { xScale, yScale, currentAgent, height, width, cakeSize } =
+    useContext(GraphContext)
 
-  const cakeSize = defaultCakeSize
   const isDrawing = !isDrawingComplete(segments)
 
   const lastDrawnSegment = convertToPixels(
@@ -151,6 +151,7 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
       >
         <svg width={width} height={height}>
           <g transform={`translate(${margin.left},${margin.top})`}>
+            <SectionLabels />
             <AxisBottom />
             <AxisLeft />
 

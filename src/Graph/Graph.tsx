@@ -10,7 +10,7 @@ import {
 } from './components/Header/GraphButtons'
 import { CompareViewGraph } from './components/CompareViewGraph'
 import { SelectAlgoModal } from './components/SelectAlgoModal'
-import { Slice, Segment, Preferences } from '../types'
+import { Slice, Segment, Preferences, SectionLabel } from '../types'
 import { GraphContext } from './GraphContext'
 import { createScales, isDrawingComplete } from './graphUtils'
 import {
@@ -69,6 +69,30 @@ const temp: Preferences = [
 
 //   return <span>{`(min-width:600px) matches: ${matches}`}</span>;
 // }
+
+const labels: SectionLabel[] = [
+  {
+    name: 'Strawberry',
+    start: 0,
+    end: 1,
+    color: '#F2CADF',
+    id: 1,
+  },
+  {
+    name: 'Vanilla',
+    start: 1,
+    end: 2,
+    color: '#F2F1A1',
+    id: 2,
+  },
+  {
+    name: 'Chocolate',
+    start: 2,
+    end: 3,
+    color: '#A57C52',
+    id: 3,
+  },
+]
 
 export const Graph = () => {
   const cakeSize = defaultCakeSize
@@ -138,6 +162,8 @@ export const Graph = () => {
         currentAgent,
         height: defaultGraphHeight,
         width: defaultGraphWidth,
+        labels,
+        cakeSize,
       }}
     >
       <div>
@@ -157,11 +183,7 @@ export const Graph = () => {
                 />
               }
             />
-            <CompareViewGraph
-              preferences={preferences}
-              cakeSize={cakeSize}
-              onClickEdit={onClickEdit}
-            />
+            <CompareViewGraph preferences={preferences} onClickEdit={onClickEdit} />
           </>
         ) : (
           <>
@@ -189,7 +211,7 @@ export const Graph = () => {
                 }
               />
             </Box>
-            <Box sx={{ position: 'relative', zIndex: 1, top: -margin.top }}>
+            <Box sx={{ position: 'relative', zIndex: 1, top: -10 }}>
               <DrawingLayer
                 segments={currentAgentPrefs}
                 setSegments={setCurrentAgentPrefs}
