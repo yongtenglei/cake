@@ -1,5 +1,5 @@
 import { Stack, Box } from '@mui/material'
-import { BodyContainer, TextContainer } from '../Layouts'
+import { TextContainer } from '../Layouts'
 import { Graph } from '../Graph/Graph'
 import { Link } from '../components/Link'
 
@@ -40,7 +40,7 @@ export const GraphPage = () => {
           />
         </Box>
       </Stack>
-      <Box marginY={10}>
+      <Box marginTop={10} marginBottom={20}>
         <Graph />
       </Box>
     </>

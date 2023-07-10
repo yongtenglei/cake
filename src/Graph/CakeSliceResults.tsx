@@ -1,4 +1,7 @@
 import React, { useContext } from 'react'
+import CircleCheckIcon from '@mui/icons-material/CheckCircle'
+import ContentCutIcon from '@mui/icons-material/ContentCut'
+import RemoveCircle from '@mui/icons-material/RemoveCircle'
 import { Tooltip, Box } from '@mui/material'
 import { Slice } from '../types'
 import { margin } from './graphConstants'
@@ -24,12 +27,17 @@ export const CakeSliceResults = ({ results }: CakeSliceResultsProps) => {
         cursor: 'pointer',
       }}
     >
+      {/* <ContentCutIcon />
+      <CircleCheckIcon color="success" />
+      <RemoveCircle color="error" /> */}
       {results.map((slice, i) => {
         const percentValue = (slice.valuePercent * 100).toFixed(1)
         return (
           <Tooltip
             key={slice.start}
-            title={`To person ${slice.owner + 1}, this slice is worth ${percentValue}% of the whole.`}
+            title={`To person ${
+              slice.owner + 1
+            }, this slice is worth ${percentValue}% of the whole.`}
           >
             <Box
               sx={{

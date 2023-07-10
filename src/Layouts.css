@@ -26,11 +26,21 @@
   margin-top: 16px;
   margin-bottom: 16px;
   background-color: white;
+  padding: 16px;
 }
 
 @media all and (min-width: 600px) {
   .layoutContainer {
     padding-left: 32px;
     padding-right: 32px;
+  }
+  .bodyContainer {
+    padding: 32px;
+  }
+}
+
+@media all and (min-width: 900px) {
+  .bodyContainer {
+    padding: 64px;
   }
 }

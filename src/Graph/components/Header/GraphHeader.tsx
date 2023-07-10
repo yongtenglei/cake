@@ -14,9 +14,9 @@ export const GraphHeader = ({ color, heading, buttons }: GraphHeaderProps) => {
       marginLeft={margin.left + 'px'}
       marginRight={margin.right + 'px'}
       paddingY={1}
-      paddingX={2}
+      paddingX={3}
       spacing={1}
-      alignContent="center"
+      alignItems="center"
       direction="row"
       maxWidth="100%"
       justifyContent="space-between"
@@ -34,7 +34,6 @@ export const GraphHeader = ({ color, heading, buttons }: GraphHeaderProps) => {
         justifyContent="flex-end"
         alignItems="center"
         spacing={1}
-        paddingRight={1}
         direction="row"
       >
         {buttons}

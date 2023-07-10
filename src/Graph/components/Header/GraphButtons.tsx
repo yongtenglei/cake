@@ -4,7 +4,7 @@ import CheckIcon from '@mui/icons-material/Check'
 import CompareIcon from '@mui/icons-material/Compare'
 import EditIcon from '@mui/icons-material/Edit'
 import { Preferences } from '../../../types'
-import { MAX_AGENTS, margin } from '../../graphConstants'
+import { maxAgents, margin } from '../../graphConstants'
 import { ExtraOptions } from './ExtraOptions'
 
 const ButtonText = ({ children }) => (
@@ -40,14 +40,14 @@ export const DrawingHeaderButtons = ({
   preferences,
   setNewData,
 }: DrawingHeaderButtonsProps) => {
-  const cantAddMoreAgents = totalAgents === MAX_AGENTS
+  const cantAddMoreAgents = totalAgents === maxAgents
 
   return (
     <>
       <Tooltip
         title={
           cantAddMoreAgents
-            ? `This tool supports up to ${MAX_AGENTS} people`
+            ? `Cannot add more than ${maxAgents} people`
             : 'Add Person'
         }
       >

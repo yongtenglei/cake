@@ -45,7 +45,7 @@ export const CompareViewGraph = ({
   const onMouseLeave = () => setMouseX(null)
 
   return (
-    <Stack direction="row" flexWrap="wrap" spacing={1}>
+    <Stack direction="row" flexWrap="wrap" spacing={1} marginTop={3}>
       {preferences.map((segments, i) => {
         return (
           <GraphContext.Provider
@@ -99,12 +99,12 @@ const SmallGraph = ({
   const hideComparisonBar = isNaN(comparisonLineValue)
 
   return (
-    <Stack alignItems={'center'}>
+    <Stack>
       <Stack
         direction="row"
         justifyContent={'center'}
         alignItems="center"
-        marginLeft={margin.left+'px'}
+        marginLeft={margin.left + 'px'}
       >
         <h3 style={{ margin: 0 }}>Person {agent + 1}</h3>
         <Tooltip title="Edit">
@@ -139,7 +139,7 @@ const SmallGraph = ({
           </g>
         </svg>
       </div>
-      <ValueBrackets segments={segments} />
+      {/* <ValueBrackets segments={segments} /> */}
     </Stack>
   )
 }

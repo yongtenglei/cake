@@ -1,4 +1,5 @@
-export const MAX_AGENTS = 3
+export const maxAgents = 3
+export const defaultCakeSize = 100
 
 // Spacing
 export const defaultGraphWidth = 940
@@ -12,7 +13,6 @@ export const getInnerHeight = (height: number) => height - margin.top - margin.b
 export const getInnerWidth = (width: number) => width - margin.left - margin.right
 
 export const tickOffset = 7
-export const defaultCakeSize = 100
 
 // Algorithms
 export type AlgoName = 'cutAndChoose' | 'selfridgeConway'

@@ -13,7 +13,7 @@ interface CompareViewGraphProps {
   preferences: Preferences
 }
 
-export const CompareViewGraph = ({ preferences }: CompareViewGraphProps) => {
+export const _CompareViewGraph = ({ preferences }: CompareViewGraphProps) => {
   const convertToPixels = useConvertSegToPixels()
   const [focused, setFocused] = useState<number | null>(null)
   const isActive = (i: number) => focused === null || focused === i

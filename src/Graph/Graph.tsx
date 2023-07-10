@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
+
 import { Stack, Box } from '@mui/material'
 import { DrawingLayer } from './components/DrawingLayer'
 import { GraphHeader } from './components/Header/GraphHeader'
 import { SwitchAgentHeader } from './components/Header/SwitchAgentHeader'
-import { CompareHeaderButtons, DrawingHeaderButtons } from './components/Header/GraphButtons'
+import {
+  CompareHeaderButtons,
+  DrawingHeaderButtons,
+} from './components/Header/GraphButtons'
 import { CompareViewGraph } from './components/CompareViewGraph'
 import { SelectAlgoModal } from './components/SelectAlgoModal'
 import { Slice, Segment, Preferences } from '../types'
@@ -75,8 +79,8 @@ export const Graph = () => {
   })
 
   const [algoResults, setAlgoResults] = useState<Slice[] | []>(null)
-  const [preferences, setPreferences] = useState<Preferences>(temp)
-  // const [preferences, setPreferences] = useState<Preferences>([[]])
+  // const [preferences, setPreferences] = useState<Preferences>(temp)
+  const [preferences, setPreferences] = useState<Preferences>([[]])
   const setNewData = (pref: Preferences) => {
     setPreferences(pref)
     setCurrentAgent(1)
@@ -92,7 +96,7 @@ export const Graph = () => {
 
   const setCurrentAgentPrefs = (segs: Segment[]) => {
     const prefs = [...preferences]
-    prefs[currentAgent] = segs.filter(seg => seg.end > seg.start)
+    prefs[currentAgent] = segs.filter((seg) => seg.end > seg.start)
     setPreferences(prefs)
   }
   const onClickDone = () => setAlgoModalOpen(true)
@@ -138,60 +142,60 @@ export const Graph = () => {
     >
       <div>
         {compareMode ? (
-          <GraphHeader
-            color={getAgentColor(currentAgent)}
-            heading={<h2>Compare</h2>}
-            buttons={
-              <CompareHeaderButtons
-                totalAgents={preferences.length}
-                isComplete={isComplete}
-                onClickCompare={onClickCompare}
-                onClickDone={onClickDone}
-                preferences={preferences}
-                setNewData={setNewData}
-              />
-            }
-          />
-        ) : (
-          <Box sx={{ width: defaultGraphWidth }}>
+          <>
             <GraphHeader
-              color={getAgentColor(currentAgent)}
-              heading={
-                <SwitchAgentHeader
-                  navigationDisabled={preferences.length < 2}
-                  onChangeIndex={onChangeIndex}
-                  currentAgent={currentAgent}
-                />
-              }
+              color={'#ccc'}
+              heading={<h2>Compare</h2>}
               buttons={
-                <DrawingHeaderButtons
+                <CompareHeaderButtons
                   totalAgents={preferences.length}
                   isComplete={isComplete}
-                  onClickCreateAgent={onClickCreateAgent}
                   onClickCompare={onClickCompare}
                   onClickDone={onClickDone}
-                  compareMode={compareMode}
                   preferences={preferences}
                   setNewData={setNewData}
                 />
               }
             />
-          </Box>
-        )}
-
-        {compareMode ? (
-          <CompareViewGraph
-            preferences={preferences}
-            cakeSize={cakeSize}
-            onClickEdit={onClickEdit}
-          />
-        ) : (
-          <Box sx={{ position: 'relative', zIndex: 1, top: -margin.top }}>
-            <DrawingLayer
-              segments={currentAgentPrefs}
-              setSegments={setCurrentAgentPrefs}
+            <CompareViewGraph
+              preferences={preferences}
+              cakeSize={cakeSize}
+              onClickEdit={onClickEdit}
             />
-          </Box>
+          </>
+        ) : (
+          <>
+            <Box sx={{ width: defaultGraphWidth }}>
+              <GraphHeader
+                color={getAgentColor(currentAgent)}
+                heading={
+                  <SwitchAgentHeader
+                    navigationDisabled={preferences.length < 2}
+                    onChangeIndex={onChangeIndex}
+                    currentAgent={currentAgent}
+                  />
+                }
+                buttons={
+                  <DrawingHeaderButtons
+                    totalAgents={preferences.length}
+                    isComplete={isComplete}
+                    onClickCreateAgent={onClickCreateAgent}
+                    onClickCompare={onClickCompare}
+                    onClickDone={onClickDone}
+                    compareMode={compareMode}
+                    preferences={preferences}
+                    setNewData={setNewData}
+                  />
+                }
+              />
+            </Box>
+            <Box sx={{ position: 'relative', zIndex: 1, top: -margin.top }}>
+              <DrawingLayer
+                segments={currentAgentPrefs}
+                setSegments={setCurrentAgentPrefs}
+              />
+            </Box>
+          </>
         )}
 
         {algoResults ? <CakeSliceResults results={algoResults} /> : null}

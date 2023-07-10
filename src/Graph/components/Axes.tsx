@@ -56,7 +56,22 @@ export const AxisLeft = ({ simple = false }: AxisProps) => {
 export const AxisBottom = ({ simple = false }: AxisProps) => {
   const { xScale, width, height } = useContext(GraphContext)
   const innerHeight = getInnerHeight(height)
-  const innerWidth = getInnerWidth(width)
+  // const innerWidth = getInnerWidth(width)
+  
+  const [min, max] = xScale.domain()
+
+  let tickNum = 10
+  if(simple) {
+    tickNum = 5
+  }
+  if(max < 10) {
+    tickNum = max
+  }
+  const ticks = xScale.ticks(tickNum)
+  // ensure there's always an ending tick
+  if(ticks[ticks.length-1] !== max) {
+    ticks.push(max)
+  }
   return (
     <>
       {/* <text
@@ -69,7 +84,7 @@ export const AxisBottom = ({ simple = false }: AxisProps) => {
       >
         Portion
       </text> */}
-      {xScale.ticks(simple ? 5 : 10).map((tickValue) => (
+      {ticks.map((tickValue) => (
         <g
           className="tick"
           key={tickValue}
@@ -82,7 +97,7 @@ export const AxisBottom = ({ simple = false }: AxisProps) => {
             y={innerHeight + tickOffset}
             fill={labelColor}
           >
-            {tickValue}%
+            {tickValue}
           </text>
         </g>
       ))}

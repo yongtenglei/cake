@@ -10,6 +10,7 @@ import {
   DialogActions,
   DialogContentText,
   Button,
+  Box,
 } from '@mui/material'
 import { Algorithms, Algorithm, AlgoName } from '../graphConstants'
 import { AlgoExplanationModal } from './AlgoExplanationModal'
@@ -28,15 +29,13 @@ export const SelectAlgoModal = ({
   totalAgents,
 }: SelectAlgoModalProps) => {
   const [algoExplainOpen, setAlgoExplainOpen] = useState(false)
-  const [running, setIsRunning] = useState(false)
   return (
     <>
-      <Dialog open={open} onClose={onCancel}>
+      <Dialog open={open} onClose={onCancel} maxWidth={'sm'} fullWidth>
         <SelectAlgoModalGuts
           totalAgents={totalAgents}
           onCancel={onCancel}
           onConfirm={(algo: AlgoName) => {
-            setIsRunning(true)
             onConfirm(algo)
           }}
           openAlgoExplainModal={() => setAlgoExplainOpen(true)}

@@ -172,10 +172,10 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
         </svg>
       </div>
 
-      <EditableValueBrackets
+      {/* <EditableValueBrackets
         segments={segsWithDrawing}
         setSegmentWidth={setSegmentWidth}
-      />
+      /> */}
     </>
   )
 }
