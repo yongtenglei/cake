@@ -26,6 +26,7 @@ export const ResultsTable = ({ preferences, results }: ResultsTableProps) => {
       <TableContainer>
         <Table
           sx={{
+            maxWidth: results.length > 3 ? 'none' : '700px',
             th: { border: 'none', paddingTop: 0, fontSize: 18 },
             td: {
               border: '2px solid black',

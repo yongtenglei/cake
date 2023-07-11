@@ -22,7 +22,7 @@ type LinkProps = React.ComponentProps<typeof MuiLink> & {
 
 export const Link = ({ children, href, innerRef, ...props }: LinkProps) => {
   const isExternal = !href.startsWith('/')
-  const extraProps = isExternal ? {target: '_blank', rel: 'noopener'} : {}
+  const extraProps = isExternal ? { target: '_blank', rel: 'noopener' } : {}
   return (
     <MuiLink
       {...props}
@@ -33,12 +33,7 @@ export const Link = ({ children, href, innerRef, ...props }: LinkProps) => {
       {...extraProps}
     >
       {children}
-      {isExternal ? (
-        <>
-          {' '}
-          <LaunchIcon sx={{ fontSize: 'inherit' }} />
-        </>
-      ) : null}
+      {isExternal ? <LaunchIcon sx={{ fontSize: 'inherit' }} /> : null}
     </MuiLink>
   )
 }

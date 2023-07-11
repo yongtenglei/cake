@@ -1,7 +1,4 @@
 import React, { useContext } from 'react'
-import CircleCheckIcon from '@mui/icons-material/CheckCircle'
-import ContentCutIcon from '@mui/icons-material/ContentCut'
-import RemoveCircle from '@mui/icons-material/RemoveCircle'
 import { Tooltip, Box } from '@mui/material'
 import { Slice } from '../types'
 import { margin } from './graphConstants'

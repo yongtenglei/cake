@@ -1,9 +1,8 @@
-import React, { useContext, memo } from 'react'
-import memoize from 'lodash.memoize'
-import { getInnerHeight } from '../graphConstants'
+import React, { memo, useContext } from 'react'
 import { DrawnSegment } from '../../types'
 import { shadeHexColor } from '../../utils/colorUtils'
 import { GraphContext } from '../GraphContext'
+import { getInnerHeight } from '../graphConstants'
 
 interface SegmentsProps {
   segments: DrawnSegment[]

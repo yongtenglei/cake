@@ -1,31 +1,30 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
-import { Stack, Box, Button } from '@mui/material'
+import { Box, Button } from '@mui/material'
+import { LoadingModal } from '../components/LoadingModal'
+import { getAgentColor } from '../constants'
+import { Portion, Preferences, SectionLabel, Segment } from '../types'
+import { GraphContext } from './GraphContext'
+import { runDivisionAlgorithm } from './algorithm/run'
+import { CompareViewGraph } from './components/CompareViewGraph'
 import { DrawingLayer } from './components/DrawingLayer'
-import { GraphHeader } from './components/Header/GraphHeader'
-import { SwitchAgentHeader } from './components/Header/SwitchAgentHeader'
 import {
   CompareHeaderButtons,
   DrawingHeaderButtons,
 } from './components/Header/GraphButtons'
-import { CompareViewGraph } from './components/CompareViewGraph'
+import { GraphHeader } from './components/Header/GraphHeader'
+import { SwitchAgentHeader } from './components/Header/SwitchAgentHeader'
+import { ResultsView } from './components/ResultsView/ResultsView'
 import { SelectAlgoModal } from './components/SelectAlgoModal'
-import { Slice, Segment, Preferences, SectionLabel, Portion } from '../types'
-import { GraphContext } from './GraphContext'
-import { createScales, isDrawingComplete } from './graphUtils'
 import {
   AlgoName,
+  defaultCakeSize,
   defaultGraphHeight,
   defaultGraphWidth,
-  getInnerWidth,
   getInnerHeight,
-  defaultCakeSize,
-  margin,
+  getInnerWidth
 } from './graphConstants'
-import { runDivisionAlgorithm } from './algorithm/run'
-import { LoadingModal } from '../components/LoadingModal'
-import { getAgentColor } from '../constants'
-import { ResultsView } from './components/ResultsView/ResultsView'
+import { createScales, isDrawingComplete } from './graphUtils'
 
 const temp: Preferences = [
   [
@@ -178,6 +177,7 @@ export const Graph = () => {
     cakeSize,
   })
 
+  const [algoUsed, setAlgoUsed] = useState<AlgoName | null>('selfridgeConway')
   const [algoResults, setAlgoResults] = useState<Portion[] | []>(testPortions)
   // const [algoResults, setAlgoResults] = useState<Portion[] | []>(null)
   const [preferences, setPreferences] = useState<Preferences>(temp2)
@@ -219,6 +219,7 @@ export const Graph = () => {
     setLoading(true)
     setAlgoModalOpen(false)
 
+    setAlgoUsed(algo)
     const results = await runDivisionAlgorithm(preferences, algo, cakeSize)
     setAlgoResults(results)
 
@@ -237,8 +238,12 @@ export const Graph = () => {
     body = (
       <Box>
         {/* <Button onClick={}>Edit</Button> */}
-        <Button onClick={() => resetData()}>Start Over</Button>
-        <ResultsView results={algoResults} preferences={preferences} />
+        <Button onClick={() => resetData()} variant="contained">Start Over</Button>
+        {/* <IconButton onClick={() => resetData()}>
+          <LoopIcon />
+          Start Over
+        </IconButton> */}
+        <ResultsView results={algoResults} preferences={preferences} algoUsed={algoUsed} />
       </Box>
     )
   } else if (compareMode) {

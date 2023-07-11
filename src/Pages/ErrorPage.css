@@ -4,7 +4,7 @@
   stroke-width: 2px;
   stroke-dasharray: 2000;
 
-  animation: dash 5s linear;
+  animation: dash 2s linear;
   fill: rgb(126, 48, 0);
   stroke: white;
 }

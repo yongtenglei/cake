@@ -3,6 +3,7 @@ import { getAgentColor } from '../../../constants'
 import { Portion, Preferences, Segment, Slice } from '../../../types'
 import { GraphContext } from '../../GraphContext'
 import { useConvertSegToPixels, createScales } from '../../graphUtils'
+import { Box } from '@mui/material'
 
 const width = 500
 const height = 100
@@ -12,7 +13,7 @@ const cuttingLineExtension = 25
 const margin = {
   top: cuttingLineExtension,
   bottom: cuttingLineExtension + 10,
-  left: 150,
+  left: 165,
   right: 70,
 }
 
@@ -51,7 +52,12 @@ export const ResultsGraphs = ({ results, preferences }: ResultsGraphsProps) => {
         }}
       >
         <h2>Resource Split</h2>
-        <svg width={totalWidth} height={totalHeight}>
+        <Box
+          component="svg"
+          width={totalWidth}
+          height={totalHeight}
+          sx={{ fontSize: 18 }}
+        >
           {/* Portion Size (percentage) label */}
           <text textAnchor="end" x={totalWidth} y={0} dominantBaseline={'hanging'}>
             Portion Size
@@ -117,7 +123,7 @@ export const ResultsGraphs = ({ results, preferences }: ResultsGraphsProps) => {
               )
             })}
           </g>
-        </svg>
+        </Box>
       </GraphContext.Provider>
     </section>
   )
