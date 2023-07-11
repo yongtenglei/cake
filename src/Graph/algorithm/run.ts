@@ -39,5 +39,6 @@ export const runDivisionAlgorithm = async (
       throw new Error(`Algorithm not implemented: ${algo}`)
   }
   console.log('Results', result)
+  console.log('Portions', result)
   return result
 }

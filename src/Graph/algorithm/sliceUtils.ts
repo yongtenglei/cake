@@ -1,7 +1,7 @@
 import maxBy from 'lodash.maxby'
 import remove from 'lodash.remove'
 import { Segment, Preferences, UnassignedSlice, Slice } from '../../types'
-import { getValueForInterval, getTotalValue } from './getValue'
+import { getValueForInterval } from './getValue'
 
 /**
  * Creates an `UnassignedSlice` from between the start and end value.
@@ -28,7 +28,6 @@ export const cutSlice = (
     end,
     values: allEvaluationsForSlice,
     assign: (agent: number): Slice => {
-      const totalCakeValue = getTotalValue(preferences[agent])
       const value = allEvaluationsForSlice[agent]
       return Object.freeze({
         start,
@@ -36,7 +35,6 @@ export const cutSlice = (
         value,
         values: allEvaluationsForSlice,
         owner: agent,
-        valuePercent: value / totalCakeValue,
       })
     },
   })

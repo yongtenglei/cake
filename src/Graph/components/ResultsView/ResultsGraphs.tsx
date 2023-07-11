@@ -1,18 +1,17 @@
 import { useContext } from 'react'
-import { getAgentColor } from '../../constants'
-import { Preferences, Segment, Slice } from '../../types'
-import { GraphContext } from '../GraphContext'
-import { useConvertSegToPixels, createScales } from '../graphUtils'
-import { Segments } from './Segments'
+import { getAgentColor } from '../../../constants'
+import { Preferences, Segment, Slice } from '../../../types'
+import { GraphContext } from '../../GraphContext'
+import { useConvertSegToPixels, createScales } from '../../graphUtils'
 
-const width = 400
+const width = 500
 const height = 100
 const spaceBetween = 20
 const cuttingLineExtension = 25
 
 const margin = {
   top: cuttingLineExtension,
-  bottom: cuttingLineExtension,
+  bottom: cuttingLineExtension + 10,
   left: 150,
   right: 70,
 }
@@ -23,6 +22,7 @@ interface ResultsGraphsProps {
 }
 
 export const ResultsGraphs = ({ results, preferences }: ResultsGraphsProps) => {
+  results.sort((a, b) => a.start - b.start)
   const { labels, cakeSize } = useContext(GraphContext)
   const { yScale, xScale } = createScales({
     innerWidth: width,
@@ -44,7 +44,9 @@ export const ResultsGraphs = ({ results, preferences }: ResultsGraphsProps) => {
         cakeSize,
       }}
     >
-      <svg width={totalWidth} height={totalHeight} style={{ border: '1px solid red' }}>
+      <h2>Resource Split</h2>
+      <svg width={totalWidth} height={totalHeight}>
+        {/* Portion Size (percentage) label */}
         <text textAnchor="end" x={totalWidth} y={0} dominantBaseline={'hanging'}>
           Portion Size
         </text>
@@ -74,35 +76,38 @@ export const ResultsGraphs = ({ results, preferences }: ResultsGraphsProps) => {
 
                 {/* Percentages */}
                 <text
-                  x={width + margin.right/2}
+                  x={width + margin.right / 2}
                   y={height / 2}
                   textAnchor="middle"
                   dominantBaseline="middle"
                 >
+                  <title>{totalSharePercent.toFixed(2)}%</title>
                   {totalSharePercent.toFixed(1)}%
                 </text>
               </g>
             )
           })}
-        </g>
 
-        {/* Cut lines */}
-        {results.map(({ start }, i) => {
-          return i === 0 ? null : (
-            <g transform={`translate(${xScale(start) + margin.left}, 0)`}>
-              <line
-                key={start}
-                y2={totalHeight - cuttingLineExtension}
-                strokeDasharray={8}
-                stroke="black"
-                strokeWidth={2}
-              />
-              <text y={totalHeight - 5} textAnchor="middle">
-                {start.toFixed(cakeSize >= 10 ? 1 : 2)}
-              </text>
-            </g>
-          )
-        })}
+          {/* Cut lines */}
+          {results.map(({ start }, i) => {
+            const offset = i % 2 === 0 ? 0 : 18
+            return start === 0 ? null : (
+              <g transform={`translate(${xScale(start)}, ${-margin.top})`} key={start}>
+                <line
+                  key={start}
+                  y2={totalHeight - cuttingLineExtension - offset}
+                  strokeDasharray={8}
+                  stroke="black"
+                  strokeWidth={2}
+                />
+                <text y={totalHeight - offset - 12} textAnchor="middle">
+                  <title>{start.toFixed(2)}</title>
+                  {start.toFixed(cakeSize >= 10 ? 0 : 1)}
+                </text>
+              </g>
+            )
+          })}
+        </g>
       </svg>
     </GraphContext.Provider>
   )
@@ -143,7 +148,7 @@ const TinyGraph = ({ segments, height, results, agent }: TinyGraphProps) => {
         <rect
           key={slice.start}
           x={xScale(slice.start)}
-          width={xScale(slice.end)}
+          width={xScale(slice.end) - xScale(slice.start)}
           y={0}
           height={height}
           fill={getAgentColor(agent)}
@@ -152,7 +157,7 @@ const TinyGraph = ({ segments, height, results, agent }: TinyGraphProps) => {
       ))}
 
       {/* Border for the whole graph */}
-      <rect width={width} height={height} stroke="#333" fill="none" strokeWidth={1} />
+      <rect width={width} height={height} stroke="#666" fill="none" strokeWidth={1} />
     </>
   )
 }

@@ -31,7 +31,7 @@ export const CakeSliceResults = ({ results }: CakeSliceResultsProps) => {
       <CircleCheckIcon color="success" />
       <RemoveCircle color="error" /> */}
       {results.map((slice, i) => {
-        const percentValue = (slice.valuePercent * 100).toFixed(1)
+        const percentValue = 5//(slice.valuePercent * 100).toFixed(1)
         return (
           <Tooltip
             key={slice.start}

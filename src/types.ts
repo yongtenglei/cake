@@ -41,8 +41,14 @@ export type Slice = {
   start: number
   end: number
   value: number
-  valuePercent: number
   values: number[]
+}
+
+// This represents all slices assigned to a certain person
+export type Portion = {
+  owner: number
+  values: number[]
+  edges: [number, number][]
 }
 
 export type SectionLabel = {
