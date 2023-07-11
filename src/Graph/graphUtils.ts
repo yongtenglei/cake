@@ -5,19 +5,17 @@ import { defaultCakeSize, getInnerHeight, getInnerWidth } from './graphConstants
 import { scaleLinear } from 'd3'
 
 interface createScalesParams {
-  width: number
-  height: number
+  innerWidth: number
+  innerHeight: number
   cakeSize: number
 }
-export const createScales = ({ width, height, cakeSize }: createScalesParams) => {
-  const yScale = scaleLinear()
-    .domain([0, 10])
-    .range([getInnerHeight(height), 0])
-    .nice()
-  const xScale = scaleLinear()
-    .domain([0, cakeSize])
-    .range([0, getInnerWidth(width)])
-    .nice()
+export const createScales = ({
+  innerWidth,
+  innerHeight,
+  cakeSize,
+}: createScalesParams) => {
+  const yScale = scaleLinear().domain([0, 10]).range([innerHeight, 0]).nice()
+  const xScale = scaleLinear().domain([0, cakeSize]).range([0, innerWidth]).nice()
   return { yScale, xScale }
 }
 
@@ -27,8 +25,8 @@ export const useConvertSegToPixels = () => {
     const { start, startValue, end, endValue, id } = seg
     return {
       x1: xScale(start),
-      y1: yScale(startValue),
       x2: xScale(end),
+      y1: yScale(startValue),
       y2: yScale(endValue),
       id,
     }

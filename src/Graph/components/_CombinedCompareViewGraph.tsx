@@ -37,7 +37,7 @@ export const _CompareViewGraph = ({ preferences }: CompareViewGraphProps) => {
                   // graying out the background looks good only when `partial` is false
                   // color={isActive(i) ? getAgentColor(i) : '#999'}
                   color={getAgentColor(i)}
-                  partial
+                  // partial
                 />
               )
             )}

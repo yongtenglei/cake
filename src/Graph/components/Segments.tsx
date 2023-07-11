@@ -8,14 +8,13 @@ import { GraphContext } from '../GraphContext'
 interface SegmentsProps {
   segments: DrawnSegment[]
   color: string
-  partial?: boolean
 }
 
 const arrowColor = '#333'
 const arrowShape = '-12 -6.7 0 0 -12 6.7 -12 -6.7'
 const strokeWidth = 1.5
 
-export const Segments = ({ segments, color, partial = false }: SegmentsProps) => {
+export const Segments = ({ segments, color }: SegmentsProps) => {
   const height = getInnerHeight(useContext(GraphContext).height)
 
   // The math with y coordinates is tricky because 0 means top, positive numbers mean further down.
@@ -23,18 +22,15 @@ export const Segments = ({ segments, color, partial = false }: SegmentsProps) =>
     <>
       {segments.map((seg, i) => {
         const { x1, y1, x2, y2, id } = seg
-        // when `partial` is true, don't fill the area, just "underline" the top line
-        const bottomFillLeft = partial ? Math.min(height, y1 + 15) : height
-        const bottomFillRight = partial ? Math.min(height, y2 + 15) : height
-        const lineColor = shadeHexColor(color, -0.5) // : lineColor
+        const lineColor = shadeHexColor(color, -0.5)
 
         return (
           <React.Fragment key={id}>
             {/* fill */}
             <path
               fill={color}
-              fillOpacity={0.5}
-              d={`M${x1},${y1} L${x2},${y2} L${x2},${bottomFillRight} L${x1},${bottomFillLeft}`}
+              fillOpacity={0.7}
+              d={`M${x1},${y1} L${x2},${y2} L${x2},${height} L${x1},${height}`}
             />
 
             {/* top line */}

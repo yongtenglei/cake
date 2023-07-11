@@ -23,9 +23,9 @@ import {
   margin,
 } from './graphConstants'
 import { runDivisionAlgorithm } from './algorithm/run'
-import { CakeSliceResults } from './CakeSliceResults'
 import { LoadingModal } from '../components/LoadingModal'
 import { getAgentColor } from '../constants'
+import { ResultsGraphs } from './components/ResultsGraphs'
 
 const temp: Preferences = [
   [
@@ -57,6 +57,41 @@ const temp: Preferences = [
       startValue: 7.1,
       end: 100,
       endValue: 7.1,
+      id: 4,
+    },
+  ],
+]
+
+const temp2: Preferences = [
+  [
+    {
+      start: 0,
+      startValue: 8.8,
+      end: 2,
+      endValue: 8.8,
+      id: 1,
+    },
+    {
+      start: 2,
+      startValue: 7.1,
+      end: 3,
+      endValue: 7.1,
+      id: 2,
+    },
+  ],
+  [
+    {
+      start: 0,
+      startValue: 4.5,
+      end: 2,
+      endValue: 4.5,
+      id: 3,
+    },
+    {
+      start: 2,
+      startValue: 8.6,
+      end: 3,
+      endValue: 8.6,
       id: 4,
     },
   ],
@@ -97,14 +132,14 @@ const labels: SectionLabel[] = [
 export const Graph = () => {
   const cakeSize = defaultCakeSize
   const { yScale, xScale } = createScales({
-    width: defaultGraphWidth,
-    height: defaultGraphHeight,
+    innerWidth: getInnerWidth(defaultGraphWidth),
+    innerHeight: getInnerHeight(defaultGraphHeight),
     cakeSize,
   })
 
   const [algoResults, setAlgoResults] = useState<Slice[] | []>(null)
-  // const [preferences, setPreferences] = useState<Preferences>(temp)
-  const [preferences, setPreferences] = useState<Preferences>([[]])
+  const [preferences, setPreferences] = useState<Preferences>(temp2)
+  // const [preferences, setPreferences] = useState<Preferences>([[]])
   const setNewData = (pref: Preferences) => {
     setPreferences(pref)
     setCurrentAgent(1)
@@ -154,74 +189,81 @@ export const Graph = () => {
   const currentAgentPrefs = preferences[currentAgent]
   const isComplete = isDrawingComplete(currentAgentPrefs)
 
-  return (
-    <GraphContext.Provider
-      value={{
-        yScale,
-        xScale,
-        currentAgent,
-        height: defaultGraphHeight,
-        width: defaultGraphWidth,
-        labels,
-        cakeSize,
-      }}
-    >
-      <div>
-        {compareMode ? (
-          <>
-            <GraphHeader
-              color={'#ccc'}
-              heading={<h2>Compare</h2>}
-              buttons={
-                <CompareHeaderButtons
-                  totalAgents={preferences.length}
-                  isComplete={isComplete}
-                  onClickCompare={onClickCompare}
-                  onClickDone={onClickDone}
-                  preferences={preferences}
-                  setNewData={setNewData}
-                />
-              }
+  let body = null
+  if (algoResults) {
+    body = <ResultsGraphs results={algoResults} preferences={preferences} />
+  } else if (compareMode) {
+    body = (
+      <>
+        <GraphHeader
+          color={'#ccc'}
+          heading={<h2>Compare</h2>}
+          buttons={
+            <CompareHeaderButtons
+              totalAgents={preferences.length}
+              isComplete={isComplete}
+              onClickCompare={onClickCompare}
+              onClickDone={onClickDone}
+              preferences={preferences}
+              setNewData={setNewData}
             />
-            <CompareViewGraph preferences={preferences} onClickEdit={onClickEdit} />
-          </>
-        ) : (
-          <>
-            <Box sx={{ width: defaultGraphWidth }}>
-              <GraphHeader
-                color={getAgentColor(currentAgent)}
-                heading={
-                  <SwitchAgentHeader
-                    navigationDisabled={preferences.length < 2}
-                    onChangeIndex={onChangeIndex}
-                    currentAgent={currentAgent}
-                  />
-                }
-                buttons={
-                  <DrawingHeaderButtons
-                    totalAgents={preferences.length}
-                    isComplete={isComplete}
-                    onClickCreateAgent={onClickCreateAgent}
-                    onClickCompare={onClickCompare}
-                    onClickDone={onClickDone}
-                    compareMode={compareMode}
-                    preferences={preferences}
-                    setNewData={setNewData}
-                  />
-                }
+          }
+        />
+        <CompareViewGraph preferences={preferences} onClickEdit={onClickEdit} />
+      </>
+    )
+  } else {
+    body = (
+      <>
+        <Box sx={{ width: defaultGraphWidth }}>
+          <GraphHeader
+            color={getAgentColor(currentAgent)}
+            heading={
+              <SwitchAgentHeader
+                navigationDisabled={preferences.length < 2}
+                onChangeIndex={onChangeIndex}
+                currentAgent={currentAgent}
               />
-            </Box>
-            <Box sx={{ position: 'relative', zIndex: 1, top: -10 }}>
-              <DrawingLayer
-                segments={currentAgentPrefs}
-                setSegments={setCurrentAgentPrefs}
+            }
+            buttons={
+              <DrawingHeaderButtons
+                totalAgents={preferences.length}
+                isComplete={isComplete}
+                onClickCreateAgent={onClickCreateAgent}
+                onClickCompare={onClickCompare}
+                onClickDone={onClickDone}
+                compareMode={compareMode}
+                preferences={preferences}
+                setNewData={setNewData}
               />
-            </Box>
-          </>
-        )}
+            }
+          />
+        </Box>
+        <Box sx={{ position: 'relative', zIndex: 1, top: -10 }}>
+          <DrawingLayer
+            segments={currentAgentPrefs}
+            setSegments={setCurrentAgentPrefs}
+            currentAgent={currentAgent}
+          />
+        </Box>
+      </>
+    )
+  }
 
-        {algoResults ? <CakeSliceResults results={algoResults} /> : null}
-      </div>
+  return (
+    <div>
+      <GraphContext.Provider
+        value={{
+          yScale,
+          xScale,
+          height: defaultGraphHeight,
+          width: defaultGraphWidth,
+          labels,
+          cakeSize,
+        }}
+      >
+        {body}
+      </GraphContext.Provider>
       <SelectAlgoModal
         open={algoModalOpen}
         onCancel={() => setAlgoModalOpen(false)}
@@ -229,6 +271,6 @@ export const Graph = () => {
         totalAgents={preferences.length}
       />
       <LoadingModal open={loading} title={'Running Algorithm'} />
-    </GraphContext.Provider>
+    </div>
   )
 }

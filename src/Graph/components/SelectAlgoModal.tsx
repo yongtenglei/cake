@@ -111,7 +111,7 @@ const SelectAlgoModalGuts = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={onCancel}>Cancel</Button>
-        <Button type="submit" variant="contained">
+        <Button type="submit" variant="contained" autoFocus>
           Find Solution
         </Button>
       </DialogActions>

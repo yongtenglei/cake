@@ -27,8 +27,8 @@ interface CompareViewGraphProps {
 export const CompareViewGraph = ({ preferences, onClickEdit }: CompareViewGraphProps) => {
   const { labels, cakeSize } = useContext(GraphContext)
   const { yScale, xScale } = createScales({
-    width: graphWidth,
-    height: graphHeight,
+    innerWidth: getInnerWidth(graphWidth),
+    innerHeight: getInnerHeight(graphHeight),
     cakeSize,
   })
 
@@ -50,7 +50,6 @@ export const CompareViewGraph = ({ preferences, onClickEdit }: CompareViewGraphP
             value={{
               yScale,
               xScale,
-              currentAgent: i,
               height: graphHeight,
               width: graphWidth,
               labels,

@@ -27,9 +27,10 @@ let id = 0
 interface DrawingLayerProps {
   segments: Segment[]
   setSegments: (segment: Segment[]) => void
+  currentAgent: number
 }
 
-export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
+export const DrawingLayer = ({ segments, setSegments, currentAgent }: DrawingLayerProps) => {
   const convertToPixels = useConvertSegToPixels()
   const convertFromPixels = useConvertSegFromPixels()
   const [mouseX, setMouseX] = useState(0)
@@ -38,7 +39,7 @@ export const DrawingLayer = ({ segments, setSegments }: DrawingLayerProps) => {
   const [yMovingId, setYMovingId] = useState<number | null>(null)
   const [xMovingId, setXMovingId] = useState<number | null>(null)
   const [cornerMovingId, setCornerMovingId] = useState<[number, number] | null>(null)
-  const { xScale, yScale, currentAgent, height, width, cakeSize } =
+  const { xScale, yScale, height, width, cakeSize } =
     useContext(GraphContext)
 
   const isDrawing = !isDrawingComplete(segments)
