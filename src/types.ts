@@ -40,17 +40,19 @@ export type Slice = {
   owner: number
   start: number
   end: number
-  value: number
+  value: number // cut this field?
   values: number[]
 }
 
-// This represents all slices assigned to a certain person
+// This represents all slices assigned to a certain person.
+// This is more useful for presenting info than `Slice`s.
 export type Portion = {
   owner: number
-  values: number[]
+  percentValues: number[]
   edges: [number, number][]
 }
 
+// A label in the graph such as "chocolate"
 export type SectionLabel = {
   id: number
   name: string

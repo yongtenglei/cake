@@ -1,7 +1,7 @@
 import maxBy from 'lodash.maxby'
 import remove from 'lodash.remove'
 import { Segment, Preferences, UnassignedSlice, Slice } from '../../types'
-import { getValueForInterval } from './getValue'
+import { getValueForInterval, getTotalValue } from './getValue'
 
 /**
  * Creates an `UnassignedSlice` from between the start and end value.

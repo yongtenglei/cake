@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Stack, Box } from '@mui/material'
+import { Stack, Box, Button } from '@mui/material'
 import { DrawingLayer } from './components/DrawingLayer'
 import { GraphHeader } from './components/Header/GraphHeader'
 import { SwitchAgentHeader } from './components/Header/SwitchAgentHeader'
@@ -10,7 +10,7 @@ import {
 } from './components/Header/GraphButtons'
 import { CompareViewGraph } from './components/CompareViewGraph'
 import { SelectAlgoModal } from './components/SelectAlgoModal'
-import { Slice, Segment, Preferences, SectionLabel } from '../types'
+import { Slice, Segment, Preferences, SectionLabel, Portion } from '../types'
 import { GraphContext } from './GraphContext'
 import { createScales, isDrawingComplete } from './graphUtils'
 import {
@@ -119,13 +119,32 @@ const temp2: Preferences = [
     },
   ],
 ]
-// import useMediaQuery from '@mui/material/useMediaQuery';
-
-// export default function SimpleMediaQuery() {
-//   const matches = useMediaQuery('(min-width:600px)');
-
-//   return <span>{`(min-width:600px) matches: ${matches}`}</span>;
-// }
+const testPortions: Portion[] = [
+  {
+    owner: 0,
+    percentValues: [0.40170573291170686, 0.3427328965249336, 0.2729967316105627],
+    edges: [
+      [0, 0.9356060606060607],
+      [1.9636776582427158, 2.1928396707213698],
+    ],
+  },
+  {
+    owner: 1,
+    percentValues: [0.2320177464728046, 0.39440788817023975, 0.13958411709329693],
+    edges: [
+      [2.510438689217759, 3],
+      [2.1928396707213698, 2.510438689217759],
+    ],
+  },
+  {
+    owner: 2,
+    percentValues: [0.36627652061548843, 0.2628592153048266, 0.5874191512961403],
+    edges: [
+      [0.9356060606060607, 1.8712121212121213],
+      [1.8712121212121213, 1.9636776582427158],
+    ],
+  },
+]
 
 const labels: SectionLabel[] = [
   {
@@ -151,57 +170,6 @@ const labels: SectionLabel[] = [
   },
 ]
 
-const testResults = [
-  {
-    start: 0.9356060606060607,
-    end: 1.8712121212121213,
-    value: 7.08219696969697,
-    values: [8.233333333333334, 4.210227272727273, 7.08219696969697],
-    owner: 2,
-    valuePercent: 0.5324960127591707,
-  },
-  {
-    start: 2.510438689217759,
-    end: 3,
-    value: 4.2102272727272725,
-    values: [3.4758853065539106, 4.2102272727272725, 1.125991014799154],
-    owner: 1,
-    valuePercent: 0.23921745867768593,
-  },
-  {
-    start: 0,
-    end: 0.9356060606060607,
-    value: 8.233333333333334,
-    values: [8.233333333333334, 4.210227272727273, 2.9003787878787883],
-    owner: 0,
-    valuePercent: 0.3333333333333333,
-  },
-  {
-    start: 2.1928396707213698,
-    end: 2.510438689217759,
-    value: 2.7313515590689477,
-    values: [2.2549530313243635, 2.7313515590689477, 0.7304777425416953],
-    owner: 1,
-    valuePercent: 0.15519042949255382,
-  },
-  {
-    start: 1.8712121212121213,
-    end: 1.9636776582427158,
-    value: 0.7304777425416963,
-    values: [0.8136967258692313, 0.41609491663767506, 0.7304777425416963],
-    owner: 2,
-    valuePercent: 0.054923138536969646,
-  },
-  {
-    start: 1.9636776582427158,
-    end: 2.1928396707213698,
-    value: 1.6887982695858264,
-    values: [1.6887982695858264, 1.8218717061115588, 0.7304777425416957],
-    owner: 0,
-    valuePercent: 0.06837239957837353,
-  },
-]
-
 export const Graph = () => {
   const cakeSize = defaultCakeSize
   const { yScale, xScale } = createScales({
@@ -210,14 +178,14 @@ export const Graph = () => {
     cakeSize,
   })
 
-  const [algoResults, setAlgoResults] = useState<Slice[] | []>(testResults)
-  // const [algoResults, setAlgoResults] = useState<Slice[] | []>(null)
+  const [algoResults, setAlgoResults] = useState<Portion[] | []>(testPortions)
+  // const [algoResults, setAlgoResults] = useState<Portion[] | []>(null)
   const [preferences, setPreferences] = useState<Preferences>(temp2)
   // const [preferences, setPreferences] = useState<Preferences>([[]])
-  const setNewData = (pref: Preferences) => {
+  const resetData = (pref: Preferences = [[]]) => {
     setPreferences(pref)
-    setCurrentAgent(1)
-    setCompareMode(true)
+    setCurrentAgent(0)
+    setCompareMode(false)
     setAlgoResults(null)
   }
   // Agents are zero-index in the code, but 1-indexed when displaying to users
@@ -252,7 +220,7 @@ export const Graph = () => {
     setAlgoModalOpen(false)
 
     const results = await runDivisionAlgorithm(preferences, algo, cakeSize)
-    setAlgoResults(results.sort((a, b) => a.start - b.start))
+    setAlgoResults(results)
 
     setLoading(false)
     setCompareMode(true)
@@ -266,7 +234,13 @@ export const Graph = () => {
 
   let body = null
   if (algoResults) {
-    body = <ResultsView results={algoResults} preferences={preferences} />
+    body = (
+      <Box>
+        {/* <Button onClick={}>Edit</Button> */}
+        <Button onClick={() => resetData()}>Start Over</Button>
+        <ResultsView results={algoResults} preferences={preferences} />
+      </Box>
+    )
   } else if (compareMode) {
     body = (
       <>
@@ -280,7 +254,7 @@ export const Graph = () => {
               onClickCompare={onClickCompare}
               onClickDone={onClickDone}
               preferences={preferences}
-              setNewData={setNewData}
+              setNewData={resetData}
             />
           }
         />
@@ -309,7 +283,7 @@ export const Graph = () => {
                 onClickDone={onClickDone}
                 compareMode={compareMode}
                 preferences={preferences}
-                setNewData={setNewData}
+                setNewData={resetData}
               />
             }
           />

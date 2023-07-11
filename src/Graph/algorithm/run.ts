@@ -1,26 +1,28 @@
 import { AlgoName } from '../graphConstants'
-import { Preferences, Slice } from '../../types'
+import { Preferences, Slice, Portion } from '../../types'
 import { validateSegments } from './validation'
 import { cutAndChoose } from './cutAndChoose'
 import { selfridgeConway } from './selfridgeConway'
+import { getTotalValue } from './getValue'
 
 export const runDivisionAlgorithm = async (
   preferences: Preferences,
   algo: AlgoName,
   cakeSize
-): Promise<Slice[]> => {
+): Promise<Portion[]> => {
+  const numPeople = preferences.length
   console.log(`Running ${algo}...`)
   console.log('Cake size:', cakeSize)
   console.log('Preferences:', preferences)
-  
+
   // simple error checking
   validateSegments(preferences, cakeSize)
 
-  // may want to add more checks here. 
-  // The UI validates enough but if people upload their own data, 
+  // may want to add more checks here.
+  // The UI validates enough but if people upload their own data,
   // who knows what could happen...
 
-  let result = null
+  let result: null | Slice[] = null
   switch (algo) {
     case 'cutAndChoose':
       result = cutAndChoose(preferences, cakeSize)
@@ -31,7 +33,7 @@ export const runDivisionAlgorithm = async (
     // NOTE FOR FUTURE DEVS
     // If server-side methods are implemented,
     // be sure to `await` the asynchronous response as shown here:
-    // 
+    //
     // case 'some server-side method':
     //   result = await method(preferences, cakeSize)
     //   break
@@ -39,6 +41,22 @@ export const runDivisionAlgorithm = async (
       throw new Error(`Algorithm not implemented: ${algo}`)
   }
   console.log('Results', result)
-  console.log('Portions', result)
-  return result
+
+  // Combine all slices assigned to each user into one "Portion"
+  const totalValues = preferences.map(getTotalValue)
+
+  const portions = result.reduce((acc, slice) => {
+    const owner = slice.owner
+    if (!acc[owner]) {
+      acc[owner] = { owner, percentValues: Array(numPeople).fill(0), edges: [] }
+    }
+    acc[owner].edges.push([slice.start, slice.end])
+    acc[owner].percentValues = slice.values.map(
+      (val, i) => acc[owner].percentValues[i] + (val / totalValues[i])
+    )
+    return acc
+  }, Array<Portion>(numPeople))
+
+  console.log('Portions', portions)
+  return portions
 }

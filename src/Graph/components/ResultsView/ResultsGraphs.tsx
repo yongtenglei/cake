@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { getAgentColor } from '../../../constants'
-import { Preferences, Segment, Slice } from '../../../types'
+import { Portion, Preferences, Segment, Slice } from '../../../types'
 import { GraphContext } from '../../GraphContext'
 import { useConvertSegToPixels, createScales } from '../../graphUtils'
 
@@ -18,11 +18,10 @@ const margin = {
 
 interface ResultsGraphsProps {
   preferences: Preferences
-  results: Slice[]
+  results: Portion[]
 }
 
 export const ResultsGraphs = ({ results, preferences }: ResultsGraphsProps) => {
-  results.sort((a, b) => a.start - b.start)
   const { labels, cakeSize } = useContext(GraphContext)
   const { yScale, xScale } = createScales({
     innerWidth: width,
@@ -33,94 +32,105 @@ export const ResultsGraphs = ({ results, preferences }: ResultsGraphsProps) => {
   const totalHeight =
     (height + spaceBetween) * preferences.length + margin.top + margin.bottom
   const totalWidth = width + margin.left + margin.right
+
+  const allCutlines = results
+    .reduce((acc, result) => [...acc, ...result.edges.map((edge) => edge[0])], [])
+    .sort()
+  // remove initial zero
+  allCutlines.shift()
   return (
-    <GraphContext.Provider
-      value={{
-        yScale,
-        xScale,
-        height,
-        width,
-        labels,
-        cakeSize,
-      }}
-    >
-      <h2>Resource Split</h2>
-      <svg width={totalWidth} height={totalHeight}>
-        {/* Portion Size (percentage) label */}
-        <text textAnchor="end" x={totalWidth} y={0} dominantBaseline={'hanging'}>
-          Portion Size
-        </text>
+    <section>
+      <GraphContext.Provider
+        value={{
+          yScale,
+          xScale,
+          height,
+          width,
+          labels,
+          cakeSize,
+        }}
+      >
+        <h2>Resource Split</h2>
+        <svg width={totalWidth} height={totalHeight}>
+          {/* Portion Size (percentage) label */}
+          <text textAnchor="end" x={totalWidth} y={0} dominantBaseline={'hanging'}>
+            Portion Size
+          </text>
 
-        <g transform={`translate(${margin.left}, ${margin.top})`}>
-          {preferences.map((segments, i) => {
-            const slices = results.filter((slice) => slice.owner === i)
-            const totalShareSize = slices.reduce(
-              (acc, slice) => acc + (slice.end - slice.start),
-              0
-            )
-            const totalSharePercent = (totalShareSize / cakeSize) * 100
-            return (
-              <g transform={`translate(${0},${(height + spaceBetween) * i})`} key={i}>
-                {/* Graphs */}
-                <TinyGraph
-                  segments={segments}
-                  height={height}
-                  results={slices}
-                  agent={i}
-                />
+          <g transform={`translate(${margin.left}, ${margin.top})`}>
+            {preferences.map((segments, i) => {
+              return (
+                <g transform={`translate(${0},${(height + spaceBetween) * i})`} key={i}>
+                  {/* Graphs */}
+                  <TinyGraph
+                    segments={segments}
+                    height={height}
+                    result={results[i]}
+                    agent={i}
+                  />
 
-                {/* Graph Owner */}
-                <text textAnchor="end" x={-10} y={height / 2}>
-                  Person {i + 1}'s Portion
-                </text>
+                  {/* Graph Owner */}
+                  <text textAnchor="end" x={-10} y={height / 2}>
+                    Person {i + 1}'s Portion
+                  </text>
+                </g>
+              )
+            })}
 
-                {/* Percentages */}
-                <text
-                  x={width + margin.right / 2}
-                  y={height / 2}
-                  textAnchor="middle"
-                  dominantBaseline="middle"
+            {/* Percentages */}
+            {results.map((result, i) => {
+              const totalSharePercent = result.percentValues[i] * 100
+              return (
+                <g
+                  transform={`translate(${width},${(height + spaceBetween) * i})`}
+                  key={i}
                 >
-                  <title>{totalSharePercent.toFixed(2)}%</title>
-                  {totalSharePercent.toFixed(1)}%
-                </text>
-              </g>
-            )
-          })}
+                  <text
+                    x={margin.right / 2}
+                    y={height / 2}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                  >
+                    <title>{totalSharePercent.toFixed(2)}%</title>
+                    {totalSharePercent.toFixed(1)}%
+                  </text>
+                </g>
+              )
+            })}
 
-          {/* Cut lines */}
-          {results.map(({ start }, i) => {
-            const offset = i % 2 === 0 ? 0 : 18
-            return start === 0 ? null : (
-              <g transform={`translate(${xScale(start)}, ${-margin.top})`} key={start}>
-                <line
-                  key={start}
-                  y2={totalHeight - cuttingLineExtension - offset}
-                  strokeDasharray={8}
-                  stroke="black"
-                  strokeWidth={2}
-                />
-                <text y={totalHeight - offset - 12} textAnchor="middle">
-                  <title>{start.toFixed(2)}</title>
-                  {start.toFixed(cakeSize >= 10 ? 0 : 1)}
-                </text>
-              </g>
-            )
-          })}
-        </g>
-      </svg>
-    </GraphContext.Provider>
+            {/* Cut lines */}
+            {allCutlines.map((cut, i) => {
+              const offset = i % 2 === 0 ? 0 : 18
+              return (
+                <g transform={`translate(${xScale(cut)}, ${-margin.top})`} key={cut}>
+                  <line
+                    y2={totalHeight - cuttingLineExtension - offset}
+                    strokeDasharray={8}
+                    stroke="black"
+                    strokeWidth={2}
+                  />
+                  <text y={totalHeight - offset - 12} textAnchor="middle">
+                    <title>{cut.toFixed(2)}</title>
+                    {cut.toFixed(cakeSize >= 10 ? 0 : 1)}
+                  </text>
+                </g>
+              )
+            })}
+          </g>
+        </svg>
+      </GraphContext.Provider>
+    </section>
   )
 }
 
 interface TinyGraphProps {
   segments: Segment[]
   height: number
-  results: Slice[]
+  result: Portion
   agent: number
 }
 
-const TinyGraph = ({ segments, height, results, agent }: TinyGraphProps) => {
+const TinyGraph = ({ segments, height, result, agent }: TinyGraphProps) => {
   const { width, xScale } = useContext(GraphContext)
   const convertToPixels = useConvertSegToPixels()
   const maskId = `resultMask${agent}`
@@ -144,11 +154,11 @@ const TinyGraph = ({ segments, height, results, agent }: TinyGraphProps) => {
       <mask id={maskId}>{segSvg}</mask>
 
       {/* Colored sections */}
-      {results.map((slice) => (
+      {result.edges.map(([start, end]) => (
         <rect
-          key={slice.start}
-          x={xScale(slice.start)}
-          width={xScale(slice.end) - xScale(slice.start)}
+          key={start}
+          x={xScale(start)}
+          width={xScale(end) - xScale(start)}
           y={0}
           height={height}
           fill={getAgentColor(agent)}
