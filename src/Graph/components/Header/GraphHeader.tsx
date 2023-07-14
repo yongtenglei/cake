@@ -6,13 +6,14 @@ interface GraphHeaderProps {
   color: string
   heading: ReactNode
   buttons: ReactNode
+  fullWidth?: boolean
 }
 
-export const GraphHeader = ({ color, heading, buttons }: GraphHeaderProps) => {
+export const GraphHeader = ({ color, heading, buttons, fullWidth }: GraphHeaderProps) => {
   return (
     <Stack
-      marginLeft={margin.left + 'px'}
-      marginRight={margin.right + 'px'}
+      marginLeft={fullWidth ? null : margin.left + 'px'}
+      marginRight={fullWidth ? null :margin.right + 'px'}
       paddingY={1}
       paddingX={3}
       spacing={1}

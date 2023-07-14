@@ -1,16 +1,18 @@
-import React from 'react'
-import { styled } from '@mui/material/styles'
-import Table from '@mui/material/Table'
-import TableBody from '@mui/material/TableBody'
-import TableCell from '@mui/material/TableCell'
-import TableContainer from '@mui/material/TableContainer'
-import TableHead from '@mui/material/TableHead'
-import TableRow from '@mui/material/TableRow'
-import { Portion, Preferences, Slice } from '../../../types'
-import { getAgentColor } from '../../../constants'
-import { useContext } from 'react'
+import {
+  Box,
+  Table,
+  TableBody,
+  TableHead,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Tooltip,
+} from '@mui/material'
+import React, { useContext } from 'react'
+import { getAgentColor } from '../../../colors'
+import { Portion, Preferences } from '../../../types'
 import { GraphContext } from '../../GraphContext'
-import { Box } from '@mui/material'
+import { formatNumber } from '../../../utils/formatUtils'
 
 interface ResultsTableProps {
   preferences: Preferences
@@ -32,10 +34,13 @@ export const ResultsTable = ({ preferences, results }: ResultsTableProps) => {
               border: '2px solid black',
               borderLeft: 'none',
               borderRight: 'none',
-              padding: 4,
+              paddingX: 2,
+              paddingY: 4,
               fontSize: 18,
+              minWidth: 140,
             },
-            '.valueLabel': { borderRight: '2px solid black', maxWidth: 120 },
+            '.valueLabel': { borderRight: '2px solid black', width: 120, minWidth: 120 },
+            '.rowLabel': { position: 'relative', paddingRight: 4 },
           }}
         >
           <TableHead>
@@ -50,6 +55,16 @@ export const ResultsTable = ({ preferences, results }: ResultsTableProps) => {
               {results.map((portion, i) => {
                 return (
                   <TableCell key={i}>
+                    <div
+                      style={{
+                        fontSize: 14,
+                        lineHeight: 1.1,
+                        textAlign: 'center',
+                        marginBottom: 4,
+                      }}
+                    >
+                      Person {i + 1}'s Portion
+                    </div>
                     <TinyChart portion={portion} color={getAgentColor(i)} />
                   </TableCell>
                 )
@@ -67,12 +82,12 @@ export const ResultsTable = ({ preferences, results }: ResultsTableProps) => {
                     </TableCell>
                   ) : null}
 
-                  <TableCell sx={{ position: 'relative' }}>
+                  <TableCell className="rowLabel">
                     Person {rowAgent + 1}
                     <Box
                       sx={{
                         position: 'absolute',
-                        right: 12,
+                        right: 8,
                         top: '10%',
                         backgroundColor: color,
                         width: 6,
@@ -81,16 +96,28 @@ export const ResultsTable = ({ preferences, results }: ResultsTableProps) => {
                     />
                   </TableCell>
                   {results.map((portion, colAgent) => {
+                    const selected = colAgent === rowAgent
                     return (
-                      <TableCell
-                        align="center"
+                      <Tooltip
+                        describeChild
                         key={colAgent}
-                        sx={{
-                          backgroundColor: colAgent === rowAgent ? color : null,
-                        }}
+                        title={
+                          selected
+                            ? `Person ${
+                                rowAgent + 1
+                              } received this portion because it is worth the most to them`
+                            : null
+                        }
                       >
-                        {(portion.percentValues[colAgent] * 100).toFixed()}%
-                      </TableCell>
+                        <TableCell
+                          align="center"
+                          sx={{
+                            backgroundColor: selected ? color : null,
+                          }}
+                        >
+                          {formatNumber(portion.percentValues[colAgent] * 100, 3)}%
+                        </TableCell>
+                      </Tooltip>
                     )
                   })}
                 </TableRow>

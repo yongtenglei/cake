@@ -3,7 +3,7 @@ import { Tooltip, Box } from '@mui/material'
 import { Slice } from '../types'
 import { margin } from './graphConstants'
 import { GraphContext } from './GraphContext'
-import { getAgentColor } from '../constants'
+import { getAgentColor } from '../colors'
 
 interface CakeSliceResultsProps {
   results: Slice[]

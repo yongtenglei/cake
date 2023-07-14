@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Stack, Box } from '@mui/material'
 import { defaultGraphHeight, defaultGraphWidth, margin } from '../graphConstants'
-import { getAgentColor } from '../../constants'
+import { getAgentColor } from '../../colors'
 import { AxisLeft, AxisBottom } from './Axes'
 import { Segments } from './Segments'
 import { useConvertSegToPixels } from '../graphUtils'

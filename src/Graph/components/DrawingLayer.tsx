@@ -1,25 +1,24 @@
-import React, { useContext, useCallback, useState, useEffect } from 'react'
 import clamp from 'lodash.clamp'
-import { margin, getInnerWidth, getInnerHeight, defaultCakeSize } from '../graphConstants'
-import { getAgentColor } from '../../constants'
+import React, { useContext, useState } from 'react'
+import { getAgentColor } from '../../colors'
+import { DrawnSegment, Segment } from '../../types'
 import { GraphContext } from '../GraphContext'
-import { AxisLeft, AxisBottom } from './Axes'
-import { Segment, DrawnSegment } from '../../types'
+import { getInnerHeight, getInnerWidth, margin } from '../graphConstants'
+import {
+  useConvertSegFromPixels,
+  useConvertSegToPixels,
+} from '../graphUtils'
+import { AxisBottom, AxisLeft } from './Axes'
+import { HorizontalResizeHandles, VerticalResizeBubbles } from './ResizeHandles'
+import { SectionLabels } from './SectionLabels'
 import { Segments } from './Segments'
 import {
-  useConvertSegToPixels,
-  useConvertSegFromPixels,
-  isDrawingComplete,
-} from '../graphUtils'
-import { HorizontalResizeHandles, VerticalResizeBubbles } from './ResizeHandles'
-import {
+  changeSegmentCornerValue,
   changeSegmentFlatValue,
   changeSegmentWidth,
   changeSegmentWidthNumerically,
-  changeSegmentCornerValue,
   changeSegmentWithKeyboard,
 } from './adjustSegments'
-import { SectionLabels } from './SectionLabels'
 
 // Simple unique ids. Increment the number on each use.
 let id = 0
@@ -28,9 +27,10 @@ interface DrawingLayerProps {
   segments: Segment[]
   setSegments: (segment: Segment[]) => void
   currentAgent: number
+  isComplete: boolean
 }
 
-export const DrawingLayer = ({ segments, setSegments, currentAgent }: DrawingLayerProps) => {
+export const DrawingLayer = ({ segments, setSegments, currentAgent, isComplete }: DrawingLayerProps) => {
   const convertToPixels = useConvertSegToPixels()
   const convertFromPixels = useConvertSegFromPixels()
   const [mouseX, setMouseX] = useState(0)
@@ -42,7 +42,7 @@ export const DrawingLayer = ({ segments, setSegments, currentAgent }: DrawingLay
   const { xScale, yScale, height, width, cakeSize } =
     useContext(GraphContext)
 
-  const isDrawing = !isDrawingComplete(segments)
+  const isDrawing = !isComplete
 
   const lastDrawnSegment = convertToPixels(
     segments[segments.length - 1] ?? {

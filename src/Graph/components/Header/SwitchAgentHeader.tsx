@@ -20,8 +20,7 @@ export const SwitchAgentHeader = ({
         justifyContent="center"
         alignItems="center"
         direction="row"
-        paddingY={1}
-        paddingX={2}
+        marginY={1}
       >
         <Tooltip title="Previous person">
           <span>
@@ -35,7 +34,7 @@ export const SwitchAgentHeader = ({
           </span>
         </Tooltip>
 
-        <h2>{`Person ${currentAgent + 1}`}</h2>
+        <h2 style={{minWidth: 100}}>{`Person ${currentAgent + 1}`}</h2>
 
         <Tooltip title="Next person">
           <span>

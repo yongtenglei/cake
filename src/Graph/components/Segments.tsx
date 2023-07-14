@@ -1,6 +1,6 @@
 import React, { memo, useContext } from 'react'
+import Color from 'color'
 import { DrawnSegment } from '../../types'
-import { shadeHexColor } from '../../utils/colorUtils'
 import { GraphContext } from '../GraphContext'
 import { getInnerHeight } from '../graphConstants'
 
@@ -21,7 +21,7 @@ export const Segments = ({ segments, color }: SegmentsProps) => {
     <>
       {segments.map((seg, i) => {
         const { x1, y1, x2, y2, id } = seg
-        const lineColor = shadeHexColor(color, -0.5)
+        const lineColor = Color(color).darken(0.5)
 
         return (
           <React.Fragment key={id}>

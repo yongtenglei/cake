@@ -45,7 +45,7 @@ export const runDivisionAlgorithm = async (
   // Combine all slices assigned to each user into one "Portion"
   const totalValues = preferences.map(getTotalValue)
 
-  const portions = result.reduce((acc, slice) => {
+const portions = result.reduce((acc, slice) => {
     const owner = slice.owner
     if (!acc[owner]) {
       acc[owner] = { owner, percentValues: Array(numPeople).fill(0), edges: [] }
@@ -57,6 +57,8 @@ export const runDivisionAlgorithm = async (
     return acc
   }, Array<Portion>(numPeople))
 
+  // Sort edges by start
+  portions.forEach(portion => portion.edges.sort((a,b) => a[0] - b[0]))
   console.log('Portions', portions)
   return portions
 }

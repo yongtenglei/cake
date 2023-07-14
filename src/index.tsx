@@ -1,16 +1,16 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { Outlet } from 'react-router-dom'
 import { CssBaseline } from '@mui/material'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
+import { C_PRIMARY, C_PRIMARY_DARK, C_PRIMARY_LIGHT, C_SECONDARY, C_SECONDARY_DARK, C_SECONDARY_LIGHT, C_SUCCESS } from './colors'
+import './index.css'
 import { PageLayout } from './Layouts'
 import { ErrorPage } from './Pages/ErrorPage'
+import { GraphPage } from './Pages/GraphPage'
+import { LandingPage } from './Pages/LandingPage'
 import { PrivacyPolicyPage } from './Pages/PrivacyPolicyPage'
 import { TutorialPage } from './Pages/TutorialPage'
-import { LandingPage } from './Pages/LandingPage'
-import { GraphPage } from './Pages/GraphPage'
-import './index.css'
 
 const theme = createTheme({
   typography: {
@@ -18,19 +18,28 @@ const theme = createTheme({
   },
   palette: {
     primary: {
-      light: '#8ECAE6',
-      main: '#0d77b0',
-      dark: '#02405f',
+      light: C_PRIMARY_LIGHT,
+      main: C_PRIMARY,
+      dark: C_PRIMARY_DARK,
     },
     secondary: {
-      light: '#ffde8b',
-      main: '#FFB703',
-      dark: '#FB8500',
+      light: C_SECONDARY_LIGHT,
+      main: C_SECONDARY,
+      dark: C_SECONDARY_DARK,
     },
     success: {
-      main: '#8bc34a',
+      main: C_SUCCESS,
     }
   },
+  components: {
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          fontSize: 18,
+        }
+      }
+    },
+  }
 })
 
 export const router = createBrowserRouter([

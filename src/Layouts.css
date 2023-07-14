@@ -40,6 +40,10 @@
 }
 
 @media all and (min-width: 900px) {
+  .layoutContainer {
+    padding-left: 64px;
+    padding-right: 64px;
+  }
   .bodyContainer {
     padding: 64px;
   }

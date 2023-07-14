@@ -14,8 +14,8 @@ export const createScales = ({
   innerHeight,
   cakeSize,
 }: createScalesParams) => {
-  const yScale = scaleLinear().domain([0, 10]).range([innerHeight, 0]).nice()
-  const xScale = scaleLinear().domain([0, cakeSize]).range([0, innerWidth]).nice()
+  const yScale = scaleLinear().domain([0, 10]).range([innerHeight, 0])
+  const xScale = scaleLinear().domain([0, cakeSize]).range([0, innerWidth])
   return { yScale, xScale }
 }
 
@@ -50,7 +50,7 @@ export const useConvertSegFromPixels = () => {
   }
 }
 
-export const isDrawingComplete = (segments: Segment[]) => {
+export const isDrawingComplete = (segments: Segment[], cakeSize: number) => {
   const seg = segments[segments.length - 1]
-  return seg?.end === defaultCakeSize
+  return seg?.end === cakeSize
 }

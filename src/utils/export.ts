@@ -80,6 +80,7 @@ export const uploadValueData = async (file: File): Promise<Preferences> => {
   return results.length ? results : [[]]
 }
 
+// Default to screenshotting and downloading the `#main` content of the page
 export const downloadScreenshot = async (selector = 'main') => {
   const canvas = await html2canvas(document.querySelector(selector))
 
@@ -87,7 +88,7 @@ export const downloadScreenshot = async (selector = 'main') => {
     .toDataURL('image/png')
     .replace('image/png', 'image/octet-stream')
   const saveLink = document.createElement('a')
-  saveLink.download = 'cake division.png'
+  saveLink.download = 'fair division.png'
   saveLink.href = strData
   saveLink.click()
 }

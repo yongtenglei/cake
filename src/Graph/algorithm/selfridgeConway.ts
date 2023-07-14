@@ -128,7 +128,6 @@ const assignTrimmings = (
   // P0 takes a slice
   const [p0Slice, remainingSlices2] = removeBestSlice(0, remainingSlices1)
   
-  console.log('doggo', p0Slice)
   // Non-trimmed picker takes a slice
   const nonTrimmedPickerSlice = remainingSlices2[0]
   return [

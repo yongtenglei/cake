@@ -1,33 +1,26 @@
-import { Stack, Tooltip, IconButton } from '@mui/material'
-import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import CheckIcon from '@mui/icons-material/Check'
 import CompareIcon from '@mui/icons-material/Compare'
 import EditIcon from '@mui/icons-material/Edit'
-import { Preferences } from '../../../types'
-import { maxAgents, margin } from '../../graphConstants'
+import LoopIcon from '@mui/icons-material/Loop'
+import PersonAddIcon from '@mui/icons-material/PersonAdd'
+import { Tooltip } from '@mui/material'
+import { ComponentProps } from 'react'
+
+import { MenuButton } from '../../../components/MenuButton'
+import { maxAgents } from '../../graphConstants'
 import { ExtraOptions } from './ExtraOptions'
 
-const ButtonText = ({ children }) => (
-  <Stack
-    alignItems="center"
-    sx={{ fontSize: 12, textTransform: 'uppercase', minWidth: 40 }}
-  >
-    {children}
-  </Stack>
-)
+type ExtraOptionsProps = ComponentProps<typeof ExtraOptions>
 
-interface SharedProps {
-  onClickCompare: VoidFunction
+type SharedProps = ExtraOptionsProps & {
   onClickDone: VoidFunction
-  preferences: Preferences
-  setNewData: (pref: Preferences) => void
   totalAgents: number
   isComplete: boolean
 }
 
 type DrawingHeaderButtonsProps = SharedProps & {
   onClickCreateAgent: VoidFunction
-  compareMode: boolean
+  onClickCompare: VoidFunction
 }
 
 export const DrawingHeaderButtons = ({
@@ -35,10 +28,9 @@ export const DrawingHeaderButtons = ({
   onClickCreateAgent,
   onClickCompare,
   totalAgents,
-  compareMode,
   isComplete,
   preferences,
-  setNewData,
+  uploadInput,
 }: DrawingHeaderButtonsProps) => {
   const cantAddMoreAgents = totalAgents === maxAgents
 
@@ -46,88 +38,87 @@ export const DrawingHeaderButtons = ({
     <>
       <Tooltip
         title={
-          cantAddMoreAgents
-            ? `Cannot add more than ${maxAgents} people`
-            : 'Add Person'
+          cantAddMoreAgents ? `Cannot add more than ${maxAgents} people` : 'Add Person'
         }
       >
         <span>
-          <IconButton
-            aria-label="add person"
+          <MenuButton
             disabled={!isComplete || cantAddMoreAgents}
-            onClick={() => {
-              if (compareMode) {
-                onClickCompare()
-              }
-              onClickCreateAgent()
-            }}
+            onClick={onClickCreateAgent}
           >
-            <ButtonText>
-              <PersonAddIcon />
-              Add Person
-            </ButtonText>
-          </IconButton>
+            <PersonAddIcon />
+            Add Person
+          </MenuButton>
         </span>
       </Tooltip>
 
-      <IconButton
-        aria-label={compareMode ? 'Edit' : 'Compare'}
-        disabled={!isComplete || totalAgents < 2}
-        onClick={onClickCompare}
-      >
-        <ButtonText>
-          {compareMode ? <EditIcon /> : <CompareIcon />}
-          {compareMode ? 'Edit' : 'Compare'}
-        </ButtonText>
-      </IconButton>
+      <MenuButton disabled={!isComplete || totalAgents < 2} onClick={onClickCompare}>
+        <CompareIcon />
+        Compare
+      </MenuButton>
 
-      <IconButton
-        aria-label={'Done'}
-        disabled={!isComplete || totalAgents < 2}
-        onClick={onClickDone}
-      >
-        <ButtonText>
-          <CheckIcon />
-          Done
-        </ButtonText>
-      </IconButton>
+      <MenuButton disabled={!isComplete || totalAgents < 2} onClick={onClickDone}>
+        <CheckIcon />
+        Done
+      </MenuButton>
 
-      <ExtraOptions setNewData={setNewData} preferences={preferences} />
+      <ExtraOptions uploadInput={uploadInput} preferences={preferences} />
     </>
   )
 }
 
-type CompareHeaderButtonsProps = SharedProps
+type CompareHeaderButtonsProps = SharedProps & {
+  onClickEdit: (agent?: number) => void
+}
 
 export const CompareHeaderButtons = ({
-  onClickCompare,
+  onClickEdit,
   onClickDone,
-  setNewData,
+  uploadInput,
   preferences,
   totalAgents,
   isComplete,
 }: CompareHeaderButtonsProps) => {
   return (
     <>
-      <IconButton aria-label={'Edit'} onClick={onClickCompare}>
-        <ButtonText>
-          <EditIcon />
-          Edit
-        </ButtonText>
-      </IconButton>
+      <MenuButton onClick={() => onClickEdit()}>
+        <EditIcon />
+        Edit
+      </MenuButton>
 
-      <IconButton
-        aria-label={'Done'}
-        onClick={onClickDone}
-        disabled={!isComplete || totalAgents < 2}
-      >
-        <ButtonText>
-          <CheckIcon />
-          Done
-        </ButtonText>
-      </IconButton>
+      <MenuButton onClick={onClickDone} disabled={!isComplete || totalAgents < 2}>
+        <CheckIcon />
+        Done
+      </MenuButton>
 
-      <ExtraOptions setNewData={setNewData} preferences={preferences} />
+      <ExtraOptions uploadInput={uploadInput} preferences={preferences} />
+    </>
+  )
+}
+
+type ResultsButtonsProps = ExtraOptionsProps & {
+  resetInput: VoidFunction
+  onClickEdit: (agent?: number) => void
+}
+
+export const ResultsButtons = ({
+  preferences,
+  uploadInput,
+  resetInput,
+  onClickEdit,
+}: ResultsButtonsProps) => {
+  return (
+    <>
+      <MenuButton onClick={() => onClickEdit()}>
+        <EditIcon />
+        Edit
+      </MenuButton>
+      <MenuButton onClick={resetInput}>
+        <LoopIcon />
+        Reset
+      </MenuButton>
+
+      <ExtraOptions uploadInput={uploadInput} preferences={preferences} />
     </>
   )
 }

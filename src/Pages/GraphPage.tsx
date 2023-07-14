@@ -40,7 +40,7 @@ export const GraphPage = () => {
           />
         </Box>
       </Stack>
-      <Box marginTop={10} marginBottom={20}>
+      <Box marginTop={10} marginBottom={20} id="graph-content">
         <Graph />
       </Box>
     </>

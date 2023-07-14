@@ -17,7 +17,7 @@ export const ResultsView = ({ results, preferences, algoUsed }: ResultsViewProps
   // The subsections do a lot of work, so in case there are bugs
   // the error boundaries will prevent errors from ruining the whole page.
   return (
-    <Stack spacing={6}>
+    <Stack spacing={8} marginTop={8}>
       <ErrorBoundary FallbackComponent={SectionErrorDisplay}>
         <ResultsGraphs results={results} preferences={preferences} />
       </ErrorBoundary>

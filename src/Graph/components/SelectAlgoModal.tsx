@@ -80,13 +80,8 @@ const SelectAlgoModalGuts = ({
         onConfirm(selectedAlgo)
       }}
     >
-      <DialogTitle>Select Method</DialogTitle>
+      <DialogTitle>Select how to divide the resource</DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          Select how to divide the resource.
-        </DialogContentText>
-
-        <br />
         <FormLabel id="algo-select">Method: </FormLabel>
         <RadioGroup aria-labelledby="algo-select" name="radio-buttons-group">
           {Object.values(Algorithms).map((algo) => (
@@ -98,10 +93,9 @@ const SelectAlgoModalGuts = ({
                   onChange={(e) => setSelectedAlgo(e.target.value as AlgoName)}
                 />
               }
-              label={algo.name}
+              label={algo.name + ' - ' + algo.numAgentsText}
               checked={algo.key === selectedAlgo}
               disabled={!algoIsSelectable(algo)}
-              // algo.numAgentsText
             />
           ))}
         </RadioGroup>

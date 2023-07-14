@@ -23,6 +23,12 @@ body {
 }
 
 
-h1 {
-  margin-top: 0;
+h1, h2 {
+  margin: 0;
+}
+
+/* small adjustment to align a faulty icon to center */
+.MuiSvgIcon-root[data-testid="ArrowBackIosIcon"] {
+  position: relative;
+  left: 4px;
 }

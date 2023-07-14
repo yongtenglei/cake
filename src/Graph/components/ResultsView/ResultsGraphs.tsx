@@ -1,11 +1,28 @@
-import { useContext } from 'react'
-import { getAgentColor } from '../../../constants'
-import { Portion, Preferences, Segment, Slice } from '../../../types'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  FormControlLabel,
+  Switch,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from '@mui/material'
+import Color from 'color'
+import { useContext, useState } from 'react'
+import { getAgentColor } from '../../../colors'
+import { Portion, Preferences, Segment } from '../../../types'
+import { formatNumber } from '../../../utils/formatUtils'
 import { GraphContext } from '../../GraphContext'
-import { useConvertSegToPixels, createScales } from '../../graphUtils'
-import { Box } from '@mui/material'
+import { createScales, useConvertSegToPixels } from '../../graphUtils'
+import { TinySectionLabels } from '../SectionLabels'
 
-const width = 500
+const width = 560
 const height = 100
 const spaceBetween = 20
 const cuttingLineExtension = 25
@@ -14,7 +31,7 @@ const margin = {
   top: cuttingLineExtension,
   bottom: cuttingLineExtension + 10,
   left: 165,
-  right: 70,
+  right: 110,
 }
 
 interface ResultsGraphsProps {
@@ -29,6 +46,7 @@ export const ResultsGraphs = ({ results, preferences }: ResultsGraphsProps) => {
     innerHeight: height,
     cakeSize,
   })
+  const [showLabels, setShowLabels] = useState(false)
 
   const totalHeight =
     (height + spaceBetween) * preferences.length + margin.top + margin.bottom
@@ -37,8 +55,10 @@ export const ResultsGraphs = ({ results, preferences }: ResultsGraphsProps) => {
   const allCutlines = results
     .reduce((acc, result) => [...acc, ...result.edges.map((edge) => edge[0])], [])
     .sort()
+
   // remove initial zero
   allCutlines.shift()
+
   return (
     <section>
       <GraphContext.Provider
@@ -52,6 +72,19 @@ export const ResultsGraphs = ({ results, preferences }: ResultsGraphsProps) => {
         }}
       >
         <h2>Resource Split</h2>
+        {labels.length ? (
+          <Box>
+            <FormControlLabel
+              control={
+                <Switch
+                  onChange={(e) => setShowLabels(e.target.checked)}
+                  checked={showLabels}
+                />
+              }
+              label="Show labels"
+            />
+          </Box>
+        ) : null}
         <Box
           component="svg"
           width={totalWidth}
@@ -62,6 +95,8 @@ export const ResultsGraphs = ({ results, preferences }: ResultsGraphsProps) => {
           <text textAnchor="end" x={totalWidth} y={0} dominantBaseline={'hanging'}>
             Portion Size
           </text>
+
+          {showLabels ? <TinySectionLabels margin={margin} height={totalHeight} /> : null}
 
           <g transform={`translate(${margin.left}, ${margin.top})`}>
             {preferences.map((segments, i) => {
@@ -97,8 +132,8 @@ export const ResultsGraphs = ({ results, preferences }: ResultsGraphsProps) => {
                     textAnchor="middle"
                     dominantBaseline="middle"
                   >
-                    <title>{totalSharePercent.toFixed(2)}%</title>
-                    {totalSharePercent.toFixed(1)}%
+                    <title>{formatNumber(totalSharePercent)}%</title>
+                    {formatNumber(totalSharePercent, 2)}%
                   </text>
                 </g>
               )
@@ -112,11 +147,11 @@ export const ResultsGraphs = ({ results, preferences }: ResultsGraphsProps) => {
                   <line
                     y2={totalHeight - cuttingLineExtension - offset}
                     strokeDasharray={8}
-                    stroke="black"
-                    strokeWidth={2}
+                    stroke="#666"
+                    strokeWidth={1.5}
                   />
-                  <text y={totalHeight - offset - 12} textAnchor="middle">
-                    <title>{cut.toFixed(2)}</title>
+                  <text y={totalHeight - offset - 10} textAnchor="middle">
+                    <title>{formatNumber(cut)}</title>
                     {cut.toFixed(cakeSize >= 10 ? 0 : 1)}
                   </text>
                 </g>
@@ -125,6 +160,45 @@ export const ResultsGraphs = ({ results, preferences }: ResultsGraphsProps) => {
           </g>
         </Box>
       </GraphContext.Provider>
+
+      <Accordion sx={{ maxWidth: totalWidth }}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="details-panel"
+          id="details-panel-header"
+        >
+          Resource Split Details
+        </AccordionSummary>
+        <AccordionDetails>
+          <TableContainer>
+            <Table size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell sx={{ fontWeight: 'bold' }}>Portion Owner</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold' }}>Range [start - end]</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {results.map((result) => (
+                  <TableRow>
+                    <TableCell>Person {result.owner + 1}</TableCell>
+                    <TableCell sx={{ whiteSpace: 'pre' }}>
+                      {result.edges
+                        .map(
+                          (range) =>
+                            '[' +
+                            range.map((edge) => formatNumber(edge)).join(' - ') +
+                            ']'
+                        )
+                        .join('\n')}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </AccordionDetails>
+      </Accordion>
     </section>
   )
 }
@@ -144,20 +218,18 @@ const TinyGraph = ({ segments, height, result, agent }: TinyGraphProps) => {
   const segSvg = segments
     .map(convertToPixels)
     .map(({ x1, x2, y1, y2 }) => (
-      <path
-        key={x1}
-        fill={'#ddd'}
-        d={`M${x1},${y1} L${x2},${y2} L${x2},${height} L${x1},${height}`}
-      />
+      <path key={x1} d={`M${x1},${y1} L${x2},${y2} L${x2},${height} L${x1},${height}`} />
     ))
 
   return (
     <>
-      {/* Segments display in gray */}
-      <g fillOpacity={0.5}>{segSvg}</g>
+      {/* Segments display in semi-gray */}
+      <g fill={Color(getAgentColor(agent)).desaturate(0.5).lightness(85)}>{segSvg}</g>
 
       {/* Mask colored sections to match segments */}
-      <mask id={maskId}>{segSvg}</mask>
+      <mask id={maskId}>
+        <g fill="#fff">{segSvg}</g>
+      </mask>
 
       {/* Colored sections */}
       {result.edges.map(([start, end]) => (

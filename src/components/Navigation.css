@@ -4,6 +4,7 @@
   position: relative;
   z-index: 100;
   border-bottom: 8px solid var(--cSecondary);
+  background-color: white;
 }
 
 .Navigation__body {
