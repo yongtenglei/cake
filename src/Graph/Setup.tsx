@@ -11,6 +11,7 @@ import { UpdateDataInput } from '../components/UploadDataInput'
 import { Preferences, SectionLabel } from '../types'
 import { defaultGraphWidth, getInnerWidth, margin } from './graphConstants'
 import { sampleLabels } from './sampleData'
+import { InteractionContainer } from '../components/InteractionContainer'
 
 // TODO: add transitions here
 // It's not as easy as dropping in a MUI Slide or Fade
@@ -56,20 +57,11 @@ export const Setup = ({ onCompletSetup, setNewData }: SetupProps) => {
   const [states, setStates] = useState<States[]>(['intro'])
   const currentState = states[states.length - 1]
   const [sameSizeSections, setSameSizeSections] = useState(false)
-  const theme = useTheme()
 
   return (
-    <Box
-      component="section"
-      padding={4}
-      sx={{
-        border: '2px solid ' + theme.palette.primary.main,
-        borderRadius: '8px',
-        marginLeft: margin.left + 'px',
-        marginRight: margin.right + 'px',
-        maxWidth: getInnerWidth(defaultGraphWidth),
-        minHeight: 300,
-      }}
+    <InteractionContainer
+      marginLeft={margin.left + 'px'}
+      marginRight={margin.right + 'px'}
     >
       <h2>Setup</h2>
       <Stack justifyContent={'space-between'} flexGrow={1} marginTop={2}>
@@ -184,7 +176,7 @@ export const Setup = ({ onCompletSetup, setNewData }: SetupProps) => {
           </Stack>
         )}
       </Stack>
-    </Box>
+    </InteractionContainer>
   )
 }
 
@@ -349,7 +341,8 @@ const SectionEdit = ({ onFinishSections, fixedSize }: SectionEditProps) => {
           <div />
         ) : (
           <Box>
-            Total resource size: {sectionLabels.reduce((acc, sec) => acc + Number(sec.width), 0)}
+            Total resource size:{' '}
+            {sectionLabels.reduce((acc, sec) => acc + Number(sec.width), 0)}
           </Box>
         )}
         <MenuButton onClick={createNewSection}>

@@ -1,6 +1,6 @@
-import { ForwardedRef } from 'react'
+import { forwardRef, ForwardedRef, ComponentProps } from 'react'
 import { Link as RRLink, NavLink as RRNavLink } from 'react-router-dom'
-import { Link as MuiLink } from '@mui/material'
+import { Link as MuiLink, Button } from '@mui/material'
 import LaunchIcon from '@mui/icons-material/Launch'
 
 /**
@@ -37,3 +37,18 @@ export const Link = ({ children, href, innerRef, ...props }: LinkProps) => {
     </MuiLink>
   )
 }
+
+/**
+ * A link that looks like a button. 
+ * While Button does support links natively, it doesn't support React Router links.
+ * 
+ * Have to work around a weird `ref` issue in Material UI's button.
+ */
+export const ButtonLink = (props: ComponentProps<typeof Button>) => (
+  <Button
+    component={forwardRef((props, ref) => (
+      <Link {...props} innerRef={ref as any} />
+    ))}
+    {...props}
+  />
+)

@@ -27,6 +27,18 @@ h1, h2 {
   margin: 0;
 }
 
+dt {
+  font-weight: bold;
+}
+dd {
+  margin-bottom: 16px;
+}
+
+/* This allows about 80 characters per line, which improves readibility */
+p {
+  max-width: 600px;
+}
+
 /* small adjustment to align a faulty icon to center */
 .MuiSvgIcon-root[data-testid="ArrowBackIosIcon"] {
   position: relative;

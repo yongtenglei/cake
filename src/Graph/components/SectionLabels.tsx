@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { GraphContext } from '../GraphContext'
-import { margin, getInnerHeight } from '../graphConstants'
+import { getInnerHeight } from '../graphConstants'
 
 const offset = 30
 export const SectionLabels = () => {

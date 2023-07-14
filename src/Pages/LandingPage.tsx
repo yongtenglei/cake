@@ -1,10 +1,9 @@
-import { forwardRef } from 'react'
+import { Box, Stack, useTheme } from '@mui/material'
 import { ReactSVG } from 'react-svg'
-import { Stack, Box, Button, useTheme } from '@mui/material'
-import { Link } from '../components/Link'
-import { PageLayout, LayoutContainer } from '../Layouts'
-import title from '../images/title.svg'
+import { LayoutContainer, PageLayout } from '../Layouts'
+import { ButtonLink } from '../components/Link'
 import edgeImage from '../images/edge.svg'
+import title from '../images/title.svg'
 
 // Needs more work to be pretty on small screen sizes
 export const LandingPage = () => {
@@ -60,26 +59,13 @@ export const LandingPage = () => {
             </Box>
 
             <Stack direction="row" alignItems="center" spacing={2}>
-              <Button
-                component={forwardRef((props, ref) => (
-                  <Link {...props} innerRef={ref as any} />
-                ))}
-                variant="outlined"
-                color="inherit"
-                href={'/graph'}
-              >
+              <ButtonLink variant="outlined" color="inherit" href={'/graph'}>
                 Splitting Tool
-              </Button>
+              </ButtonLink>
 
-              <Button
-                component={forwardRef((props, ref) => (
-                  <Link {...props} innerRef={ref as any} />
-                ))}
-                variant="contained"
-                href={'/learn'}
-              >
+              <ButtonLink variant="contained" href={'/learn'}>
                 Learn
-              </Button>
+              </ButtonLink>
             </Stack>
           </Stack>
 

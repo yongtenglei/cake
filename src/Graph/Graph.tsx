@@ -32,6 +32,15 @@ import { createScales, isDrawingComplete } from './graphUtils'
 export const Graph = () => {
   const [cakeSize, setCakeSize] = useState<number>(defaultCakeSize)
   const [sectionLabels, setSectionLabels] = useState<SectionLabel[]>([])
+  const [algoUsed, setAlgoUsed] = useState<AlgoName | null>(null)
+  const [algoResults, setAlgoResults] = useState<Portion[] | []>(null)
+  const [preferences, setPreferences] = useState<Preferences>([[]])
+
+  const { yScale, xScale } = createScales({
+    innerWidth: getInnerWidth(defaultGraphWidth),
+    innerHeight: getInnerHeight(defaultGraphHeight),
+    cakeSize,
+  })
   
   const onCompletSetup = (sectionLabels: SectionLabel[], cakeSize?: number) => {
     if (cakeSize) {
@@ -51,17 +60,6 @@ export const Graph = () => {
     setSectionLabels(sectionLabels)
     setViewMode('edit')
   }
-
-  const { yScale, xScale } = createScales({
-    innerWidth: getInnerWidth(defaultGraphWidth),
-    innerHeight: getInnerHeight(defaultGraphHeight),
-    cakeSize,
-  })
-
-  const [algoUsed, setAlgoUsed] = useState<AlgoName | null>(null)
-  const [algoResults, setAlgoResults] = useState<Portion[] | []>(null)
-
-  const [preferences, setPreferences] = useState<Preferences>([[]])
 
   const uploadInput = (pref: Preferences) => {
     resetInput()
@@ -207,9 +205,7 @@ export const Graph = () => {
             }
           />
         </Box>
-        <Box
-          sx={{ position: 'relative', zIndex: 1, top: -10 }}
-        >
+        <Box sx={{ position: 'relative', zIndex: 1, top: -10 }}>
           <DrawingLayer
             segments={currentAgentPrefs}
             setSegments={setCurrentAgentPrefs}

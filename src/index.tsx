@@ -10,7 +10,7 @@ import { ErrorPage } from './Pages/ErrorPage'
 import { GraphPage } from './Pages/GraphPage'
 import { LandingPage } from './Pages/LandingPage'
 import { PrivacyPolicyPage } from './Pages/PrivacyPolicyPage'
-import { TutorialPage } from './Pages/TutorialPage'
+import { LearningPage } from './Pages/LearningPage/LearningPage'
 
 const theme = createTheme({
   typography: {
@@ -72,8 +72,8 @@ export const router = createBrowserRouter([
         element: <GraphPage />,
       },
       {
-        path: '/learn',
-        element: <TutorialPage />,
+        path: '/learn/:step?',
+        element: <LearningPage />,
       },
       {
         path: '/privacy-policy',
