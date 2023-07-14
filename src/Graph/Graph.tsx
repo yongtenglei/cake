@@ -32,6 +32,7 @@ import { createScales, isDrawingComplete } from './graphUtils'
 export const Graph = () => {
   const [cakeSize, setCakeSize] = useState<number>(defaultCakeSize)
   const [sectionLabels, setSectionLabels] = useState<SectionLabel[]>([])
+  
   const onCompletSetup = (sectionLabels: SectionLabel[], cakeSize?: number) => {
     if (cakeSize) {
       setCakeSize(cakeSize)
@@ -40,9 +41,17 @@ export const Graph = () => {
     } else {
       setCakeSize(defaultCakeSize)
     }
+    // truncate any segments outside the cake
+    const prefsScopeToCakeSize = preferences.map((segments) =>
+      segments
+        .map((seg) => ({ ...seg, end: Math.min(seg.end, cakeSize) }))
+        .filter((seg) => seg.end > seg.start)
+    )
+    setPreferences(prefsScopeToCakeSize)
     setSectionLabels(sectionLabels)
     setViewMode('edit')
   }
+
   const { yScale, xScale } = createScales({
     innerWidth: getInnerWidth(defaultGraphWidth),
     innerHeight: getInnerHeight(defaultGraphHeight),
@@ -54,12 +63,6 @@ export const Graph = () => {
 
   const [preferences, setPreferences] = useState<Preferences>([[]])
 
-  const resetAll = () => {
-    resetInput()
-    setSectionLabels([])
-    setCakeSize(defaultCakeSize)
-    setViewMode('setup')
-  }
   const uploadInput = (pref: Preferences) => {
     resetInput()
     const maxEndpoint = maxBy(pref, (segs: Segment[]) =>
@@ -74,6 +77,9 @@ export const Graph = () => {
     setCurrentAgent(0)
     setAlgoResults(null)
     setViewMode('edit')
+  }
+  const onClickSetLabels = () => {
+    setViewMode('setup')
   }
   // Agents are zero-index in the code, but 1-indexed when displaying to users
   const [currentAgent, setCurrentAgent] = useState<number>(0)
@@ -161,6 +167,7 @@ export const Graph = () => {
           heading={<h2>Compare</h2>}
           buttons={
             <CompareHeaderButtons
+              onClickSetLabels={onClickSetLabels}
               totalAgents={preferences.length}
               isComplete={isComplete}
               onClickEdit={onClickEdit}
@@ -188,6 +195,7 @@ export const Graph = () => {
             }
             buttons={
               <DrawingHeaderButtons
+                onClickSetLabels={onClickSetLabels}
                 totalAgents={preferences.length}
                 isComplete={isComplete}
                 onClickCreateAgent={onClickCreateAgent}
@@ -200,7 +208,7 @@ export const Graph = () => {
           />
         </Box>
         <Box
-          sx={{ position: 'relative', zIndex: 1, top: sectionLabels.length ? -10 : -40 }}
+          sx={{ position: 'relative', zIndex: 1, top: -10 }}
         >
           <DrawingLayer
             segments={currentAgentPrefs}

@@ -2,6 +2,7 @@ import CheckIcon from '@mui/icons-material/Check'
 import CompareIcon from '@mui/icons-material/Compare'
 import EditIcon from '@mui/icons-material/Edit'
 import LoopIcon from '@mui/icons-material/Loop'
+import LabelIcon from '@mui/icons-material/Label'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import { Tooltip } from '@mui/material'
 import { ComponentProps } from 'react'
@@ -13,6 +14,7 @@ import { ExtraOptions } from './ExtraOptions'
 type ExtraOptionsProps = ComponentProps<typeof ExtraOptions>
 
 type SharedProps = ExtraOptionsProps & {
+  onClickSetLabels: VoidFunction
   onClickDone: VoidFunction
   totalAgents: number
   isComplete: boolean
@@ -24,6 +26,7 @@ type DrawingHeaderButtonsProps = SharedProps & {
 }
 
 export const DrawingHeaderButtons = ({
+  onClickSetLabels,
   onClickDone,
   onClickCreateAgent,
   onClickCompare,
@@ -36,6 +39,10 @@ export const DrawingHeaderButtons = ({
 
   return (
     <>
+      <MenuButton onClick={onClickSetLabels}>
+        <LabelIcon />
+        Set Labels
+      </MenuButton>
       <Tooltip
         title={
           cantAddMoreAgents ? `Cannot add more than ${maxAgents} people` : 'Add Person'
@@ -72,6 +79,7 @@ type CompareHeaderButtonsProps = SharedProps & {
 }
 
 export const CompareHeaderButtons = ({
+  onClickSetLabels,
   onClickEdit,
   onClickDone,
   uploadInput,
@@ -81,6 +89,10 @@ export const CompareHeaderButtons = ({
 }: CompareHeaderButtonsProps) => {
   return (
     <>
+      <MenuButton onClick={onClickSetLabels}>
+        <LabelIcon />
+        Set Labels
+      </MenuButton>
       <MenuButton onClick={() => onClickEdit()}>
         <EditIcon />
         Edit
