@@ -28,13 +28,13 @@ const agentColors = [
 export const getAgentColor = (agent: number) => agentColors[agent] ?? ''
 
 // Label colors
-const C_STRAWBERRY = '#F2CADF'
-const C_VANILLA = '#F2F1A1'
-const C_CHOCOLATE = '#A57C52'
-const C_AVACADO = '#3a5a40'
-const C_LAVENDER = '#967aa1'
-const C_CARROT = '#ffa200'
-const C_RED_VELVET = '#bc4749'
+export const C_STRAWBERRY = '#F2CADF'
+export const C_VANILLA = '#F2F1A1'
+export const C_CHOCOLATE = '#A57C52'
+export const C_AVACADO = '#3a5a40'
+export const C_LAVENDER = '#967aa1'
+export const C_CARROT = '#ffa200'
+export const C_RED_VELVET = '#bc4749'
 export const labelColors = [
   C_STRAWBERRY,
   C_VANILLA,

@@ -1,4 +1,4 @@
-import { Box, Stack, useTheme } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 import { ReactSVG } from 'react-svg'
 import { LayoutContainer, PageLayout } from '../Layouts'
 import { ButtonLink } from '../components/Link'
@@ -7,11 +7,10 @@ import title from '../images/title.svg'
 
 // Needs more work to be pretty on small screen sizes
 export const LandingPage = () => {
-  const theme = useTheme()
   return (
     <PageLayout
       contained={false}
-      sx={{ backgroundColor: theme.palette.primary.dark, flexGrow: 1 }}
+      sx={{ backgroundColor: theme => theme.palette.primary.dark, flexGrow: 1 }}
     >
       <Box component="article" sx={{ position: 'relative' }}>
         <Box

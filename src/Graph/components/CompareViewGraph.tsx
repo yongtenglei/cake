@@ -126,18 +126,17 @@ const SmallGraph = ({
 
             <Segments key={agent} segments={pixelSegs} color={getAgentColor(agent)} />
 
-            {hideComparisonBar ? (
+            {/* {hideComparisonBar ? (
               <ValueBubbles segments={pixelSegs} />
             ) : (
               <>
                 <line y2={getInnerHeight(height)} x1={x} x2={x} stroke={'black'} />
                 <ValueBubble x={x} y={comparisonLineValue} />
               </>
-            )}
+            )} */}
           </g>
         </svg>
       </div>
-      {/* <ValueBrackets segments={segments} /> */}
     </Stack>
   )
 }

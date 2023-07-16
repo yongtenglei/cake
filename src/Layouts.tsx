@@ -52,6 +52,10 @@ export const BodyContainer = ({ children, sx }: LayoutProps) => {
   )
 }
 
+/**
+ * TextContainer provides a decent max width for fitting 75-80 characters per line, 
+ * which aids readibility.
+ */
 export const TextContainer = ({ children, sx }: LayoutProps) => {
-  return <Box sx={{ maxWidth: 700, ...sx }}>{children}</Box>
+  return <Box sx={{ maxWidth: 600, ...sx }}>{children}</Box>
 }

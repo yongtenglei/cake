@@ -31,7 +31,7 @@ export const SectionLabels = () => {
               width={width}
               height={getInnerHeight(height)}
               fill={label.color}
-              fillOpacity={0.4}
+              fillOpacity={0.2}
             />
           </React.Fragment>
         )

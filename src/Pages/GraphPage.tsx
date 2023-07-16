@@ -1,14 +1,17 @@
-import { Stack, Box } from '@mui/material'
-import { TextContainer } from '../Layouts'
+import { Box, Stack } from '@mui/material'
+import { ErrorBoundary } from 'react-error-boundary'
 import { Graph } from '../Graph/Graph'
+import { TextContainer } from '../Layouts'
 import { Link } from '../components/Link'
+import { SectionErrorDisplay } from '../components/SectionErrorDisplay'
+import { CakeImage } from './LearningPage/Images'
 
 export const GraphPage = () => {
   return (
     <>
-      <Stack direction="row">
+      <h1>Resource Splitting Tool</h1>
+      <Stack direction={{ xs: 'column-reverse', sm: 'row' }}>
         <TextContainer>
-          <h1>Resource Splitting Tool</h1>
           <p>
             Welcome to our innovative <strong>Visual Fair Division Tool</strong>, the
             first of its kind! Using this tool you can visually express the value you
@@ -32,16 +35,18 @@ export const GraphPage = () => {
             to understand how fair division works.
           </p>
         </TextContainer>
-        <Box padding={6}>
-          <img
-            src="https://creazilla-store.fra1.digitaloceanspaces.com/emojis/53176/birthday-cake-emoji-clipart-md.png"
-            style={{ width: '100%', maxWidth: 500 }}
-            alt=""
-          />
+        <Box marginX={6}>
+          <Stack direction="row" justifyContent="center" flexWrap="wrap" gap="20px">
+            <CakeImage flavor="vanilla" width={140} />
+            <CakeImage flavor="chocolate" width={140} />
+            <CakeImage flavor="strawberry" width={140} />
+          </Stack>
         </Box>
       </Stack>
       <Box marginTop={10} marginBottom={20} id="graph-content">
-        <Graph />
+        <ErrorBoundary FallbackComponent={SectionErrorDisplay}>
+          <Graph />
+        </ErrorBoundary>
       </Box>
     </>
   )

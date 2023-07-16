@@ -16,7 +16,6 @@ import {
   changeSegmentCornerValue,
   changeSegmentFlatValue,
   changeSegmentWidth,
-  changeSegmentWidthNumerically,
   changeSegmentWithKeyboard,
 } from './adjustSegments'
 
@@ -118,10 +117,6 @@ export const DrawingLayer = ({ segments, setSegments, currentAgent, isComplete }
       }
       setSegments([...segments, convertFromPixels(newSegment)])
     }
-  }
-
-  const setSegmentWidth = (id: number, newEnd: number) => {
-    setSegments(changeSegmentWidthNumerically(segments, id, newEnd, cakeSize))
   }
 
   let segsWithDrawing = [...segments]

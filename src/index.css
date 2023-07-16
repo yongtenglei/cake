@@ -27,16 +27,30 @@ h1, h2 {
   margin: 0;
 }
 
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.17rem;
+}
+
 dt {
   font-weight: bold;
 }
-dd {
-  margin-bottom: 16px;
+dd, li {
+  margin-bottom: 1em;
+}
+ol, ul {
+  margin-bottom: 1.5em;
 }
 
-/* This allows about 80 characters per line, which improves readibility */
-p {
-  max-width: 600px;
+img {
+  max-width: 100%;
 }
 
 /* small adjustment to align a faulty icon to center */

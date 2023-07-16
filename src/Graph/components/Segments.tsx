@@ -28,7 +28,7 @@ export const Segments = ({ segments, color }: SegmentsProps) => {
             {/* fill */}
             <path
               fill={color}
-              fillOpacity={0.7}
+              fillOpacity={0.8}
               d={`M${x1},${y1} L${x2},${y2} L${x2},${height} L${x1},${height}`}
             />
 
@@ -64,7 +64,7 @@ export const Segments = ({ segments, color }: SegmentsProps) => {
             />
 
             {/* width measuring lines */}
-            <WidthDisplay {...seg} height={height} />
+            {/* <WidthDisplay {...seg} height={height} /> */}
           </React.Fragment>
         )
       })}

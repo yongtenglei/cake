@@ -1,23 +1,54 @@
-import { Box, Button, Stack, useTheme } from '@mui/material'
-import EditIcon from '@mui/icons-material/Edit'
+import { Box, Button, Stack } from '@mui/material'
+
 import ArrowBackIcon from '@mui/icons-material/ArrowBackIos'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForwardIos'
-import { Link as RRLink } from 'react-router-dom'
 
-import { Routes, Route, useParams } from 'react-router-dom'
-import { ButtonLink, Link } from '../../components/Link'
-import { TextContainer } from '../../Layouts'
-import { InteractionContainer } from '../../components/InteractionContainer'
-import { Algorithms } from '../../Graph/graphConstants'
 import { useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { GraphContext } from '../../Graph/GraphContext'
+import { findCutLineByPercent } from '../../Graph/algorithm/getValue'
+import { runDivisionAlgorithm } from '../../Graph/algorithm/run'
+import { DrawingLayer } from '../../Graph/components/DrawingLayer'
+import {
+  Algorithms,
+  getInnerHeight,
+  getInnerWidth,
+  margin,
+} from '../../Graph/graphConstants'
+import { createScales, isDrawingComplete } from '../../Graph/graphUtils'
+import { C_STRAWBERRY, C_VANILLA } from '../../colors'
+import { InteractionContainer } from '../../components/InteractionContainer'
+import { ButtonLink, Link } from '../../components/Link'
+import cake3PrefAki from '../../images/preference/aki.png'
+import cake3PrefBruno from '../../images/preference/bruno.png'
+import cake3PrefCloe from '../../images/preference/cloe.png'
+import selfridgeResults from '../../images/results/selfridgeresults.png'
+import simple3Results from '../../images/results/simple3results.png'
+import { Portion, Segment } from '../../types'
+import { CakeFlavor, CakeImage, CharacterImage } from './Images'
+import { ResultsGraphs } from '../../Graph/components/ResultsView/ResultsGraphs'
+import { ResultsTable } from '../../Graph/components/ResultsView/ResultsTable'
+import { formatNumber } from '../../utils/formatUtils'
+
+interface CommonProps {
+  preferredFlavor: CakeFlavor | null
+  setPreferredFlavor: (flavor: CakeFlavor) => void
+}
 
 export const LearningPath = () => {
-  const theme = useTheme()
   const { step } = useParams()
+
+  const [preferredFlavor, setPreferredFlavor] = useState<CakeFlavor | undefined>(
+    undefined
+  )
+
   let stepNum = Number(step)
-  if (isNaN(stepNum)) {
+  if (isNaN(stepNum) || stepNum < 1) {
     stepNum = 1
   }
+
+  const stepProps: CommonProps = { preferredFlavor, setPreferredFlavor }
+
   const steps = [
     null, // step 0
     WhatLearn,
@@ -36,15 +67,25 @@ export const LearningPath = () => {
     Recap2,
     Ending,
   ]
+  const CurrentStep = steps[stepNum]
   return (
-    <InteractionContainer minHeight={500} display="flex" flexDirection="column">
-      Step is {stepNum}
-      <Box flexGrow={1}>{steps[stepNum || 1]()}</Box>
-      {/* Previous/Next buttons and pagination dots */}
+    <InteractionContainer
+      minHeight={600}
+      display="flex"
+      flexDirection="column"
+      sx={{
+        '& p, & dt, & dd,& ol,& ul': {
+          fontSize: 18,
+        },
+      }}
+    >
+      <Box flexGrow={1}>
+        <CurrentStep {...stepProps} />
+      </Box>
       <Box
         marginTop={4}
         display="grid"
-        gridAutoFlow="column"
+        gridAutoFlow={{ xs: 'row', sm: 'column' }}
         gridTemplateColumns="1fr 4fr 1fr"
         alignItems="center"
         justifyItems="center"
@@ -62,7 +103,7 @@ export const LearningPath = () => {
             </ButtonLink>
           )}
         </Box>
-        <Box order={3}>
+        <Box order={{ xs: 2, sm: 3 }}>
           {stepNum >= steps.length - 1 ? null : (
             <ButtonLink
               variant="outlined"
@@ -74,21 +115,46 @@ export const LearningPath = () => {
             </ButtonLink>
           )}
         </Box>
-        <Stack order={2} direction="row" spacing={1} justifySelf="center">
+        <Stack
+          order={2}
+          direction="row"
+          spacing={1}
+          justifySelf="center"
+          component="ol"
+          margin={0}
+          padding={0}
+          sx={{ listStyle: 'none' }}
+          alignItems="center"
+        >
           {steps.map((_, i) => {
             const current = stepNum === i
             return i === 0 ? null : (
-              <Link
-                key={i}
-                href={`/learn/${i}`}
-                aria-label={`Step ${i}${current ? ', current page' : ''}`}
-                sx={{
-                  borderRadius: '50%',
-                  backgroundColor: current ? theme.palette.secondary.main : '#666',
-                  height: 12,
-                  width: 12,
-                }}
-              />
+              <li style={{ margin: 0 }}>
+                <Link
+                  key={i}
+                  href={`/learn/${i}`}
+                  aria-label={`Step ${i}${current ? ', current page' : ''}`}
+                  // wrapping the navigation circle like this creates a larger click target
+                  sx={{
+                    display: 'block',
+                    padding: '6px',
+                    ':hover>div,:focus>div': {
+                      transform: 'scale(1.2)',
+                    },
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: 'block',
+                      borderRadius: '50%',
+                      backgroundColor: (theme) =>
+                        current ? theme.palette.secondary.main : '#666',
+                      height: 12,
+                      width: 12,
+                    }}
+                  />
+                </Link>
+              </li>
             )
           })}
         </Stack>
@@ -97,20 +163,26 @@ export const LearningPath = () => {
   )
 }
 
+const ImageContainer = ({ children }) => (
+  <Stack direction="row" justifyContent="center" marginY={2} sx={{ clear: 'both' }}>
+    {children}
+  </Stack>
+)
+
 const WhatLearn = () => (
   <>
-    <h2>Learn about Fair Division with this interactive tutorial</h2>
+    <h2>Learn about Fair Division in this Interactive Learning Path</h2>
     {/* flavor image here */}
     <p>Time: about 10 minutes</p>
     <h3>What you'll learn</h3>
     <ol>
-      <li>What is fair division?</li>
+      <li>What is "fair division"</li>
       <li>Divisible vs indivisible resources</li>
       <li>Proportional fairness and envy-free fairness</li>
-      <li>The cut and choose method</li>
+      <li>The Cut and Choose Method</li>
       <li>The Selfridge-Conway Method</li>
     </ol>
-    Let's begin.
+    <p>Let's begin.</p>
   </>
 )
 
@@ -129,10 +201,13 @@ const FairDivision = () => {
         <strong>Divisible resources</strong> are resources which can be divided any number
         of times, in any number of ways. This could be land, time, airwaves, or anything
         else arbitrarily divisible. When speaking abstractly, we usually refer to a
-        divisible resouces as a <strong>cake</strong>. Cakes are a good example because
-        can be cut at any place, as many times as necessary, and you usually share them
-        equally.
+        divisible resouces as a <strong>cake</strong>.
       </p>
+      <p>
+        Cakes are a good example because can be cut at any place, as many times as
+        necessary, and are usually shared equally.
+      </p>
+      <CakeImage flavor="chocolate" sx={{ display: 'block', margin: 'auto' }} />
 
       <p>
         In contrast, <strong>indivisible resources</strong> can't be split. This could be
@@ -147,23 +222,31 @@ const FairDivision = () => {
 }
 
 const SimpleCakeDivision = () => {
+  const [selected, setSelected] = useState(false)
   return (
     <>
       <h2>Simple Cake Division</h2>
+      <CharacterImage character="Aki" sx={{ float: 'right' }} />
       <p>
-        You and your friend Alexis have a small chocolate cake. She's divided it into two
+        You and your friend Aki have a small chocolate cake. She's divided it into two
         pieces. Which piece do you want?
       </p>
-      {/*  */}
-      <p>
-        Because the cake is just one flavor it <em>doesn't really matter</em> which one
-        you choose.{' '}
-      </p>
-      <p>
-        This resource-splitting solution is fair because both of you got <sup>1</sup>
-        &frasl;
-        <sub>2</sub> of the cake.
-      </p>
+
+      <ImageContainer>
+        <CakeImage flavor="chocolate" width="200px" onClick={() => setSelected(true)} />
+        <CakeImage flavor="chocolate" width="200px" onClick={() => setSelected(true)} />
+      </ImageContainer>
+      {selected ? (
+        <>
+          <p>Yum!</p>
+          <p>Since both pieces are identical, you get a fair portion either way.</p>
+          <p>
+            This cake division solution is fair because you both received <sup>1</sup>
+            &frasl;
+            <sub>2</sub> of the cake.
+          </p>
+        </>
+      ) : null}
     </>
   )
 }
@@ -172,60 +255,90 @@ const MeaningOfFair = () => {
   return (
     <>
       <h2>The Meaning of Fair</h2>
-      <p>
-        What does <em>“fair”</em> really mean?
-      </p>
+      <p>But what does “fair” really mean?</p>
       <p>
         One way to define fair is <strong>proportionality</strong>. A solution to a
         division problem is <strong>proportional</strong> if for <em>n</em> people, each
         person receives <sup>1</sup>&frasl;<sub>n</sub> of the resource.
       </p>
       <p>
-        So for 2 people, each get <sup>1</sup>&frasl;
-        <sub>2</sub> of the resource, for 3 people, each get <sup>1</sup>&frasl;
+        For example, with 2 people each get <sup>1</sup>&frasl;
+        <sub>2</sub> of the resource, with 3 people, each get <sup>1</sup>&frasl;
         <sub>3</sub>.
+      </p>
+      <p>
+        With a <strong>homogenous</strong> cake (made of the same thing) all the pieces
+        are equal so this is simple. But this gets tricky when a cake has multiple
+        flavors.
       </p>
     </>
   )
 }
 
-const TwoFlavorCake = () => {
-  const [flavor, setFlavor] = useState<'chocolate' | 'vanilla' | null>(null)
+const TwoFlavorCake = ({ preferredFlavor, setPreferredFlavor }: CommonProps) => {
   return (
     <>
       <h2>2-Flavor Cake</h2>
       <p>
-        This cake is <strong>heterogenous</strong> (has multiple parts).
+        This cake is <strong>heterogenous</strong> (made of different things).
       </p>
+      <CharacterImage character="Aki" sx={{ float: 'right' }} />
+
       <p>
-        One half is chocolate, and one half is vanilla. Alexis has divided the cake into
-        two pieces. <em>Which piece do you want?</em>
+        One half is chocolate, and one half is vanilla. Aki has divided the cake into two
+        pieces. <em>Which piece do you want?</em>
       </p>
-      <p>
-        So you prefer {null}? Alexis is happy as well because she likes both flavors
-        equally.
-      </p>
-      <p>
-        This solution is <strong>proportional</strong> because Alexis got a piece worth{' '}
-        <sup>1</sup>&frasl;
-        <sub>2</sub> of the cake and you got a piece worth <sup>1</sup>&frasl;
-        <sub>2</sub> of the cake.
-      </p>
+
+      <ImageContainer>
+        <CakeImage
+          flavor="vanilla"
+          width="200px"
+          onClick={() => setPreferredFlavor('vanilla')}
+        />
+        <CakeImage
+          flavor="chocolate"
+          width="200px"
+          onClick={() => setPreferredFlavor('chocolate')}
+        />
+      </ImageContainer>
+      {preferredFlavor && (
+        <>
+          <p>
+            Cool. So you prefer <strong>{preferredFlavor}</strong>?
+          </p>
+          <p>
+            Aki is happy to take the other piece because she likes both flavors equally.
+          </p>
+          <p>
+            This solution is <strong>proportional</strong> because Aki got a piece worth{' '}
+            <sup>1</sup>&frasl;
+            <sub>2</sub> the cake to her and you got a piece worth <sup>1</sup>&frasl;
+            <sub>2</sub> the cake to you.
+          </p>
+        </>
+      )}
     </>
   )
 }
 
-const BetterThanHalf = () => {
+const BetterThanHalf = ({ preferredFlavor = 'chocolate' }: CommonProps) => {
+  const otherFlavor = preferredFlavor === 'chocolate' ? 'vanilla' : 'chocolate'
   return (
     <>
       <h2>Better Than Half</h2>
       <p>
-        Alexis likes chocolate and vanilla equally, so she values both pieces of the cake
-        at <sup>1</sup>&frasl;
+        Since Aki likes chocolate and vanilla equally, so she values both pieces of the
+        cake at <sup>1</sup>&frasl;
         <sub>2</sub> of the cake's total value.
       </p>
+      <Stack direction="row" alignItems="flex-start" justifyContent="center">
+        <CakeImage flavor={preferredFlavor} width="200px" />
+        <Box fontSize={150}>&gt;</Box>
+        <CakeImage flavor={otherFlavor} width="200px" />
+      </Stack>
       <p>
-        However, if you like {null} more than {null}, the piece you received is worth{' '}
+        However, since you like <strong>{preferredFlavor}</strong> more than{' '}
+        <strong>{otherFlavor}</strong>, the piece you received is worth{' '}
         <em>
           more than <sup>1</sup>&frasl;
           <sub>2</sub> the cake's value
@@ -233,7 +346,7 @@ const BetterThanHalf = () => {
         .
       </p>
       <p>
-        This solution is still <strong>proportionally fair</strong> to Alexis because she
+        This solution is still <strong>proportionally fair</strong> to Aki because she
         only expected to receive <sup>1</sup>&frasl;
         <sub>2</sub> the value.
       </p>
@@ -251,9 +364,9 @@ const CutAndChoose = () => {
       </p>
       <ol>
         <li>
-          One person <strong>cuts</strong> the resource into two portions{' '}
-          <strong>they judge to have equal value</strong>. As both portions are equal to
-          them, they will accept either one.
+          One person <strong>cuts</strong> the resource into two portions which{' '}
+          <strong>they judge to have equal value</strong>. Both portions are equal to them
+          so they will accept either one.
         </li>
         <li>
           The second person <strong>chooses</strong> which piece they personally prefer.
@@ -262,32 +375,198 @@ const CutAndChoose = () => {
         </li>
       </ol>
       <p>
-        Cut and Choose is <strong>proportionally fair</strong> to both people. However,
-        the chooser may receive a portion worth more than <sup>1</sup>&frasl;
-        <sub>2</sub> of the cake, so it's better to be the chooser.
+        Cut and Choose is <strong>proportionally fair</strong> to both people. However, if
+        the chooser values parts of the cake differently than the cutter, one piece may be
+        worth more than half. With Cut and Choose, it's better to be the chooser.
       </p>
     </>
   )
 }
 
+const akisPreferences = [
+  { id: 1, start: 0, end: 1, startValue: 10, endValue: 10 },
+  { id: 2, start: 1, end: 2, startValue: 5, endValue: 5 },
+]
 const MeasuringPreference = () => {
+  const cakeSize = 2
+  const labels = [
+    {
+      id: 1,
+      name: 'strawberry',
+      start: 0,
+      end: 1,
+      color: C_STRAWBERRY,
+    },
+    {
+      id: 2,
+      name: 'vanilla',
+      start: 1,
+      end: 2,
+      color: C_VANILLA,
+    },
+  ]
+  const drawingWidth = 500
+  const drawingHeight = 300
+  const drawingInnerWidth = getInnerWidth(drawingWidth)
+  const drawingScales = createScales({
+    innerWidth: drawingInnerWidth,
+    innerHeight: getInnerHeight(drawingHeight),
+    cakeSize,
+  })
+  const outputWidth = 400
+  const outputHeight = 150
+
+  const [algoResults, setAlgoResults] = useState<Portion[] | []>(null)
+  const [segments, setSegments] = useState<Segment[]>([])
+  const [cutPoint, setCutPoint] = useState<number | undefined>(undefined)
+  const isComplete = isDrawingComplete(segments, cakeSize)
+  const runCutAlgo = () => {
+    setCutPoint(findCutLineByPercent(segments, 0.5))
+  }
+  const redoMarking = () => {
+    setSegments([])
+    setCutPoint(undefined)
+    setAlgoResults(null)
+  }
+  const onChangeSegments = (segs) => {
+    setSegments(segs)
+    setCutPoint(undefined)
+    setAlgoResults(null)
+  }
+  const runAlgo = async () => {
+    const results = await runDivisionAlgorithm(
+      [segments, akisPreferences],
+      'cutAndChoose',
+      cakeSize
+    )
+    setAlgoResults(results)
+  }
   return (
     <>
       <h2>Measuring Preference</h2>
+
+      <p>Here's a strawberry and vanilla cake</p>
+      <ImageContainer>
+        <CakeImage flavor="strawberry" width={drawingInnerWidth / 2} />
+        <CakeImage flavor="vanilla" width={drawingInnerWidth / 2} />
+      </ImageContainer>
       <p>
-        This time you cut and Alexis chooses. First,{' '}
-        <em>mark how much you like each flavor</em>. A higher number means you like that
-        flavor more.
+        This time you cut and Aki chooses. First, <strong>mark</strong> how much you like
+        each flavor on the graph below. A higher number means you like that flavor more.
       </p>
-      <p>
-        [After marking strawberry and chocolate cake] :: based on your preferences, this
-        is where you should cut the cake so that each piece is worth <sup>1</sup>&frasl;
-        <sub>2</sub> the cake to you.{' '}
-      </p>
-      <p>
-        [After click cutline] :: It turns out Alexis likes strawberry even more than
-        chocolate. She chooses this piece because it's worth the most to her.
-      </p>
+
+      <GraphContext.Provider
+        value={{
+          ...drawingScales,
+          height: drawingHeight,
+          width: drawingWidth,
+          labels,
+          cakeSize,
+        }}
+      >
+        <Box
+          position="relative"
+          marginX="auto"
+          paddingRight={margin.left - margin.right + 'px'}
+          width="fit-content"
+        >
+          <DrawingLayer
+            segments={segments}
+            setSegments={onChangeSegments}
+            currentAgent={0}
+            isComplete={isComplete}
+          />
+          {/* Dotted line for cutting */}
+          {cutPoint ? (
+            <Box
+              role="button"
+              tabIndex={0}
+              position="absolute"
+              onClick={runAlgo}
+              left={drawingScales.xScale(cutPoint) + margin.left}
+              top={0}
+              aria-label={`Cut the cake here, at ${(cutPoint / cakeSize) * 100}%`}
+              sx={{
+                cursor: 'pointer',
+                transform: {
+                  xs: 'translateX(-50%)',
+                },
+                '&:hover, &:focus': {
+                  transform: 'translateX(-50%) scaleX(1.5)',
+                },
+              }}
+              paddingX={2}
+              height="100%"
+            >
+              <Box borderLeft="4px dashed black" height="100%" />
+            </Box>
+          ) : null}
+        </Box>
+      </GraphContext.Provider>
+
+      {cutPoint && !algoResults ? (
+        <p>
+          Based on your preferences, this dotted line is where you should cut the cake so
+          that each piece is worth <sup>1</sup>
+          &frasl;
+          <sub>2</sub> the cake to you. This way you'll get a fair portion of the cake no
+          matter which part Aki chooses.
+        </p>
+      ) : null}
+
+      <Stack justifyContent={'center'} direction="row" spacing={2} marginY={2}>
+        <Button variant="outlined" disabled={!isComplete} onClick={redoMarking}>
+          Redo marking
+        </Button>
+        <Button variant="contained" disabled={!isComplete} onClick={runCutAlgo}>
+          Done marking
+        </Button>
+      </Stack>
+
+      {algoResults ? (
+        <>
+          <Box component="p" marginTop={4}>
+            Nice! Let's see which piece Aki chooses:
+          </Box>
+          <CharacterImage character="Aki" sx={{ marginY: 2, marginX: 'auto' }} />
+          <GraphContext.Provider
+            value={{
+              ...createScales({
+                innerWidth: outputWidth,
+                innerHeight: outputHeight,
+                cakeSize,
+              }),
+              height: outputHeight,
+              width: outputWidth,
+              labels,
+              cakeSize,
+            }}
+          >
+            <ResultsGraphs
+              preferences={[segments, akisPreferences]}
+              results={algoResults}
+              names={['You', 'Aki']}
+              namesPossessive={['Your', "Aki's"]}
+            />
+          </GraphContext.Provider>
+
+          <Box component="p" marginTop={6}>
+            It turns out Aki likes strawberry even more than vanilla so she chose the left
+            piece.
+          </Box>
+
+          <p>
+            She says her piece is worth{' '}
+            {formatNumber(
+              algoResults.find((portion: Portion) => portion.owner === 1)
+                .percentValues[1] * 100,
+              2
+            )}
+            % of the cake to her.
+          </p>
+        </>
+      ) : null}
+      {/* polygon(0 0, 50% 0%, 50% 100%, 0 100%) */}
     </>
   )
 }
@@ -296,7 +575,7 @@ const Recap1 = () => {
     <>
       <h2>Recap</h2>
 
-      <p>Let's go over what we've learned so far</p>
+      <p>Let's go over what we've learned :</p>
       <dl>
         <dt>Fair Division </dt>
         <dd>Dividing a resource between all people by some definition of fair. </dd>
@@ -316,39 +595,133 @@ const Recap1 = () => {
     </>
   )
 }
+
+const threePreferences = (
+  <Box
+    marginX="auto"
+    marginBottom={8}
+    display="grid"
+    justifyItems="center"
+    alignItems="center"
+    gridTemplateColumns={{ xs: 'auto', sm: 'auto auto' }}
+    maxWidth="600px"
+    sx={{ gridRowGap: '16px' }}
+  >
+    <img src={cake3PrefAki} style={{ maxHeight: 200 }} />
+    <Stack alignItems="center">
+      <CharacterImage character="Aki" hideName />
+      Aki likes vanilla
+    </Stack>
+
+    <img src={cake3PrefBruno} style={{ maxHeight: 200 }} />
+    <Stack alignItems="center">
+      <CharacterImage character="Bruno" hideName />
+      Bruno likes chocolate
+    </Stack>
+
+    <img src={cake3PrefCloe} style={{ maxHeight: 200 }} />
+    <Stack alignItems="center">
+      <CharacterImage character="Cloe" hideName />
+      Cloe likes both equally
+    </Stack>
+  </Box>
+)
+
+const OverlayText = ({ character, children, ...props }) => (
+  <Stack alignItems="center" fontSize={16} {...props}>
+    <CharacterImage character={character} hideName width={60} />
+    <Box bgcolor={'rgba(255,255,255,0.6)'} border="1px solid black">
+      {children}
+    </Box>
+  </Stack>
+)
+
 const EnterPlayer3 = () => {
   return (
     <>
       <h2>Enter Player 3</h2>
-      <p>
-        Here we have a cake to split between 3 people. Here's how they feel about the
-        flavors.{' '}
-      </p>
-      {/* description for each? */}
-      <p>One way to split the cake looks like this.</p>
-      {/* image */}
+      <p>Here we have another cake.</p>
+      <ImageContainer>
+        <CakeImage flavor="vanilla" />
+        <CakeImage flavor="chocolate" />
+      </ImageContainer>
+
+      <p>But we need to split it among 3 people.</p>
+      <ImageContainer>
+        <CharacterImage character="Aki" />
+        <CharacterImage character="Bruno" />
+        <CharacterImage character="Cloe" />
+      </ImageContainer>
+
+      <p>Here's how they value the flavors:</p>
+
+      {threePreferences}
+      <p>One simple way to split the cake is in thirds like this.</p>
+      <Box position="relative" width="fit-content" marginX="auto">
+        <Box
+          component={'img'}
+          src={simple3Results}
+          //add alt
+          alt=""
+          maxHeight={400}
+        />
+        <Box
+          position={{ xs: 'relative', sm: 'absolute' }}
+          display="grid"
+          gridAutoFlow="row"
+          top={0}
+          left={0}
+          height="100%"
+          width="100%"
+          paddingX="10px"
+          paddingBottom="70px"
+          paddingTop="20px"
+          sx={{ gridRowGap: '12px' }}
+          textAlign="center"
+        >
+          <OverlayText justifySelf="flex-start" character="Aki">
+            Aki gets the left third.
+          </OverlayText>
+          <OverlayText justifySelf="center" character="Bruno">
+            Bruno gets the middle third,
+            <br />
+            which includes a part he doesn't value.
+          </OverlayText>
+          <OverlayText justifySelf="flex-end" character="Cloe">
+            Cloe gets the right third.
+          </OverlayText>
+        </Box>
+      </Box>
       <ul>
         <li>
-          Alexis values her piece as <sup>2</sup>&frasl;
-          <sub>3</sub> of the whole, lucky!
+          Aki's piece is worth <sup>2</sup>&frasl;
+          <sub>3</sub> to her, lucky!
         </li>
         <li>
-          Bruno values his piece as <sup>1</sup>&frasl;
-          <sub>3</sub>.
+          Bruno's piece is worth <sup>1</sup>&frasl;
+          <sub>3</sub> to him.
         </li>
         <li>
-          Cora values her piece as <sup>1</sup>&frasl;
-          <sub>3</sub>.
+          Cloe's piece is worth <sup>1</sup>&frasl;
+          <sub>3</sub> to her.
         </li>
       </ul>
 
       <p>
-        This is a <strong>proportional solution</strong>, everyone gets at least{' '}
+        This is a <strong>proportional solution</strong> because everyone gets at least{' '}
         <sup>1</sup>&frasl;
-        <sub>3</sub>. <em>However,</em> this solution doesn't seem fair to Bruno. From his
-        perspective, Cora's piece is worth <sup>2</sup>&frasl;
+        <sub>3</sub>.
+      </p>
+
+      <p>
+        <em>However,</em> this solution doesn't seem fair to Bruno. From his perspective,
+        Cloe's piece is worth <sup>2</sup>&frasl;
         <sub>3</sub> while his own is only worth <sup>1</sup>&frasl;
-        <sub>3</sub>. <em>He envies her share and feels cheated.</em>
+        <sub>3</sub>.
+      </p>
+      <p>
+        He <em>envies</em> her share and feels cheated.
+        {/* tear drop image? */}
       </p>
     </>
   )
@@ -372,7 +745,9 @@ const EnvyFree = () => {
         <sup>1</sup>&frasl;
         <sub>n</sub> or more for each person.
       </p>
-      <p>However, splitting a cake with 3 or more people gets a bit tricky.</p>
+      <p>
+        This is easy with 2 people, but splitting a cake with 3 or more gets a bit tricky.
+      </p>
     </>
   )
 }
@@ -386,26 +761,25 @@ const SelfridgeConway = () => {
         <strong>guaranteed to be envy-free</strong>. This method is now called the{' '}
         <strong>Selfridge-Conway Method.</strong>
       </p>
-      <p>The method is a bit involved, but the simple version looks like this:</p>
+      <p>The method is a bit involved, but the simplified steps looks like this:</p>
       <ol>
         <li>Person 1 divides the cake into 3 pieces they consider equal.</li>
         <li>
           Person 2 trims a bit off what they consider the largest piece until it matches
           the second largest.
         </li>
-        <li>Person 3 chooses from the pieces, then person 2, then person 1.</li>
+        <li>Person 3 chooses one the pieces to keep, then person 2, then person 1.</li>
         <li>
-          The remaining trimmings are then divided up between everyone (with a few more
-          steps).{' '}
+          The remaining trimmings are then divided up between everyone (there's a few more
+          steps involved with this part).{' '}
         </li>
       </ol>
 
       <p>
         If you're curious, you can{' '}
         <Link href={Algorithms.selfridgeConway.link}>
-          learn more about the Selfridge-Conway Method
+          learn the details of the Selfridge-Conway Method.
         </Link>
-        .
       </p>
       <p></p>
     </>
@@ -415,17 +789,64 @@ const ThreeWayDivision = () => {
   return (
     <>
       <h2>Division with the Selfridge-Conway Method</h2>
-      <p>Here is the 3-person example again.</p>
-      <p>These are the preferences for each person.</p>
-      {/* preference descriptions? */}
+      <p>Here is the problem again:</p>
+
+      {threePreferences}
+
       <p>Let's see how the cake is split using the Selfridge-Conway Method.</p>
-      {/* image of result */}
+
       <p>
         Due to the trimming step in the method, the cake has been cut into more pieces.{' '}
       </p>
+
+      <Box position="relative" width="fit-content" marginX="auto">
+        <Box
+          component="img"
+          src={selfridgeResults}
+          //add alt text
+          alt=""
+          maxHeight={500}
+        />
+
+        <Box
+          position={{ xs: 'relative', sm: 'absolute' }}
+          display="grid"
+          top={0}
+          left={0}
+          height="100%"
+          width="100%"
+          paddingX="10px"
+          paddingBottom="70px"
+          paddingTop="20px"
+          sx={{
+            gridTemplateColumns: 'repeat(5,1fr)',
+            gridTemplateRows: 'repeat(3,1fr)',
+            gridTemplateAreas: `
+              ". a a . ." 
+              ". . b b b" 
+              "c1 . . . c2"`,
+            gridRowGap: '12px',
+          }}
+          textAlign="center"
+        >
+          <OverlayText justifySelf="flex-start" character="Aki" gridArea="a">
+            Aki gets these two pieces
+          </OverlayText>
+          <OverlayText justifySelf="center" character="Bruno" gridArea="b">
+            Bruno gets this one plus a sliver at the end
+          </OverlayText>
+          <OverlayText justifySelf="flex-end" character="Cloe" gridArea="c1">
+            Cloe gets this piece
+          </OverlayText>
+          <OverlayText justifySelf="flex-end" character="Cloe" gridArea="c2">
+            Cloe algo gets this piece
+          </OverlayText>
+        </Box>
+      </Box>
+
       <p>
-        Each person receives multiple pieces. The pieces a person receives is their{' '}
-        <strong>portion</strong> of the cake.{' '}
+        Together, the pieces a person receives is called their <strong>portion</strong> or
+        <strong>share</strong> of the cake.{' '}
       </p>
       <p>
         Although a bit more involved than before, this solution is{' '}
@@ -471,7 +892,9 @@ const Ending = () => {
         in the future.
       </p>
 
-      <Link href="/graph">Splitting Tool</Link>
+      <ButtonLink variant="outlined" href="/graph">
+        Try the Splitting Tool
+      </ButtonLink>
     </>
   )
 }

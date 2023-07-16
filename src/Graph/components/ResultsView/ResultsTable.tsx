@@ -115,7 +115,8 @@ export const ResultsTable = ({ preferences, results }: ResultsTableProps) => {
                             backgroundColor: selected ? color : null,
                           }}
                         >
-                          {formatNumber(portion.percentValues[colAgent] * 100, 3)}%
+                          {/* This index in the solution is `rowAgent`, not `colAgent` */}
+                          {formatNumber(portion.percentValues[rowAgent] * 100, 3)}%
                         </TableCell>
                       </Tooltip>
                     )

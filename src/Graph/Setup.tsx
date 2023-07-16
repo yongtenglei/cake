@@ -1,17 +1,17 @@
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import ArrowBackIcon from '@mui/icons-material/ArrowBackIos'
 import RemoveIcon from '@mui/icons-material/Remove'
-import { Box, Button, IconButton, Stack, TextField, useTheme } from '@mui/material'
+import { Box, Button, IconButton, Stack, TextField } from '@mui/material'
 import { MuiColorInput } from 'mui-color-input'
 import { useState } from 'react'
 
 import { labelColors } from '../colors'
+import { InteractionContainer } from '../components/InteractionContainer'
 import { MenuButton } from '../components/MenuButton'
 import { UpdateDataInput } from '../components/UploadDataInput'
 import { Preferences, SectionLabel } from '../types'
-import { defaultGraphWidth, getInnerWidth, margin } from './graphConstants'
-import { sampleLabels } from './sampleData'
-import { InteractionContainer } from '../components/InteractionContainer'
+import { margin } from './graphConstants'
+import { sampleLabels3Flavor } from './sampleData'
 
 // TODO: add transitions here
 // It's not as easy as dropping in a MUI Slide or Fade
@@ -84,7 +84,7 @@ export const Setup = ({ onCompletSetup, setNewData }: SetupProps) => {
                 />
                 Import
               </Button>
-              <Button onClick={() => onCompletSetup(sampleLabels)} variant="outlined">
+              <Button onClick={() => onCompletSetup(sampleLabels3Flavor)} variant="outlined">
                 Demo Setup
               </Button>
 
@@ -127,9 +127,6 @@ export const Setup = ({ onCompletSetup, setNewData }: SetupProps) => {
         {currentState === 'sameSizeSections' ? (
           <SetupStep>
             <QuestionText>Are the sections the same size?</QuestionText>
-            <HelperText>
-              Example: A cake with chocolate, vanilla, and strawberry parts
-            </HelperText>
             <StepBody>
               <Button
                 variant="contained"

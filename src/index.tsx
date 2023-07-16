@@ -11,6 +11,7 @@ import { GraphPage } from './Pages/GraphPage'
 import { LandingPage } from './Pages/LandingPage'
 import { PrivacyPolicyPage } from './Pages/PrivacyPolicyPage'
 import { LearningPage } from './Pages/LearningPage/LearningPage'
+import { Page } from './components/Page'
 
 const theme = createTheme({
   typography: {
@@ -53,7 +54,7 @@ const theme = createTheme({
 
 export const router = createBrowserRouter([
   // Landing page uses a custom `PageLayout`
-  { path: '/', element: <LandingPage />, errorElement: <ErrorPage /> },
+  { path: '/', element: <Page title=''><LandingPage /></Page>, errorElement: <ErrorPage /> },
   {
     path: '/',
     element: (
@@ -65,19 +66,19 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <LandingPage />,
+        element: <Page title=''><LandingPage /></Page>,
       },
       {
         path: '/graph',
-        element: <GraphPage />,
+        element: <Page title='Splitting Tool'><GraphPage /></Page>,
       },
       {
         path: '/learn/:step?',
-        element: <LearningPage />,
+        element: <Page title='Learning Path'><LearningPage /></Page>,
       },
       {
         path: '/privacy-policy',
-        element: <PrivacyPolicyPage />,
+        element: <Page title='Privacy Policy'><PrivacyPolicyPage /></Page>,
       },
     ],
   },

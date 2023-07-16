@@ -1,5 +1,5 @@
 import maxBy from 'lodash.maxby'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import { Box } from '@mui/material'
 import { C_PRIMARY_LIGHT, getAgentColor } from '../colors'
@@ -30,18 +30,26 @@ import {
 import { createScales, isDrawingComplete } from './graphUtils'
 
 export const Graph = () => {
-  const [cakeSize, setCakeSize] = useState<number>(defaultCakeSize)
+  const [cakeSize, setCakeSize] = useState<number>(2)
   const [sectionLabels, setSectionLabels] = useState<SectionLabel[]>([])
   const [algoUsed, setAlgoUsed] = useState<AlgoName | null>(null)
   const [algoResults, setAlgoResults] = useState<Portion[] | []>(null)
   const [preferences, setPreferences] = useState<Preferences>([[]])
+
+  // Agents are zero-index in the code, but 1-indexed when displaying to users
+  const [currentAgent, setCurrentAgent] = useState<number>(0)
+  const [algoModalOpen, setAlgoModalOpen] = useState<boolean>(false)
+  const [viewMode, setViewMode] = useState<'setup' | 'edit' | 'compare' | 'results'>(
+    'edit'
+  )
+  const [loading, setLoading] = useState<boolean>(false)
 
   const { yScale, xScale } = createScales({
     innerWidth: getInnerWidth(defaultGraphWidth),
     innerHeight: getInnerHeight(defaultGraphHeight),
     cakeSize,
   })
-  
+
   const onCompletSetup = (sectionLabels: SectionLabel[], cakeSize?: number) => {
     if (cakeSize) {
       setCakeSize(cakeSize)
@@ -79,13 +87,7 @@ export const Graph = () => {
   const onClickSetLabels = () => {
     setViewMode('setup')
   }
-  // Agents are zero-index in the code, but 1-indexed when displaying to users
-  const [currentAgent, setCurrentAgent] = useState<number>(0)
-  const [algoModalOpen, setAlgoModalOpen] = useState<boolean>(false)
-  const [viewMode, setViewMode] = useState<'setup' | 'edit' | 'compare' | 'results'>(
-    'setup'
-  )
-  const [loading, setLoading] = useState<boolean>(false)
+
   const onClickCompare = () => setViewMode('compare')
 
   const setCurrentAgentPrefs = (segs: Segment[]) => {
@@ -154,6 +156,8 @@ export const Graph = () => {
           results={algoResults}
           preferences={preferences}
           algoUsed={algoUsed}
+          cakeSize={cakeSize}
+          sectionLabels={sectionLabels}
         />
       </>
     )
