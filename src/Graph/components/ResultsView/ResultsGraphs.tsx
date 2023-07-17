@@ -40,10 +40,7 @@ interface ResultsGraphsProps {
 }
 
 const getPortionSize = (result: Portion, cakeSize: number) => {
-  const totalArea = result.edges.reduce(
-    (total, [start, end]) => total + end - start,
-    0
-  )
+  const totalArea = result.edges.reduce((total, [start, end]) => total + end - start, 0)
   return (totalArea / cakeSize) * 100
 }
 
@@ -58,7 +55,10 @@ export const ResultsGraphs = ({
   const [showLabels, setShowLabels] = useState(false)
 
   const totalHeight =
-    (height + spaceBetween) * preferences.length + margin.top + margin.bottom
+    (height * preferences.length) +
+    (spaceBetween * preferences.length - 1) +
+    margin.top +
+    margin.bottom
   const totalWidth = width + margin.left + margin.right
 
   const allCutlines = results

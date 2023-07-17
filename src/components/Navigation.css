@@ -22,7 +22,7 @@
 a.Navigation__link {
   color: black;
   text-decoration: none;
-  padding: 16px 32px;
+  padding: 16px;
   display: block;
   border-bottom: 4px solid transparent;
 }

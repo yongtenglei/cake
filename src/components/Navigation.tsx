@@ -25,6 +25,11 @@ export const Navigation = () => {
                   Splitting Tool
                 </NavLink>
               </li>
+              <li>
+                <NavLink href={'/help'} className="Navigation__link">
+                 Help
+                </NavLink>
+              </li>
             </ol>
 
             <Button

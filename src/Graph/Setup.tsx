@@ -24,7 +24,7 @@ const SetupStep = ({ children, ...props }) => {
 }
 
 const HelperText = ({ children }) => (
-  <Box sx={{ color: '#666', fontSize: 'small' }}>{children}</Box>
+  <Box sx={{ color: '#666', fontSize: 14 }}>{children}</Box>
 )
 
 const QuestionText = ({ children }) => (
@@ -189,7 +189,7 @@ const CakeSizeEdit = ({ onCompletSetup }: CakeSizeEditProps) => {
         An increment is the smallest section that a person can have an opinion about.
       </HelperText>
       <HelperText>
-        100 is a good number to use; it's easy to think of as 100% of something.
+        100 is a good number, it's easy use as a percent.
       </HelperText>
       <StepBody>
         <TextField
@@ -295,6 +295,7 @@ const SectionEdit = ({ onFinishSections, fixedSize }: SectionEditProps) => {
                 InputLabelProps={{ shrink: true }}
                 label={'Name'}
                 value={sectionLabels[i].name}
+                placeholder={`Section ${i+1}`}
                 onChange={(e) => changeField(i, 'name', e.target.value)}
               />
               {/* Needs accessiblity work. The focus indicator on the color is imperceptible */}

@@ -15,6 +15,9 @@ export const Footer = () => {
             <Link href={'/learn'}>Learn</Link>
           </li>
           <li className="Footer__link">
+            <Link href={'/help'}>Help</Link>
+          </li>
+          <li className="Footer__link">
             <Link href={'/privacy-policy'}>Privacy policy</Link>
           </li>
         </ol>

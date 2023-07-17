@@ -10,6 +10,7 @@ import { ErrorPage } from './Pages/ErrorPage'
 import { GraphPage } from './Pages/GraphPage'
 import { LandingPage } from './Pages/LandingPage'
 import { PrivacyPolicyPage } from './Pages/PrivacyPolicyPage'
+import { HelpPage } from './Pages/HelpPage'
 import { LearningPage } from './Pages/LearningPage/LearningPage'
 import { Page } from './components/Page'
 
@@ -79,6 +80,10 @@ export const router = createBrowserRouter([
       {
         path: '/privacy-policy',
         element: <Page title='Privacy Policy'><PrivacyPolicyPage /></Page>,
+      },
+      {
+        path: '/help',
+        element: <Page title='Help'><HelpPage /></Page>,
       },
     ],
   },

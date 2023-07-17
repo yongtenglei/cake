@@ -4,7 +4,7 @@ import { getInnerHeight } from '../graphConstants'
 
 const offset = 30
 export const SectionLabels = () => {
-  const { height, yScale, xScale, labels } = useContext(GraphContext)
+  const { height, xScale, labels } = useContext(GraphContext)
 
   return (
     <g transform={`translate(0,-${offset})`}>
@@ -74,7 +74,7 @@ export const TinySectionLabels = ({ margin, height }: TinySectionLabelsProps) =>
               y={margin.top}
               x={x1}
               width={width}
-              height={height - margin.top - margin.bottom}
+              height={height - margin.top - margin.bottom - 20}
               fill={label.color}
               fillOpacity={0.4}
             />
