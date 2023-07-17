@@ -186,10 +186,10 @@ const CakeSizeEdit = ({ onCompletSetup }: CakeSizeEditProps) => {
     <>
       <QuestionText>How many increments should the resource have?</QuestionText>
       <HelperText>
-        More increments means greater precision assigning value to an area.
+        An increment is the smallest section that a person can have an opinion about.
       </HelperText>
       <HelperText>
-        100 is a good number to use. It makes math easy with percents.
+        100 is a good number to use; it's easy to think of as 100% of something.
       </HelperText>
       <StepBody>
         <TextField

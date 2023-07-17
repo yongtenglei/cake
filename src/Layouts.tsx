@@ -54,20 +54,18 @@ export const BodyContainer = ({ children, sx }: LayoutProps) => {
 }
 
 /**
- * TextContainer provides a decent max width for fitting 75-80 characters per line, 
+ * TextContainer provides a decent max width for fitting 75-80 characters per line,
  * which aids readibility.
  */
 export const TextContainer = ({ children, sx }: LayoutProps) => {
   return <Box sx={{ maxWidth: 600, ...sx }}>{children}</Box>
 }
 
-
-
 export const InteractionContainer = ({ sx, ...props }: ComponentProps<typeof Box>) => {
   return (
     <Box
       component="section"
-      padding={4}
+      padding={{ xs: 2, sm: 4, md: 6 }}
       minHeight={300}
       maxWidth={getInnerWidth(defaultGraphWidth)}
       sx={{

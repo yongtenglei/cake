@@ -1,9 +1,9 @@
 import { Box, Button } from '@mui/material'
 import { ComponentProps } from 'react'
 
-import chocolateCake from '../../images/cake/cake chocolate.svg'
-import strawberryCake from '../../images/cake/cake strawberry.svg'
-import vanillaCake from '../../images/cake/cake vanilla.svg'
+import chocolateCake from '../../images/cake/cake chocolate.png'
+import strawberryCake from '../../images/cake/cake strawberry.png'
+import vanillaCake from '../../images/cake/cake vanilla.png'
 import akiChar from '../../images/character/aki.svg'
 import brunoChar from '../../images/character/bruno.svg'
 import cloeChar from '../../images/character/cloe.svg'
