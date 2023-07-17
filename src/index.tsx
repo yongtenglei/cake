@@ -74,7 +74,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/learn/:step?',
-        element: <Page title='Learning Path'><LearningPage /></Page>,
+        element: <Page title='Learning Course'><LearningPage /></Page>,
       },
       {
         path: '/privacy-policy',
