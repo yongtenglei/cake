@@ -31,7 +31,7 @@ export const GraphPage = () => {
           <p>
             Explore our{' '}
             <strong>
-              <Link href="/learn">Interactive Learning Course</Link>
+              <Link href="/learn">Interactive Course</Link>
             </strong>{' '}
             to understand how fair division works.
           </p>
@@ -58,7 +58,7 @@ export const GraphPage = () => {
 
       <h3>Feeling Lost?</h3>
       <p>
-        See the <Link href="/learn">Interactive Learning Course</Link> for an introduction
+        See the <Link href="/learn">Interactive Course</Link> for an introduction
         to fair division or the <Link href="/help">Help Page</Link> for clarification on
         how this tool works.
       </p>

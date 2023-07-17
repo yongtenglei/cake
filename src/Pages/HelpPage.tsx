@@ -17,7 +17,11 @@ export const HelpPage = () => {
   return (
     <article>
       <h1>Help Page</h1>
-      <p>This page demonstrates how to use the splitting tool.</p>
+      <p>This page explains the steps and controls of the splitting tool.</p>
+      <p>
+        For a general introduction to fair division, see the{' '}
+        <Link href="/learn">Interactive Course</Link>.
+      </p>
       <Stack
         spacing={4}
         sx={{
@@ -70,8 +74,8 @@ export const HelpPage = () => {
           </p>
           <p>
             Continue to fill out the graph until you've given a value to all areas in the
-            resource. When you are done, click "ADD PERSON" to mark values for the
-            next person.
+            resource. When you are done, click "ADD PERSON" to mark values for the next
+            person.
           </p>
         </div>
 
