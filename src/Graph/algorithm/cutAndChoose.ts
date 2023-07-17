@@ -1,11 +1,10 @@
 import { Preferences, Slice } from '../../types'
 import { findCutLineByPercent } from './getValue'
 import { cutSlice } from './sliceUtils'
-import { defaultCakeSize } from '../graphConstants'
 
 export const cutAndChoose = (
   preferences: Preferences,
-  cakeSize = defaultCakeSize
+  cakeSize: number
 ): Slice[] => {
   if (preferences.length !== 2) {
     throw 'Cut and choose only works with two agents'

@@ -17,7 +17,6 @@ import {
 } from '../../Graph/graphConstants'
 import { createScales, isDrawingComplete } from '../../Graph/graphUtils'
 import { C_STRAWBERRY, C_VANILLA } from '../../colors'
-import { InteractionContainer } from '../../components/InteractionContainer'
 import { ButtonLink, Link } from '../../components/Link'
 import cake3PrefAki from '../../images/preference/aki.png'
 import cake3PrefBruno from '../../images/preference/bruno.png'
@@ -29,6 +28,7 @@ import { CakeFlavor, CakeImage, CharacterImage } from './Images'
 import { ResultsGraphs } from '../../Graph/components/ResultsView/ResultsGraphs'
 import { ResultsTable } from '../../Graph/components/ResultsView/ResultsTable'
 import { formatNumber } from '../../utils/formatUtils'
+import { InteractionContainer } from '../../Layouts'
 
 interface CommonProps {
   preferredFlavor: CakeFlavor | null

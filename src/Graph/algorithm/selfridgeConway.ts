@@ -9,7 +9,7 @@ import { defaultCakeSize } from '../graphConstants'
 // Selfridge-Conway method use a 1-based index because that's, you know, normal.
 export const selfridgeConway = (
   preferences: Preferences,
-  cakeSize = defaultCakeSize
+  cakeSize: number
 ): Slice[] => {
   if (preferences.length !== 3) {
     throw 'Divide and choose only works with three agents'

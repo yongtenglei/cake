@@ -1,4 +1,3 @@
-import { defaultCakeSize } from '../graphConstants'
 import { cutAndChoose } from './cutAndChoose'
 import {
   genFlatSeg,
@@ -8,10 +7,12 @@ import {
   genRandomSegs,
 } from './testUtil'
 
+const cakeSize = 100
+
 test('splits a uniform flat value graph evenly in half', () => {
   const person1 = [genFlatSeg(0, 100, 10)] // 1000
   const person2 = [genFlatSeg(0, 100, 10)] // 1000
-  const result = cutAndChoose([person1, person2])
+  const result = cutAndChoose([person1, person2], cakeSize)
   expect(result).toHaveLength(2)
   // Each agent values the cake uniformly for a total of 1000 value.
   // The results should be an even 500/500 split.
@@ -24,7 +25,7 @@ test('splits a uniform flat value graph evenly in half', () => {
 test('splits a seesaw-like graph in an envy-free way', () => {
   const person1 = [genFlatSeg(0, 50, 10), genFlatSeg(50, 100, 5)] // 750, halfway point is 37.5%
   const person2 = [genFlatSeg(0, 50, 5), genFlatSeg(50, 100, 10)] // 750, halfway point is 67.5%
-  const result = cutAndChoose([person1, person2])
+  const result = cutAndChoose([person1, person2], cakeSize)
   expect(result).toHaveLength(2)
   // The slices should be 375 value on both sides for person 0,
   // but the second slice is better for person 1.
@@ -41,7 +42,7 @@ test('splits a seesaw-like graph in an envy-free way', () => {
 test('splits a seesaw-like sloped graph in an envy-free way', () => {
   const person1 = [genSlopedSeg(0, 100, 10, 0)] // 500, halfway point is ~30%
   const person2 = [genSlopedSeg(0, 100, 0, 10)] // 500, halfway point is ~70%
-  const result = cutAndChoose([person1, person2])
+  const result = cutAndChoose([person1, person2], cakeSize)
   expect(result).toHaveLength(2)
   // We get a weird `TypeError: val.toAsymmetricMatcher is not a function` bug when testing
   // with `toMatchObject` and `expect.closeTo` so doing things the verbose way.
@@ -67,7 +68,7 @@ test('splits a tricky case in an envy-free way', () => {
     genFlatSeg(70, 90, 8),
     genFlatSeg(90, 100, 0),
   ]
-  const result = cutAndChoose([person1, person2])
+  const result = cutAndChoose([person1, person2], cakeSize)
   expect(result).toHaveLength(2)
   testIfEnvyFree(2, result)
 })
@@ -76,16 +77,28 @@ test('splits a tricky case in an envy-free way', () => {
 test('splits a tricky sloped case in an envy-free way', () => {
   const person1 = [genFlatSeg(0, 45, 3.5), genSlopedSeg(45, 100, 7.5, 6.5)]
   const person2 = [genSlopedSeg(0, 60, 8, 9.5), genSlopedSeg(60, 100, 2.5, 5.5)]
-  const result = cutAndChoose([person1, person2])
+  const result = cutAndChoose([person1, person2], cakeSize)
   expect(result).toHaveLength(2)
   testIfEnvyFree(2, result)
 })
 
 test('splits randomly generated preferences fairly', () => {
   const segs = [
-    genRandomSegs(defaultCakeSize),
-    genRandomSegs(defaultCakeSize),
+    genRandomSegs(cakeSize),
+    genRandomSegs(cakeSize),
   ]
-  const result = cutAndChoose(segs, defaultCakeSize)
+  const result = cutAndChoose(segs, cakeSize)
+  testIfEnvyFree(2, result)
+})
+
+
+
+test('splits randomly generated preferences fairly on a smaller cake size', () => {
+  const smallCake = 3
+  const segs = [
+    genRandomSegs(smallCake),
+    genRandomSegs(smallCake),
+  ]
+  const result = cutAndChoose(segs, smallCake)
   testIfEnvyFree(2, result)
 })

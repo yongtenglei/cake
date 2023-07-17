@@ -40,7 +40,7 @@ export const Graph = () => {
   const [currentAgent, setCurrentAgent] = useState<number>(0)
   const [algoModalOpen, setAlgoModalOpen] = useState<boolean>(false)
   const [viewMode, setViewMode] = useState<'setup' | 'edit' | 'compare' | 'results'>(
-    'edit'
+    'setup'
   )
   const [loading, setLoading] = useState<boolean>(false)
 

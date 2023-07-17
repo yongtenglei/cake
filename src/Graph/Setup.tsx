@@ -6,12 +6,12 @@ import { MuiColorInput } from 'mui-color-input'
 import { useState } from 'react'
 
 import { labelColors } from '../colors'
-import { InteractionContainer } from '../components/InteractionContainer'
 import { MenuButton } from '../components/MenuButton'
 import { UpdateDataInput } from '../components/UploadDataInput'
 import { Preferences, SectionLabel } from '../types'
 import { margin } from './graphConstants'
 import { sampleLabels3Flavor } from './sampleData'
+import { InteractionContainer } from '../Layouts'
 
 // TODO: add transitions here
 // It's not as easy as dropping in a MUI Slide or Fade

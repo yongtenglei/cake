@@ -5,7 +5,6 @@ import {
   testIfEnvyFree,
   genRandomSegs,
 } from './testUtil'
-import { defaultCakeSize } from '../graphConstants'
 
 test('splits a "no trimming needed" uniform evaluation cake into even (almost) thirds', () => {
   // Use a cake size of 90 so it's evenly divisible into thirds.
@@ -110,14 +109,14 @@ test('splits a simple "trimming needed" cake fairly', () => {
   { end: 40, start: 35, values: [25, 50, 25] }
 */
 
-// This test is non-probablistic, so run it many times 
+// This test is non-deterministic so run it many times 
 // to ensure edge cases are (probably) covered.
 test('splits randomly generated preferences fairly', () => {
   const segs = [
-    genRandomSegs(defaultCakeSize),
-    genRandomSegs(defaultCakeSize),
-    genRandomSegs(defaultCakeSize),
+    genRandomSegs(100),
+    genRandomSegs(100),
+    genRandomSegs(100),
   ]
-  const result = selfridgeConway(segs, defaultCakeSize)
+  const result = selfridgeConway(segs, 100)
   testIfEnvyFree(3, result)
 })

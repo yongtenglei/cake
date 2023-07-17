@@ -1,5 +1,5 @@
 export const maxAgents = 3
-export const defaultCakeSize = 3
+export const defaultCakeSize = 100
 
 // Spacing
 
