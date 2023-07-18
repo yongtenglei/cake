@@ -1,7 +1,7 @@
 import CircleCheckIcon from '@mui/icons-material/CheckCircle'
 import CodeIcon from '@mui/icons-material/Code'
 import ContentCutIcon from '@mui/icons-material/ContentCut'
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
+import WarningIcon from '@mui/icons-material/Warning'
 import { Box, Stack, SvgIconProps } from '@mui/material'
 import { Portion } from '../../../types'
 import { AlgoName, Algorithms } from '../../graphConstants'
@@ -55,7 +55,7 @@ export const SolutionInfo = ({ algoUsed, results }: SolutionInfoProps) => {
           text={'No person values another portion more than their own.'}
         />
         <BulletPoint
-          icon={<RemoveCircleIcon color="warning" fontSize="large" />}
+          icon={<WarningIcon color="warning" fontSize="large" />}
           title={'Optimal'}
           text={
             <>
