@@ -1,16 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 124.8 110.5" fill="currentColor">
-  <g>
-    <rect x="-31.4" y="66.4" width="75.5" height="12.7" transform="translate(-66.4 79.1) rotate(-90)" />
-    <rect x="74.2" y="84.1" width="40.4" height="12.3" transform="translate(4.1 184.6) rotate(-90)" />
-    <rect x="12.7" y="66.4" width="75.5" height="12.7" transform="translate(-22.3 123.2) rotate(-90)" />
-    <rect x="85.8" y="4.4" width="16.7" height="10.5" />
-    <rect x="63.9" y="17.1" width="16.7" height="10.5" transform="translate(16.8 73.7) rotate(-60)" />
-    <rect x="63.9" y="42.4" width="16.7" height="10.5" transform="translate(67 134) rotate(-120)" />
-    <rect x="85.8" y="55" width="16.7" height="10.5" transform="translate(188.2 120.6) rotate(-180)" />
-    <rect x="107.7" y="42.4" width="16.7" height="10.5" transform="translate(215.3 -29) rotate(120)" />
-    <rect x="107.7" y="17.1" width="16.7" height="10.5" transform="translate(77.4 -89.3) rotate(60)" />
-    <path
-      d="m94.1,11.6c-12.9,0-23.4,10.5-23.4,23.4s10.5,23.4,23.4,23.4,23.4-10.5,23.4-23.4-10.5-23.4-23.4-23.4Zm0,35.3c-6.6,0-11.9-5.3-11.9-11.9s5.3-11.9,11.9-11.9,11.9,5.3,11.9,11.9-5.3,11.9-11.9,11.9Z" />
-    <path d="m85.8,0H0v27.3h60.2c2.3-13.7,11.7-24.5,25.6-27.3Z" />
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 146.3 129.6" fill="currentColor">
+  <rect x="-20.6" y="75.9" width="75.5" height="12.7" transform="translate(-65.2 99.4) rotate(-90)" />
+  <rect x="84.9" y="93.7" width="40.4" height="12.3" transform="translate(5.3 204.9) rotate(-90)" />
+  <rect x="23.5" y="75.9" width="75.5" height="12.7" transform="translate(-21.1 143.5) rotate(-90)" />
+  <path
+    d="m128.3,44.5c0-1.3-.1-2.5-.3-3.7l7.6-4.4-8.3-14.4-7.6,4.4c-1.9-1.6-4.1-2.8-6.4-3.7v-8.7h-16.7v8.7c-2.3.9-4.5,2.2-6.4,3.7l-7.6-4.4-8.3,14.4,7.6,4.4c-.2,1.2-.3,2.5-.3,3.7s.1,2.5.3,3.7l-7.6,4.4,8.3,14.4,7.6-4.4c1.9,1.6,4.1,2.8,6.4,3.7v8.7h16.7v-8.7c2.3-.9,4.5-2.2,6.4-3.7l7.6,4.4,8.3-14.4-7.6-4.4c.2-1.2.3-2.5.3-3.7Zm-23.4,11.9c-6.6,0-11.9-5.3-11.9-11.9s5.3-11.9,11.9-11.9,11.9,5.3,11.9,11.9-5.3,11.9-11.9,11.9Z" />
+  <path d="m96.6,9.5H10.8v27.3h60.2c2.3-13.7,11.7-24.5,25.6-27.3Z" />
 </svg>
