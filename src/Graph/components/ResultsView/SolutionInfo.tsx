@@ -26,8 +26,9 @@ export const SolutionInfo = ({ algoUsed, results }: SolutionInfoProps) => {
       <h2 style={{ marginTop: 0 }}>Solution Info</h2>
       <Stack
         component="ul"
-        spacing={2}
-        sx={{ padding: 0, listStyle: 'none', fontSize: 18 }}
+        padding={0}
+        marginBottom={0}
+        sx={{ listStyle: 'none', fontSize: 18 }}
       >
         <BulletPoint
           icon={<CodeIcon fontSize="large" />}

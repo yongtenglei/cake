@@ -54,7 +54,7 @@ export const HelpPage = () => {
           <img src={defineSections} />
           <p>
             Here you can define the sections the resource. Sections are labels for parts
-            of the resource. If you were splitting a cake, these could be a strawberry, a
+            of the resource. If you are splitting a multi-flavor cake, these could be a strawberry, a
             vanilla, and a chocolate section.
           </p>
           <p>
@@ -65,7 +65,7 @@ export const HelpPage = () => {
 
         <div>
           <h2 id="mark">Mark Preferences</h2>
-          <p>Next, you need to mark how much you value different parts of resource.</p>
+          <p>Next, mark how much you value different parts of resource.</p>
           <img src={draw} />
           <p>
             You can mark value by clicking on the graph at the value level you want.
@@ -113,7 +113,7 @@ export const HelpPage = () => {
             <li>
               Arrows - Navigate to next or previous person (when there's more than one).
             </li>
-            <li>SET LABELS - Return to the section label set up.</li>
+            <li>SET SECTIONS - Return to the section label set up.</li>
             <li>ADD PERSON - Add an additional person. The limit is {maxAgents}.</li>
             <li>
               COMPARE - Enter a view where you can compare the value display of all

@@ -63,7 +63,7 @@ export const Setup = ({ onCompletSetup, setNewData }: SetupProps) => {
       marginLeft={margin.left + 'px'}
       marginRight={margin.right + 'px'}
     >
-      <h2>Setup</h2>
+      <h2>Resource Setup</h2>
       <Stack justifyContent={'space-between'} flexGrow={1} marginTop={2}>
         {currentState === 'intro' ? (
           <SetupStep>

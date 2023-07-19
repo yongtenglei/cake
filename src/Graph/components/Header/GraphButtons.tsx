@@ -41,7 +41,7 @@ export const DrawingHeaderButtons = ({
     <>
       <MenuButton onClick={onClickSetLabels}>
         <LabelIcon />
-        Set Labels
+        Set Sections
       </MenuButton>
       <Tooltip
         title={

@@ -612,7 +612,7 @@ const MeasuringPreference = () => {
             % of the cake to her.
           </p>
 
-          <p>Feel free to try this again with different values. </p>
+          <p>Feel free to experiment with different values. </p>
           <Stack alignItems={'center'}>
             <Button variant="contained" disabled={!drawingComplete} onClick={redoMarking}>
               <ReplayIcon sx={{ marginRight: 1 / 2 }} />
@@ -628,7 +628,7 @@ const MeasuringPreference = () => {
 const Recap1 = () => {
   return (
     <>
-      <h2>Recap</h2>
+      <h2>Part 1 Recap</h2>
 
       <p>Let's go over a few of the terms we've learned:</p>
       <dl>
