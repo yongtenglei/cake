@@ -29,10 +29,11 @@ import {
 } from './graphConstants'
 import { createScales, isDrawingComplete } from './graphUtils'
 import { SectionConfig } from './SectionConfig'
+import { sampleLabels3Flavor } from './sampleData'
 
 export const Graph = ({ v1 }: { v1?: boolean }) => {
   const [cakeSize, setCakeSize] = useState<number>(defaultCakeSize)
-  const [sectionLabels, setSectionLabels] = useState<SectionLabel[]>([])
+  const [sectionLabels, setSectionLabels] = useState<SectionLabel[]>([sampleLabels3Flavor[0]])
   const [algoUsed, setAlgoUsed] = useState<AlgoName | null>(null)
   const [algoResults, setAlgoResults] = useState<Portion[] | []>(null)
   const [preferences, setPreferences] = useState<Preferences>([[]])

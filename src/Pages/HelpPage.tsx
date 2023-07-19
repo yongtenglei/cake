@@ -1,7 +1,6 @@
 import { Stack } from '@mui/material'
 import { Link } from '../components/Link'
 import chooseAlgo from '../images/help/choose algo.png'
-import defineSections from '../images/help/define sections.png'
 import draw from '../images/help/draw preferences.png'
 import resizeDiag from '../images/help/resize3.png'
 import resizeVert from '../images/help/resize1.png'
@@ -9,7 +8,8 @@ import resizeHorz from '../images/help/resize2.png'
 import results from '../images/help/results.png'
 import results2 from '../images/help/results2.png'
 import results3 from '../images/help/results3.png'
-import setup from '../images/help/setup.png'
+import setup1 from '../images/help/setup1.png'
+import setup2 from '../images/help/setup2.png'
 import fullView from '../images/help/total view.png'
 import { maxAgents } from '../Graph/graphConstants'
 
@@ -37,29 +37,28 @@ export const HelpPage = () => {
         }}
       >
         <div>
-          <h2>Set up</h2>
-          <p>
-            This is the initial set up screen. If you want to try things out quickly,
-            click "DEMO SETUP", otherwise click "START".
-          </p>
-          <img src={setup} />
-        </div>
-        <div>
           <h2>Describe the Resource to Split</h2>
           <p>
-            Start by answering a few questions about the resource you want to split. If
-            your resource has sections, you'll reach the following. Otherwise,{' '}
-            <a href="#mark">go to the next step</a>.
+            This is the initial set up screen. If you want to try things out quickly,
+            click "USE SAMPLE VALUES", otherwise follow the prompts.
           </p>
-          <img src={defineSections} />
+          <img src={setup1} />
+          <p>If your resource has sections, define them here.</p>
           <p>
-            Here you can define the sections the resource. Sections are labels for parts
-            of the resource. If you are splitting a multi-flavor cake, these could be a strawberry, a
-            vanilla, and a chocolate section.
+            Sections are labels for parts of the resource. If you are splitting a
+            multi-flavor cake, these could be a strawberry, a vanilla, and a chocolate
+            section.
+          </p>
+          <img src={setup2} />
+
+          <p>
+            You can give sections different colors and sizes. This is up to you, whatever
+            works best for the resource you want to split.
           </p>
           <p>
-            You can give sections unique colors and different sizes. This is up to you,
-            whatever works best for the resource you want to split.
+            If your resource doesn't have sections, we'll still need to know its size.
+            Generally you can leave size at 100, but you can increase this number for more
+            control, or decrease it for simpler interactions.
           </p>
         </div>
 
