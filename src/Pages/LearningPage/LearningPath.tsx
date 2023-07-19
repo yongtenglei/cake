@@ -4,13 +4,14 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBackIos'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForwardIos'
 import ReplayIcon from '@mui/icons-material/Replay'
 
-import { useEffect, useRef, useState, forwardRef } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 import { GraphContext } from '../../Graph/GraphContext'
 import { findCutLineByPercent } from '../../Graph/algorithm/getValue'
 import { runDivisionAlgorithm } from '../../Graph/algorithm/run'
 import { DrawingLayer } from '../../Graph/components/DrawingLayer'
 import { ResultsGraphs } from '../../Graph/components/ResultsView/ResultsGraphs'
+import { ViewGraph } from '../../Graph/components/ViewGraph'
 import {
   Algorithms,
   getInnerHeight,
@@ -30,7 +31,6 @@ import toolExample from '../../images/tool example.png'
 import { Portion, Segment } from '../../types'
 import { formatNumber } from '../../utils/formatUtils'
 import { CakeFlavor, CakeImage, CharacterImage } from './Images'
-import { ViewGraph } from '../../Graph/components/ViewGraph'
 
 interface CommonProps {
   preferredFlavor: CakeFlavor | null
@@ -42,11 +42,13 @@ export const LearningPath = () => {
 
   // scroll to top when navigating between steps
   const { pathname } = useLocation()
-  const containerRef = useRef(null)
   useEffect(() => {
-    // don't scroll on initial load
-    if (pathname !== '/learn') {
-      containerRef.current?.scrollIntoView()
+    if (pathname === '/learn') {
+      // scroll to top on initial load
+      window.scrollTo(0, 0)
+    } else {
+      // otherwise scroll to container
+      document.getElementById('container')?.scrollIntoView()
     }
   }, [pathname])
 
@@ -83,6 +85,7 @@ export const LearningPath = () => {
   const [CurrentStep] = steps[stepNum]
   return (
     <InteractionContainer
+      id="container"
       minHeight={600}
       display="flex"
       flexDirection="column"
@@ -92,7 +95,7 @@ export const LearningPath = () => {
         },
       }}
     >
-      <Box flexGrow={1} ref={containerRef}>
+      <Box flexGrow={1}>
         <CurrentStep {...stepProps} />
       </Box>
       <Box
@@ -992,9 +995,10 @@ const Ending = () => {
         display="block"
       />
 
+      <p>Give it a try, experiment!</p>
       <p>
-        Give it a try, experiment!</p><p>Split a 10-flavor cake! Make a resource with 1000
-        increments! See if you can find better solutions than the algorithm can!
+        Split a 10-flavor cake! Make a resource with 1000 increments! See if you can find
+        better solutions than the algorithm can!
       </p>
       <p>
         The tool uses <strong>Cut and Choose</strong> for 2 people and{' '}

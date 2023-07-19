@@ -3,7 +3,15 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
-import { C_PRIMARY, C_PRIMARY_DARK, C_PRIMARY_LIGHT, C_SECONDARY, C_SECONDARY_DARK, C_SECONDARY_LIGHT, C_SUCCESS } from './colors'
+import {
+  C_PRIMARY,
+  C_PRIMARY_DARK,
+  C_PRIMARY_LIGHT,
+  C_SECONDARY,
+  C_SECONDARY_DARK,
+  C_SECONDARY_LIGHT,
+  C_SUCCESS,
+} from './colors'
 import './index.css'
 import { PageLayout } from './Layouts'
 import { ErrorPage } from './Pages/ErrorPage'
@@ -18,13 +26,13 @@ const theme = createTheme({
   typography: {
     fontFamily: 'Poppins, "Segoe UI", sans-serif',
     h1: {
-      fontSize: '2rem'
+      fontSize: '2rem',
     },
     h2: {
-      fontSize: '1.5rem'
+      fontSize: '1.5rem',
     },
     h3: {
-      fontSize: '1.17rem'
+      fontSize: '1.17rem',
     },
   },
   palette: {
@@ -40,22 +48,30 @@ const theme = createTheme({
     },
     success: {
       main: C_SUCCESS,
-    }
+    },
   },
   components: {
     MuiTableCell: {
       styleOverrides: {
         root: {
           fontSize: 18,
-        }
-      }
+        },
+      },
     },
   },
 })
 
 export const router = createBrowserRouter([
   // Landing page uses a custom `PageLayout`
-  { path: '/', element: <Page title=''><LandingPage /></Page>, errorElement: <ErrorPage /> },
+  {
+    path: '/',
+    element: (
+      <Page title="">
+        <LandingPage />
+      </Page>
+    ),
+    errorElement: <ErrorPage />,
+  },
   {
     path: '/',
     element: (
@@ -67,23 +83,43 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Page title=''><LandingPage /></Page>,
+        element: (
+          <Page title="">
+            <LandingPage />
+          </Page>
+        ),
       },
       {
         path: '/graph',
-        element: <Page title='Splitting Tool'><GraphPage /></Page>,
+        element: (
+          <Page title="Splitting Tool">
+            <GraphPage />
+          </Page>
+        ),
       },
       {
         path: '/learn/:step?',
-        element: <Page title='Learning Course'><LearningPage /></Page>,
+        element: (
+          <Page title="Learning Course" scroll={false}>
+            <LearningPage />
+          </Page>
+        ),
       },
       {
         path: '/privacy-policy',
-        element: <Page title='Privacy Policy'><PrivacyPolicyPage /></Page>,
+        element: (
+          <Page title="Privacy Policy">
+            <PrivacyPolicyPage />
+          </Page>
+        ),
       },
       {
         path: '/help',
-        element: <Page title='Help'><HelpPage /></Page>,
+        element: (
+          <Page title="Help">
+            <HelpPage />
+          </Page>
+        ),
       },
     ],
   },
