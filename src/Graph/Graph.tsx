@@ -84,6 +84,7 @@ export const Graph = () => {
     setAlgoResults(null)
     setViewMode('edit')
   }
+
   const onClickSetLabels = () => {
     setViewMode('setup')
   }
@@ -181,6 +182,7 @@ export const Graph = () => {
               onClickDone={onClickDone}
               preferences={preferences}
               uploadInput={uploadInput}
+              resetInput={resetInput}
             />
           }
         />
@@ -210,6 +212,7 @@ export const Graph = () => {
                 uploadInput={uploadInput}
                 currentAgent={currentAgent}
                 cakeSize={cakeSize}
+                resetInput={resetInput}
               />
             }
           />

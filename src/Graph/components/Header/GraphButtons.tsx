@@ -24,6 +24,7 @@ type ExtraOptionsProps = ComponentProps<typeof ExtraOptions>
 type SharedProps = ExtraOptionsProps & {
   onClickSetLabels: VoidFunction
   onClickDone: VoidFunction
+  resetInput: VoidFunction
 }
 
 type DrawingHeaderButtonsProps = SharedProps & {
@@ -42,6 +43,7 @@ export const DrawingHeaderButtons = ({
   uploadInput,
   currentAgent,
   cakeSize,
+  resetInput,
 }: DrawingHeaderButtonsProps) => {
   const totalAgents = preferences.length
   const cantAddMoreAgents = totalAgents === maxAgents
@@ -80,7 +82,7 @@ export const DrawingHeaderButtons = ({
         Done
       </MenuButton>
 
-      <ExtraOptions uploadInput={uploadInput} preferences={preferences} />
+      <ExtraOptions uploadInput={uploadInput} preferences={preferences} resetInput={resetInput}/>
     </>
   )
 }
@@ -95,6 +97,7 @@ export const CompareHeaderButtons = ({
   onClickDone,
   uploadInput,
   preferences,
+  resetInput,
 }: CompareHeaderButtonsProps) => {
   const totalAgents = preferences.length
   return (
@@ -113,21 +116,20 @@ export const CompareHeaderButtons = ({
         Done
       </MenuButton>
 
-      <ExtraOptions uploadInput={uploadInput} preferences={preferences} />
+      <ExtraOptions uploadInput={uploadInput} preferences={preferences} resetInput={resetInput}/>
     </>
   )
 }
 
 type ResultsButtonsProps = ExtraOptionsProps & {
-  resetInput: VoidFunction
   onClickEdit: (agent?: number) => void
 }
 
 export const ResultsButtons = ({
   preferences,
   uploadInput,
-  resetInput,
   onClickEdit,
+  resetInput,
 }: ResultsButtonsProps) => {
   return (
     <>
@@ -140,7 +142,7 @@ export const ResultsButtons = ({
         Reset
       </MenuButton>
 
-      <ExtraOptions uploadInput={uploadInput} preferences={preferences} />
+      <ExtraOptions uploadInput={uploadInput} preferences={preferences} resetInput={resetInput} />
     </>
   )
 }

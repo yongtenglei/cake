@@ -1,8 +1,10 @@
+import { forwardRef } from 'react'
 import DownloadIcon from '@mui/icons-material/GetApp'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import ExportImageIcon from '@mui/icons-material/Panorama'
 import UploadIcon from '@mui/icons-material/Publish'
 import HelpIcon from '@mui/icons-material/HelpOutline'
+import LoopIcon from '@mui/icons-material/Loop'
 import { IconButton, ListItemIcon, Menu, MenuItem } from '@mui/material'
 import { useState } from 'react'
 import { LoadingModal } from '../../../components/LoadingModal'
@@ -12,11 +14,16 @@ import { downloadScreenshot, downloadValueData } from '../../../utils/export'
 import { Link } from '../../../components/Link'
 
 interface ExtraOptionsProps {
+  resetInput: VoidFunction
   uploadInput: (pref: Preferences) => void
   preferences: Preferences
 }
 
-export const ExtraOptions = ({ uploadInput, preferences }: ExtraOptionsProps) => {
+export const ExtraOptions = ({
+  uploadInput,
+  resetInput,
+  preferences,
+}: ExtraOptionsProps) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -34,6 +41,14 @@ export const ExtraOptions = ({ uploadInput, preferences }: ExtraOptionsProps) =>
   const onClickDownloadData = () => {
     handleClose()
     downloadValueData(preferences)
+  }
+  const onUpload = (newData) => {
+    handleClose()
+    uploadInput(newData)
+  }
+  const onClickClear = () => {
+    handleClose()
+    resetInput()
   }
 
   return (
@@ -62,13 +77,14 @@ export const ExtraOptions = ({ uploadInput, preferences }: ExtraOptionsProps) =>
           horizontal: 'center',
         }}
       >
+        <MenuItem onClick={onClickClear}>
+          <ListItemIcon>
+            <LoopIcon fontSize="small" />
+          </ListItemIcon>
+          Clear All Inputs
+        </MenuItem>
         <MenuItem component="label" htmlFor="uploadFile">
-          <UpdateDataInput
-            onUpload={(newData) => {
-              handleClose()
-              uploadInput(newData)
-            }}
-          />
+          <UpdateDataInput onUpload={onUpload} />
           <ListItemIcon>
             <UploadIcon fontSize="small" />
           </ListItemIcon>
@@ -86,7 +102,11 @@ export const ExtraOptions = ({ uploadInput, preferences }: ExtraOptionsProps) =>
           </ListItemIcon>
           Export Image
         </MenuItem>
-        <MenuItem href="/help" component={Link} forceNewTab>
+        <MenuItem
+          component={forwardRef((props, ref) => (
+            <Link {...props} innerRef={ref} forceNewTab href="/help" />
+          ))}
+        >
           <ListItemIcon>
             <HelpIcon fontSize="small" />
           </ListItemIcon>
