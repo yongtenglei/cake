@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { GraphContext } from './GraphContext'
-import { Segment, DrawnSegment } from '../types'
+import { Segment, DrawnSegment, Preferences } from '../types'
 import { defaultCakeSize, getInnerHeight, getInnerWidth } from './graphConstants'
 import { scaleLinear } from 'd3'
 
@@ -54,3 +54,7 @@ export const isDrawingComplete = (segments: Segment[], cakeSize: number) => {
   const seg = segments[segments.length - 1]
   return seg?.end === cakeSize
 }
+
+export const isAllInputComplete = (preferences: Preferences, cakeSize: number) => (
+  preferences.every(segments => isDrawingComplete(segments, cakeSize))
+)

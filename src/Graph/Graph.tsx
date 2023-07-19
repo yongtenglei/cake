@@ -114,17 +114,24 @@ export const Graph = () => {
       setCurrentAgent(nextAgent)
     }
   }
+
   const onClickRunAlgo = async (algo: AlgoName) => {
     setLoading(true)
     setAlgoModalOpen(false)
 
     setAlgoUsed(algo)
-    const results = await runDivisionAlgorithm(preferences, algo, cakeSize)
-    setAlgoResults(results)
+
+    try {
+      const results = await runDivisionAlgorithm(preferences, algo, cakeSize)
+      setAlgoResults(results)
+      setViewMode('results')
+    } catch (e) {
+      alert('Sorry, something has gone wrong\n\n' + e.message)
+    }
 
     setLoading(false)
-    setViewMode('results')
   }
+
   const onClickEdit = (agent = 0) => {
     setViewMode('edit')
     setCurrentAgent(agent)
@@ -170,8 +177,6 @@ export const Graph = () => {
           buttons={
             <CompareHeaderButtons
               onClickSetLabels={onClickSetLabels}
-              totalAgents={preferences.length}
-              isComplete={isComplete}
               onClickEdit={onClickEdit}
               onClickDone={onClickDone}
               preferences={preferences}
@@ -198,13 +203,13 @@ export const Graph = () => {
             buttons={
               <DrawingHeaderButtons
                 onClickSetLabels={onClickSetLabels}
-                totalAgents={preferences.length}
-                isComplete={isComplete}
                 onClickCreateAgent={onClickCreateAgent}
                 onClickCompare={onClickCompare}
                 onClickDone={onClickDone}
                 preferences={preferences}
                 uploadInput={uploadInput}
+                currentAgent={currentAgent}
+                cakeSize={cakeSize}
               />
             }
           />
