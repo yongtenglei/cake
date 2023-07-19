@@ -28,8 +28,9 @@ import {
   getInnerWidth,
 } from './graphConstants'
 import { createScales, isDrawingComplete } from './graphUtils'
+import { SectionConfig } from './SectionConfig'
 
-export const Graph = () => {
+export const Graph = ({ v2 }: { v2?: boolean }) => {
   const [cakeSize, setCakeSize] = useState<number>(2)
   const [sectionLabels, setSectionLabels] = useState<SectionLabel[]>([])
   const [algoUsed, setAlgoUsed] = useState<AlgoName | null>(null)
@@ -142,7 +143,11 @@ export const Graph = () => {
 
   let body = null
   if (viewMode === 'setup') {
-    body = <Setup onCompletSetup={onCompletSetup} setNewData={resetInput} />
+    body = v2 ? (
+      <SectionConfig onCompletSetup={onCompletSetup} resetInput={resetInput} />
+    ) : (
+      <Setup onCompletSetup={onCompletSetup} setNewData={resetInput} />
+    )
   } else if (viewMode === 'results') {
     body = (
       <>

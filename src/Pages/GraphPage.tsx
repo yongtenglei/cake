@@ -6,7 +6,7 @@ import { Link } from '../components/Link'
 import { SectionErrorDisplay } from '../components/SectionErrorDisplay'
 import cake from '../images/cake/cake divided.png'
 
-export const GraphPage = () => {
+export const GraphPage = (props) => {
   return (
     <>
       <h1>Resource Splitting Tool</h1>
@@ -52,7 +52,7 @@ export const GraphPage = () => {
 
       <Box marginTop={10} marginBottom={20} id="graph-content">
         <ErrorBoundary FallbackComponent={SectionErrorDisplay}>
-          <Graph />
+          <Graph {...props} />
         </ErrorBoundary>
       </Box>
 

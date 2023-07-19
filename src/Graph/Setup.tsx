@@ -75,7 +75,8 @@ export const Setup = ({ onCompletSetup, setNewData }: SetupProps) => {
               marginTop={4}
               direction="row"
             >
-              <Button variant="outlined" component="label" htmlFor="uploadFile">
+              {/* import button doesn't make much sense UX-wise with this set up */}
+              {/* <Button variant="outlined" component="label" htmlFor="uploadFile">
                 <UpdateDataInput
                   onUpload={(newData) => {
                     onCompletSetup([])
@@ -83,7 +84,7 @@ export const Setup = ({ onCompletSetup, setNewData }: SetupProps) => {
                   }}
                 />
                 Import
-              </Button>
+              </Button> */}
               <Button onClick={() => onCompletSetup(sampleLabels3Flavor)} variant="outlined">
                 Demo Setup
               </Button>
@@ -95,9 +96,9 @@ export const Setup = ({ onCompletSetup, setNewData }: SetupProps) => {
                 Start
               </Button>
             </Stack>
-            <Box textAlign="center">
+            {/* <Box textAlign="center">
               <HelperText>Note: Import doesn't support sections</HelperText>
-            </Box>
+            </Box> */}
           </SetupStep>
         ) : null}
 

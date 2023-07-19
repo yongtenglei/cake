@@ -21,6 +21,7 @@ import { PrivacyPolicyPage } from './Pages/PrivacyPolicyPage'
 import { HelpPage } from './Pages/HelpPage'
 import { LearningPage } from './Pages/LearningPage/LearningPage'
 import { Page } from './components/Page'
+import { SectionConfig } from './Graph/SectionConfig'
 
 const theme = createTheme({
   typography: {
@@ -94,6 +95,14 @@ export const router = createBrowserRouter([
         element: (
           <Page title="Splitting Tool">
             <GraphPage />
+          </Page>
+        ),
+      },
+      {
+        path: '/graph2',
+        element: (
+          <Page title="Splitting Tool">
+            <GraphPage v2 />
           </Page>
         ),
       },
