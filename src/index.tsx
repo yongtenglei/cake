@@ -12,16 +12,15 @@ import {
   C_SECONDARY_LIGHT,
   C_SUCCESS,
 } from './colors'
+import { Page } from './components/Page'
 import './index.css'
 import { PageLayout } from './Layouts'
 import { ErrorPage } from './Pages/ErrorPage'
 import { GraphPage } from './Pages/GraphPage'
-import { LandingPage } from './Pages/LandingPage'
-import { PrivacyPolicyPage } from './Pages/PrivacyPolicyPage'
 import { HelpPage } from './Pages/HelpPage'
+import { LandingPage } from './Pages/LandingPage'
 import { LearningPage } from './Pages/LearningPage/LearningPage'
-import { Page } from './components/Page'
-import { SectionConfig } from './Graph/SectionConfig'
+import { PrivacyPolicyPage } from './Pages/PrivacyPolicyPage'
 
 const theme = createTheme({
   typography: {
@@ -102,7 +101,8 @@ export const router = createBrowserRouter([
         path: '/graph2',
         element: (
           <Page title="Splitting Tool">
-            <GraphPage v2 />
+            {/* old version */}
+            <GraphPage v1 />
           </Page>
         ),
       },

@@ -13,29 +13,35 @@ import { sampleLabels3Flavor } from './sampleData'
 
 interface TempSection {
   name: string
-  width: string // keeping this as a string when editing allows users to clear the field
+  width: string // keeping this as a numerical string when editing allows users to clear the field
   color: string
 }
+
+const convertSectionToEditableSection = (sections: SectionLabel[]): TempSection[] =>
+  sections.map((sec) => ({ ...sec, width: String(sec.end - sec.start) }))
 
 const HelperText = ({ children }) => (
   <Box sx={{ color: '#666', fontSize: 14 }}>{children}</Box>
 )
 
 interface SectionConfigProps {
+  initialSections: SectionLabel[]
   onCompletSetup: (sectionLabels: SectionLabel[], cakeSize?: number) => void
-  resetInput: VoidFunction
+  cakeSize: number
 }
 
-export const SectionConfig = ({ onCompletSetup, resetInput }: SectionConfigProps) => {
-  const [hasSections, setHasSections] = useState(true)
-  const [increments, setIncrements] = useState<number>(100)
-  const [sectionLabels, setSectionLabels] = useState<TempSection[]>([
-    {
-      name: '',
-      width: '1',
-      color: labelColors[0],
-    },
-  ])
+export const SectionConfig = ({
+  initialSections,
+  onCompletSetup,
+  cakeSize,
+}: SectionConfigProps) => {
+  // Either the cake has section labels and the size is derived from that,
+  // or the cake has no labels and the size is set manually.
+  const [size, setSize] = useState<number>(cakeSize)
+  const [hasSections, setHasSections] = useState(!!initialSections.length)
+  const [sectionLabels, setSectionLabels] = useState<TempSection[]>(
+    convertSectionToEditableSection(initialSections)
+  )
 
   // Use a simplified version of the sections until the form is submitted
   const createNewSection = () => {
@@ -51,7 +57,7 @@ export const SectionConfig = ({ onCompletSetup, resetInput }: SectionConfigProps
   }
   const setDemo = () => {
     setHasSections(true)
-    setSectionLabels(sampleLabels3Flavor.map((sec) => ({ ...sec, width: '1' })))
+    setSectionLabels(convertSectionToEditableSection(sampleLabels3Flavor))
   }
   const removeSection = (i: number) => {
     setSectionLabels(sectionLabels.filter((_, index) => i !== index))
@@ -84,7 +90,7 @@ export const SectionConfig = ({ onCompletSetup, resetInput }: SectionConfigProps
         })
       )
     } else {
-      resetInput()
+      onCompletSetup([], size)
     }
   }
 
@@ -181,16 +187,17 @@ export const SectionConfig = ({ onCompletSetup, resetInput }: SectionConfigProps
         ) : (
           <Stack direction="row" justifyContent={'space-between'} marginTop={2}>
             <div>
-            <h4>Resouce Size</h4>
+              <h4>Resouce Size</h4>
               <TextField
                 type="number"
                 InputLabelProps={{ shrink: true }}
                 label="Size"
-                value={increments}
-                onChange={(e) => setIncrements(Number(e.target.value))}
+                value={size}
+                onChange={(e) => setSize(Number(e.target.value))}
               />
               <HelperText>
-                A larger number means greater granularity when assigning values.<br />
+                A larger number means greater granularity when assigning values.
+                <br />
                 100 is a good default value because it can represent a percentage.
               </HelperText>
             </div>

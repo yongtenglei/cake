@@ -1,5 +1,5 @@
 import maxBy from 'lodash.maxby'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 import { Box } from '@mui/material'
 import { C_PRIMARY_LIGHT, getAgentColor } from '../colors'
@@ -30,8 +30,8 @@ import {
 import { createScales, isDrawingComplete } from './graphUtils'
 import { SectionConfig } from './SectionConfig'
 
-export const Graph = ({ v2 }: { v2?: boolean }) => {
-  const [cakeSize, setCakeSize] = useState<number>(2)
+export const Graph = ({ v1 }: { v1?: boolean }) => {
+  const [cakeSize, setCakeSize] = useState<number>(defaultCakeSize)
   const [sectionLabels, setSectionLabels] = useState<SectionLabel[]>([])
   const [algoUsed, setAlgoUsed] = useState<AlgoName | null>(null)
   const [algoResults, setAlgoResults] = useState<Portion[] | []>(null)
@@ -143,10 +143,10 @@ export const Graph = ({ v2 }: { v2?: boolean }) => {
 
   let body = null
   if (viewMode === 'setup') {
-    body = v2 ? (
-      <SectionConfig onCompletSetup={onCompletSetup} resetInput={resetInput} />
-    ) : (
+    body = v1 ? (
       <Setup onCompletSetup={onCompletSetup} setNewData={resetInput} />
+      ) : (
+      <SectionConfig onCompletSetup={onCompletSetup} initialSections={sectionLabels} cakeSize={cakeSize} />
     )
   } else if (viewMode === 'results') {
     body = (
