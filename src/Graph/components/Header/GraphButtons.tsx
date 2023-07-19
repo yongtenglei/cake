@@ -4,9 +4,11 @@ import EditIcon from '@mui/icons-material/Edit'
 import LoopIcon from '@mui/icons-material/Loop'
 import LabelIcon from '@mui/icons-material/Label'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
-import { Tooltip } from '@mui/material'
+import { Tooltip,Box } from '@mui/material'
 import { ComponentProps } from 'react'
+import { ReactSVG } from 'react-svg'
 
+import sectionIcon from '../../../images/icons/section config.svg'
 import { MenuButton } from '../../../components/MenuButton'
 import { maxAgents } from '../../graphConstants'
 import { ExtraOptions } from './ExtraOptions'
@@ -40,7 +42,9 @@ export const DrawingHeaderButtons = ({
   return (
     <>
       <MenuButton onClick={onClickSetLabels}>
-        <LabelIcon />
+        <Box width={24} height={24}>
+        <ReactSVG src={sectionIcon} />
+        </Box>
         Set Sections
       </MenuButton>
       <Tooltip
