@@ -9,7 +9,7 @@ const Bubble = ({ y }: BubbleProps) => {
   const { yScale } = useContext(GraphContext)
   return (
     <>
-      <circle r={15} fill="#ccc" stroke="black" />
+      <circle r={15} fill="#ddd" stroke="black" />
       <text dominantBaseline="middle" textAnchor="middle">
         {roundValue(yScale.invert(y))}
       </text>

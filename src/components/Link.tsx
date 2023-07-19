@@ -18,11 +18,12 @@ export const NavLink = ({ href, ...props }: NavLinkProps) => (
 // External links will automatically open in a new window and have an "external" icon
 type LinkProps = React.ComponentProps<typeof MuiLink> & {
   innerRef?: ForwardedRef<unknown>
+  forceNewTab?: boolean
 }
 
-export const Link = ({ children, href, innerRef, ...props }: LinkProps) => {
+export const Link = ({ children, href, innerRef, forceNewTab, ...props }: LinkProps) => {
   const isExternal = !href.startsWith('/')
-  const extraProps = isExternal ? { target: '_blank', rel: 'noopener' } : {}
+  const extraProps = isExternal || forceNewTab ? { target: '_blank', rel: 'noopener' } : {}
   return (
     <MuiLink
       {...props}

@@ -2,15 +2,14 @@ import DownloadIcon from '@mui/icons-material/GetApp'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import ExportImageIcon from '@mui/icons-material/Panorama'
 import UploadIcon from '@mui/icons-material/Publish'
+import HelpIcon from '@mui/icons-material/HelpOutline'
 import { IconButton, ListItemIcon, Menu, MenuItem } from '@mui/material'
 import { useState } from 'react'
 import { LoadingModal } from '../../../components/LoadingModal'
 import { UpdateDataInput } from '../../../components/UploadDataInput'
 import { Preferences } from '../../../types'
-import {
-  downloadScreenshot,
-  downloadValueData
-} from '../../../utils/export'
+import { downloadScreenshot, downloadValueData } from '../../../utils/export'
+import { Link } from '../../../components/Link'
 
 interface ExtraOptionsProps {
   uploadInput: (pref: Preferences) => void
@@ -86,6 +85,12 @@ export const ExtraOptions = ({ uploadInput, preferences }: ExtraOptionsProps) =>
             <ExportImageIcon fontSize="small" />
           </ListItemIcon>
           Export Image
+        </MenuItem>
+        <MenuItem href="/help" component={Link} forceNewTab>
+          <ListItemIcon>
+            <HelpIcon fontSize="small" />
+          </ListItemIcon>
+          Help
         </MenuItem>
       </Menu>
     </div>
