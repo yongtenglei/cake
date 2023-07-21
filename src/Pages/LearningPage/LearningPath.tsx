@@ -459,7 +459,7 @@ const MeasuringPreference = () => {
     setAlgoResults(null)
   }
   const onChangeSegments = (segs: Segment[]) => {
-    setSegments(segs)
+    setSegments(segs.filter((seg) => seg.end > seg.start))
     setCutPoint(undefined)
     setAlgoResults(null)
   }
@@ -601,8 +601,10 @@ const MeasuringPreference = () => {
           </GraphContext.Provider>
 
           <Box component="p" marginTop={6}>
-            It turns out Aki likes strawberry even more than vanilla so she chose the left
-            piece.
+            It turns out Aki likes strawberry even more than vanilla
+            {algoResults[1].edges[0][0] === 0
+              ? ' so she chose the left piece.'
+              : ', yet despite that, the right part looks better to her.'}
           </Box>
 
           <p>
