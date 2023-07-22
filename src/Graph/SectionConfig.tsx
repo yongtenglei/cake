@@ -187,7 +187,7 @@ export const SectionConfig = ({
         ) : (
           <Stack direction="row" justifyContent={'space-between'} marginTop={2}>
             <div>
-              <h4>Resouce Size</h4>
+              <h4>Resource Size</h4>
               <TextField
                 type="number"
                 InputLabelProps={{ shrink: true }}

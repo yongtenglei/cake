@@ -221,7 +221,7 @@ const FairDivision = () => {
         <strong>Divisible resources</strong> are resources which can be divided any number
         of times, in any number of places. This could be land, time, airwaves, or anything
         else arbitrarily divisible. When speaking abstractly, we usually refer to a
-        divisible resouces as a <strong>cake</strong>.
+        divisible resources as a <strong>cake</strong>.
       </p>
       <p>
         Cakes are good examples because they can be cut at any place, as many times as
