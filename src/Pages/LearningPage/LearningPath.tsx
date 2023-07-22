@@ -122,7 +122,7 @@ export const LearningPath = () => {
         <Box order={{ xs: 2, sm: 3 }}>
           {stepNum >= steps.length - 1 ? null : (
             <ButtonLink
-              variant="outlined"
+              variant="contained"
               href={'/learn/' + (stepNum + 1)}
               sx={{ justifySelf: 'flex-end' }}
             >

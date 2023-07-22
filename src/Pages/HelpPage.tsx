@@ -174,9 +174,3 @@ export const HelpPage = () => {
     </article>
   )
 }
-
-// <figure>
-//     <img src="/media/cc0-images/elephant-660-480.jpg"
-//          alt="Elephant at sunset">
-//     <figcaption>An elephant at sunset</figcaption>
-// </figure>
