@@ -92,7 +92,7 @@ export const router = createBrowserRouter([
       {
         path: '/graph',
         element: (
-          <Page title="Splitting Tool">
+          <Page title="Resource Splitting Tool">
             <GraphPage />
           </Page>
         ),
@@ -100,7 +100,7 @@ export const router = createBrowserRouter([
       {
         path: '/graph2',
         element: (
-          <Page title="Splitting Tool">
+          <Page title="Resource Splitting Tool">
             {/* old version */}
             <GraphPage v1 />
           </Page>

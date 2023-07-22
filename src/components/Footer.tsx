@@ -9,7 +9,7 @@ export const Footer = () => {
  
         <ol className="Footer__links">
           <li className="Footer__link">
-            <Link href={'/graph'}>Splitting Tool</Link>
+            <Link href={'/graph'}>Resource Splitting Tool</Link>
           </li>
           <li className="Footer__link">
             <Link href={'/learn'}>Learn</Link>

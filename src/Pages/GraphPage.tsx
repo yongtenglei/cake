@@ -13,7 +13,7 @@ export const GraphPage = (props) => {
       <Stack direction={{ xs: 'column-reverse', sm: 'row' }}>
         <TextContainer>
           <p>
-            Welcome to our innovative <strong>Visual Fair Division Tool</strong>, the
+            Welcome to our innovative, visual <strong>Resource Splitting Tool</strong>, the
             first of its kind! Using this tool you can visually express the value you
             assign to each part of a resource, which our intelligent{' '}
             <strong>algorithm</strong> will then split evenly among all users.
@@ -21,7 +21,7 @@ export const GraphPage = (props) => {
           <p>
             Using this tool, you can split a resource fairly based on the preferences of
             each person. This tool works with <strong>divisible resources</strong>,
-            allowing you to fairly divide a tasty cake, allocate timeslots, or apportion
+            allowing you to fairly divide a tasty cake, allocate time slots, or apportion
             land.
           </p>
           <p>

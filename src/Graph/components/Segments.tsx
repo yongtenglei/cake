@@ -7,13 +7,14 @@ import { getInnerHeight } from '../graphConstants'
 interface SegmentsProps {
   segments: DrawnSegment[]
   color: string
+  showWidth?: boolean
 }
 
 const arrowColor = '#333'
 const arrowShape = '-12 -6.7 0 0 -12 6.7 -12 -6.7'
 const strokeWidth = 1.5
 
-export const Segments = ({ segments, color }: SegmentsProps) => {
+export const Segments = ({ segments, color, showWidth = false }: SegmentsProps) => {
   const height = getInnerHeight(useContext(GraphContext).height)
 
   // The math with y coordinates is tricky because 0 means top, positive numbers mean further down.
@@ -64,7 +65,7 @@ export const Segments = ({ segments, color }: SegmentsProps) => {
             />
 
             {/* width measuring lines */}
-            {/* <WidthDisplay {...seg} height={height} /> */}
+            {showWidth ? <WidthDisplay {...seg} height={height} /> : null}
           </React.Fragment>
         )
       })}

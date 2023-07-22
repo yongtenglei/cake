@@ -1010,7 +1010,7 @@ const Ending = () => {
 
       <Stack alignItems="center" marginY={2}>
         <ButtonLink variant="contained" href="/graph">
-          Try the Splitting Tool
+          Try the Resource Splitting Tool
         </ButtonLink>
       </Stack>
     </>

@@ -22,7 +22,7 @@ export const Navigation = () => {
             <ol className="Navigation__links">
               <li>
                 <NavLink href={'/graph'} className="Navigation__link">
-                  Splitting Tool
+                  Resource Splitting
                 </NavLink>
               </li>
               <li>

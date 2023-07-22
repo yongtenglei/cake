@@ -17,7 +17,7 @@ export const HelpPage = () => {
   return (
     <article>
       <h1>Help Page</h1>
-      <p>This page explains the steps and controls of the splitting tool.</p>
+      <p>This page explains the steps and controls of the resource splitting tool.</p>
       <p>
         For a general introduction to fair division, see the{' '}
         <Link href="/learn">Interactive Course</Link>.
@@ -100,6 +100,14 @@ export const HelpPage = () => {
           <p>
             To change an angled area back to a flat area, drag one of the corners until
             it's even with the other.
+          </p>
+          <p>
+            Areas can also be resized using the keyboard. After focusing on a value
+            circle, press <kbd>↑</kbd>/<kbd>↓</kbd> to adjust a value in increments of 0.1
+            or hold <kbd>Shift</kbd>+<kbd>↑</kbd>/<kbd>↓</kbd> to adjust a value in
+            increments of 1. When focusing on a border, press <kbd>←</kbd>/<kbd>→</kbd> to
+            adjust a value in increments of 1 or <kbd>Shift</kbd>+<kbd>←</kbd>/
+            <kbd>→</kbd> in adjust in increments of 10.
           </p>
         </div>
 

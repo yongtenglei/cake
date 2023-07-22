@@ -151,7 +151,7 @@ export const DrawingLayer = ({ segments, setSegments, currentAgent, isComplete }
             <AxisBottom />
             <AxisLeft />
 
-            <Segments segments={pixelSegs} color={getAgentColor(currentAgent)} />
+            <Segments segments={pixelSegs} color={getAgentColor(currentAgent)} showWidth={cakeSize > 10} />
 
             <HorizontalResizeHandles
               segments={pixelSegs}
