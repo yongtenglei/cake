@@ -937,8 +937,7 @@ const ParetoOptimal = () => {
       </p>
       <p>
         A solution where no change would give someone more value without taking value away
-        from someone else is called <strong>Pareto-optimal</strong> or{' '}
-        <strong>Pareto-efficient</strong>.
+        from someone else is called <strong>Pareto-optimal</strong>.
       </p>
       <p>
         Unfortunately, <strong>Pareto-optimal solutions</strong> can be very difficult to
@@ -948,7 +947,7 @@ const ParetoOptimal = () => {
       <p>
         For more info,{' '}
         <Link href={'https://en.wikipedia.org/wiki/Pareto_efficiency'}>
-          read about Pareto-efficiency and Pareto-optimality.
+          read about Pareto-optimality.
         </Link>
       </p>
     </>
