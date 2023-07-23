@@ -6,7 +6,7 @@ import strawberryCake from '../../images/cake/cake strawberry.png'
 import vanillaCake from '../../images/cake/cake vanilla.png'
 import akiChar from '../../images/character/aki.svg'
 import brunoChar from '../../images/character/bruno.svg'
-import cloeChar from '../../images/character/cloe.svg'
+import chloeChar from '../../images/character/chloe.svg'
 
 export const highlightCss = {
   // cursor: 'pointer',
@@ -46,11 +46,11 @@ export const CakeImage = ({
 const characterImageMap = {
   Aki: akiChar,
   Bruno: brunoChar,
-  Cloe: cloeChar,
+  Chloe: chloeChar,
 }
 
 interface CharacterImageProps {
-  character: 'Aki' | 'Bruno' | 'Cloe'
+  character: 'Aki' | 'Bruno' | 'Chloe'
   width?: string | number
   hideName?: boolean
   sx?: ComponentProps<typeof Box>['sx']

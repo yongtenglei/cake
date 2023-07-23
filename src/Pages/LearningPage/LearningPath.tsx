@@ -24,7 +24,7 @@ import { C_STRAWBERRY, C_VANILLA } from '../../colors'
 import { ButtonLink, Link } from '../../components/Link'
 import cake3PrefAki from '../../images/preference/aki.png'
 import cake3PrefBruno from '../../images/preference/bruno.png'
-import cake3PrefCloe from '../../images/preference/cloe.png'
+import cake3PrefChloe from '../../images/preference/chloe.png'
 import selfridgeResults from '../../images/results/selfridgeresults.png'
 import simple3Results from '../../images/results/simple3results.png'
 import toolExample from '../../images/tool example.png'
@@ -679,10 +679,10 @@ const threePreferences = (
       Bruno likes chocolate
     </Stack>
 
-    <img src={cake3PrefCloe} style={{ maxHeight: 200 }} />
+    <img src={cake3PrefChloe} style={{ maxHeight: 200 }} />
     <Stack alignItems="center">
-      <CharacterImage character="Cloe" hideName />
-      Cloe likes both equally
+      <CharacterImage character="Chloe" hideName />
+      Chloe likes both equally
     </Stack>
   </Box>
 )
@@ -710,7 +710,7 @@ const EnterPlayer3 = () => {
       <ImageContainer>
         <CharacterImage character="Aki" />
         <CharacterImage character="Bruno" />
-        <CharacterImage character="Cloe" />
+        <CharacterImage character="Chloe" />
       </ImageContainer>
 
       <p>Here's how they value the flavors:</p>
@@ -747,8 +747,8 @@ const EnterPlayer3 = () => {
             <br />
             which includes a part he doesn't value.
           </OverlayText>
-          <OverlayText justifySelf="flex-end" character="Cloe">
-            Cloe gets the right third.
+          <OverlayText justifySelf="flex-end" character="Chloe">
+            Chloe gets the right third.
           </OverlayText>
         </Box>
       </Box>
@@ -762,7 +762,7 @@ const EnterPlayer3 = () => {
           <sub>3</sub> to him.
         </li>
         <li>
-          Cloe's piece is worth <sup>1</sup>&frasl;
+          Chloe's piece is worth <sup>1</sup>&frasl;
           <sub>3</sub> to her.
         </li>
       </ul>
@@ -775,7 +775,7 @@ const EnterPlayer3 = () => {
 
       <p>
         <em>However,</em> this solution doesn't seem fair to Bruno. From his perspective,
-        Cloe's piece is worth <sup>2</sup>&frasl;
+        Chloe's piece is worth <sup>2</sup>&frasl;
         <sub>3</sub> while his own is only worth <sup>1</sup>&frasl;
         <sub>3</sub>.
       </p>
@@ -901,11 +901,11 @@ const ThreeWayDivision = () => {
           <OverlayText justifySelf="center" character="Bruno" gridArea="b">
             Bruno gets this one plus a sliver at the end
           </OverlayText>
-          <OverlayText justifySelf="flex-end" character="Cloe" gridArea="c1">
-            Cloe gets this piece
+          <OverlayText justifySelf="flex-end" character="Chloe" gridArea="c1">
+            Chloe gets this piece
           </OverlayText>
-          <OverlayText justifySelf="flex-end" character="Cloe" gridArea="c2">
-            Cloe algo gets this piece
+          <OverlayText justifySelf="flex-end" character="Chloe" gridArea="c2">
+            Chloe algo gets this piece
           </OverlayText>
         </Box>
       </Box>
