@@ -81,8 +81,8 @@ export const uploadValueData = async (file: File): Promise<Preferences> => {
 }
 
 // Default to screenshotting and downloading the `#main` content of the page
-export const downloadScreenshot = async (selector = 'main') => {
-  const canvas = await html2canvas(document.querySelector(selector))
+export const downloadScreenshot = async (elementId = 'main') => {
+  const canvas = await html2canvas(document.querySelector('#' + elementId))
 
   var strData = canvas
     .toDataURL('image/png')
