@@ -114,7 +114,7 @@ export const SectionConfig = ({
         <HelperText>
           Does the resource have logical sections?
           <br />
-          Example: A cake with a chocolate, a vanilla, and a strawberry section.
+          Example: A cake with chocolate, vanilla, and strawberry sections.
         </HelperText>
 
         {hasSections ? (
