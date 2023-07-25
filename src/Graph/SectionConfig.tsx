@@ -136,7 +136,7 @@ export const SectionConfig = ({
                       placeholder={`Section ${i + 1}`}
                       onChange={(e) => changeField(i, 'name', e.target.value)}
                     />
-                    {/* Needs accessiblity work. The focus indicator on the color is imperceptible */}
+                    {/* Needs accessibility work. The focus indicator on the color is imperceptible */}
                     <MuiColorInput
                       InputLabelProps={{ shrink: true }}
                       label="Color"
@@ -147,7 +147,6 @@ export const SectionConfig = ({
                     />
 
                     <TextField
-                      sx={{ flexShrink: 0 }}
                       InputLabelProps={{ shrink: true }}
                       label="Size"
                       type="number"
