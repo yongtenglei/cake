@@ -227,11 +227,11 @@ const FairDivision = () => {
         Cakes are good examples because they can be cut at any place, as many times as
         necessary, and are usually shared equally.
       </p>
-      <CakeImage
-        flavor="chocolate"
-        width={200}
-        sx={{ display: 'block', margin: 'auto' }}
-      />
+      <ImageContainer>
+        <CakeImage flavor="chocolate" width={200}/>
+        {/* make them look overlapping, not perfect though */}
+        <CakeImage flavor="chocolate" width={200} sx={{ marginLeft: '-1px' }} />
+      </ImageContainer>
 
       <p>
         In contrast, <strong>indivisible resources</strong> can't be split. This could be
@@ -307,6 +307,18 @@ const TwoFlavorCake = ({ preferredFlavor, setPreferredFlavor }: CommonProps) => 
       <p>
         This cake is <strong>heterogenous</strong> (made of different things).
       </p>
+      <ImageContainer>
+        <CakeImage
+          flavor="vanilla"
+          width="200px"
+        />
+        <CakeImage
+          flavor="chocolate"
+          width="200px"
+          sx={{marginLeft: '-1px'}}
+        />
+      </ImageContainer>
+
       <CharacterImage character="Aki" sx={{ float: 'right' }} />
 
       <p>
