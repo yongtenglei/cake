@@ -462,18 +462,18 @@ const MeasuringPreference = () => {
   const outputWidth = 400
   const outputHeight = 150
 
-  const [algoResults, setAlgoResults] = useState<Portion[] | []>(null)
+  const [algoResults, setAlgoResults] = useState<Portion[] | undefined>(undefined)
   const [segments, setSegments] = useState<Segment[]>([])
   const [cutPoint, setCutPoint] = useState<number | undefined>(undefined)
   const redoMarking = () => {
     setSegments([])
     setCutPoint(undefined)
-    setAlgoResults(null)
+    setAlgoResults(undefined)
   }
   const onChangeSegments = (segs: Segment[]) => {
     setSegments(segs.filter((seg) => seg.end > seg.start))
     setCutPoint(undefined)
-    setAlgoResults(null)
+    setAlgoResults(undefined)
   }
   const runCutAlgo = () => {
     setCutPoint(findCutLineByPercent(segments, 0.5))
@@ -488,12 +488,17 @@ const MeasuringPreference = () => {
   }
   const drawingComplete = isDrawingComplete(segments, cakeSize)
 
+  const cutPointPercent = (100 * cutPoint) / cakeSize
+
   const activeCutlineProps = {
     role: 'button',
     tabIndex: 0,
     onClick: runAlgo,
-    'aria-label': `Cut the cake here, at ${(cutPoint / cakeSize) * 100}%`,
+    'aria-label': `Cut the cake here, at ${cutPointPercent}%`,
   }
+  const akiLikesLeft =
+    algoResults?.find((result) => result.owner === 1)?.edges[0][0] === 0
+
   return (
     <>
       <h2>Measuring Preference</h2>
@@ -522,7 +527,6 @@ const MeasuringPreference = () => {
         }}
       >
         <Box
-          position="relative"
           marginX="auto"
           paddingRight={margin.left - margin.right + 'px'}
           width="fit-content"
@@ -537,35 +541,23 @@ const MeasuringPreference = () => {
               isComplete={drawingComplete}
             />
           )}
-          {/* Dotted line for cutting */}
-          {cutPoint ? (
-            <Box
-              role="button"
-              tabIndex={0}
-              position="absolute"
-              onClick={runAlgo}
-              left={drawingScales.xScale(cutPoint) + margin.left}
-              top={0}
-              aria-label={`Cut the cake here, at ${(cutPoint / cakeSize) * 100}%`}
-              sx={{
-                cursor: 'pointer',
-                transform: {
-                  xs: 'translateX(-50%)',
-                },
-                '&:hover, &:focus': {
-                  transform: 'translateX(-50%) scaleX(1.5)',
-                },
-              }}
-              paddingX={2}
-              height="100%"
-            >
-              <Box borderLeft="4px dashed black" height="100%" />
-            </Box>
-          ) : null}
         </Box>
       </GraphContext.Provider>
 
-      {cutPoint && !algoResults ? (
+      <Stack justifyContent={'center'} direction="row" spacing={2} marginY={2}>
+        <Button variant="outlined" disabled={!drawingComplete} onClick={redoMarking}>
+          Redo
+        </Button>
+        <Button
+          variant="contained"
+          disabled={!drawingComplete || !!cutPoint}
+          onClick={runCutAlgo}
+        >
+          Done marking
+        </Button>
+      </Stack>
+
+      {cutPoint ? (
         <>
           <p>
             Based on your preferences, this dotted line is where you should cut the cake
@@ -585,7 +577,7 @@ const MeasuringPreference = () => {
             <Box
               {...(algoResults ? {} : activeCutlineProps)}
               position="absolute"
-              left={(100 * cutPoint) / cakeSize + '%'}
+              left={cutPointPercent + '%'}
               top={0}
               sx={{
                 cursor: 'pointer',
@@ -603,17 +595,6 @@ const MeasuringPreference = () => {
         </>
       ) : null}
 
-      {cutPoint ? null : (
-        <Stack justifyContent={'center'} direction="row" spacing={2} marginY={2}>
-          <Button variant="outlined" disabled={!drawingComplete} onClick={redoMarking}>
-            Redo
-          </Button>
-          <Button variant="contained" disabled={!drawingComplete} onClick={runCutAlgo}>
-            Done marking
-          </Button>
-        </Stack>
-      )}
-
       {algoResults ? (
         <>
           <Box component="p" marginTop={4}>
@@ -622,12 +603,53 @@ const MeasuringPreference = () => {
 
           <CharacterImage character="Aki" sx={{ marginY: 2, marginX: 'auto' }} />
 
+          {/* This is a bit of a magic trick */}
+          {/* The outer container hides anything outside its bounds */}
+          <Box
+            width="fit-content"
+            marginX="auto"
+            position="relative"
+            overflow="hidden"
+            sx={{
+              transform: `translateX(${
+                (akiLikesLeft ? -cutPointPercent : cutPointPercent) / 2
+              }%)`,
+            }}
+          >
+            {/* The inner container moves based on the cut line and which piece aki chooses 
+              so that only Aki's piece is visible.
+            */}
+            <Box
+              display="flex"
+              sx={{
+                transform: `translateX(${
+                  akiLikesLeft ? 100 - cutPointPercent : -cutPointPercent
+                }%)`,
+              }}
+            >
+              <CakeImage flavor="strawberry" width="200px" />
+              <CakeImage flavor="vanilla" width="200px" />
+            </Box>
+          </Box>
+
           <p>
             It turns out Aki likes strawberry even more than vanilla
-            {algoResults[1].edges[0][0] === 0
-              ? ' so she chose the left piece.'
-              : ', yet despite that, the right part looks better to her based on where you cut the cake.'}
+            {akiLikesLeft ? (
+              <>
+                {' '}
+                so she chose the <strong>left piece</strong>.
+              </>
+            ) : (
+              <>
+                , yet despite that, the <strong>right piece</strong> looks better to her based on where you
+                cut the cake.
+              </>
+            )}
           </p>
+
+          <Box component="p" marginTop={6}>
+            Here are the details of the cut and the cake value each person receives.
+          </Box>
 
           <GraphContext.Provider
             value={{
@@ -669,7 +691,6 @@ const MeasuringPreference = () => {
           </Stack>
         </>
       ) : null}
-      {/* polygon(0 0, 50% 0%, 50% 100%, 0 100%) */}
     </>
   )
 }
