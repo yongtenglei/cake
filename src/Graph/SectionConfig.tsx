@@ -26,13 +26,13 @@ const HelperText = ({ children }) => (
 
 interface SectionConfigProps {
   initialSections: SectionLabel[]
-  onCompletSetup: (sectionLabels: SectionLabel[], cakeSize?: number) => void
+  onCompleteSetup: (sectionLabels: SectionLabel[], cakeSize?: number) => void
   cakeSize: number
 }
 
 export const SectionConfig = ({
   initialSections,
-  onCompletSetup,
+  onCompleteSetup,
   cakeSize,
 }: SectionConfigProps) => {
   // Either the cake has section labels and the size is derived from that,
@@ -76,7 +76,7 @@ export const SectionConfig = ({
     if (hasSections) {
       let currentWidth = 0
       // transform into real section objects
-      onCompletSetup(
+      onCompleteSetup(
         sectionLabels.map((sec, i) => {
           const newSec = {
             id: i,
@@ -90,7 +90,7 @@ export const SectionConfig = ({
         })
       )
     } else {
-      onCompletSetup([], size)
+      onCompleteSetup([], size)
     }
   }
 

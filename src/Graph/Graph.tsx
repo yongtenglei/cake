@@ -52,7 +52,7 @@ export const Graph = ({ v1 }: { v1?: boolean }) => {
     cakeSize,
   })
 
-  const onCompletSetup = (sectionLabels: SectionLabel[], cakeSize?: number) => {
+  const onCompleteSetup = (sectionLabels: SectionLabel[], cakeSize?: number) => {
     if (cakeSize) {
       setCakeSize(cakeSize)
     } else if (sectionLabels.length) {
@@ -145,9 +145,9 @@ export const Graph = ({ v1 }: { v1?: boolean }) => {
   let body = null
   if (viewMode === 'setup') {
     body = v1 ? (
-      <Setup onCompletSetup={onCompletSetup} setNewData={resetInput} />
+      <Setup onCompleteSetup={onCompleteSetup} setNewData={resetInput} />
       ) : (
-      <SectionConfig onCompletSetup={onCompletSetup} initialSections={sectionLabels} cakeSize={cakeSize} />
+      <SectionConfig onCompleteSetup={onCompleteSetup} initialSections={sectionLabels} cakeSize={cakeSize} />
     )
   } else if (viewMode === 'results') {
     body = (

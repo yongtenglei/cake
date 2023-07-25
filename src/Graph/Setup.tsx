@@ -12,6 +12,8 @@ import { Preferences, SectionLabel } from '../types'
 import { margin } from './graphConstants'
 import { sampleLabels3Flavor } from './sampleData'
 
+// Note, this is the older one, currently at /graph2
+
 // TODO: add transitions here
 // It's not as easy as dropping in a MUI Slide or Fade
 const SetupStep = ({ children, ...props }) => {
@@ -40,7 +42,7 @@ const StepBody = ({ children }) => (
 
 type CompleteFunction = (sectionLabels: SectionLabel[], cakeSize?: number) => void
 interface SetupProps {
-  onCompletSetup: CompleteFunction
+  onCompleteSetup: CompleteFunction
   setNewData: (pref: Preferences) => void
 }
 
@@ -52,7 +54,7 @@ type States =
   | 'configSections'
   | 'cakeSize'
 
-export const Setup = ({ onCompletSetup, setNewData }: SetupProps) => {
+export const Setup = ({ onCompleteSetup, setNewData }: SetupProps) => {
   const [states, setStates] = useState<States[]>(['intro'])
   const currentState = states[states.length - 1]
   const [sameSizeSections, setSameSizeSections] = useState(false)
@@ -78,13 +80,13 @@ export const Setup = ({ onCompletSetup, setNewData }: SetupProps) => {
               {/* <Button variant="outlined" component="label" htmlFor="uploadFile">
                 <UpdateDataInput
                   onUpload={(newData) => {
-                    onCompletSetup([])
+                    onCompleteSetup([])
                     setNewData(newData)
                   }}
                 />
                 Import
               </Button> */}
-              <Button onClick={() => onCompletSetup(sampleLabels3Flavor)} variant="outlined">
+              <Button onClick={() => onCompleteSetup(sampleLabels3Flavor)} variant="outlined">
                 Demo Setup
               </Button>
 
@@ -151,12 +153,12 @@ export const Setup = ({ onCompletSetup, setNewData }: SetupProps) => {
         ) : null}
         {currentState === 'cakeSize' ? (
           <SetupStep>
-            <CakeSizeEdit onCompletSetup={onCompletSetup} />
+            <CakeSizeEdit onCompleteSetup={onCompleteSetup} />
           </SetupStep>
         ) : null}
         {currentState === 'configSections' ? (
           <SetupStep>
-            <SectionEdit fixedSize={sameSizeSections} onFinishSections={onCompletSetup} />
+            <SectionEdit fixedSize={sameSizeSections} onFinishSections={onCompleteSetup} />
           </SetupStep>
         ) : null}
 
@@ -178,9 +180,9 @@ export const Setup = ({ onCompletSetup, setNewData }: SetupProps) => {
 }
 
 interface CakeSizeEditProps {
-  onCompletSetup: CompleteFunction
+  onCompleteSetup: CompleteFunction
 }
-const CakeSizeEdit = ({ onCompletSetup }: CakeSizeEditProps) => {
+const CakeSizeEdit = ({ onCompleteSetup }: CakeSizeEditProps) => {
   const [increments, setIncrements] = useState<number>(100)
   return (
     <>
@@ -204,7 +206,7 @@ const CakeSizeEdit = ({ onCompletSetup }: CakeSizeEditProps) => {
         <Button
           variant="contained"
           onClick={() => {
-            onCompletSetup([], increments)
+            onCompleteSetup([], increments)
           }}
         >
           Done
