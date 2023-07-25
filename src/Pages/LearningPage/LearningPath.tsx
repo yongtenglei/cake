@@ -30,7 +30,7 @@ import simple3Results from '../../images/results/simple3results.png'
 import toolExample from '../../images/tool example.png'
 import { Portion, Segment } from '../../types'
 import { formatNumber } from '../../utils/formatUtils'
-import { CakeFlavor, CakeImage, CharacterImage } from './Images'
+import { CakeFlavor, CakeImage, CharacterImage, ImageContainer } from './Images'
 
 interface CommonProps {
   preferredFlavor: CakeFlavor | null
@@ -183,12 +183,6 @@ export const LearningPath = () => {
   )
 }
 
-const ImageContainer = ({ children }) => (
-  <Stack direction="row" justifyContent="center" marginY={2} sx={{ clear: 'both' }}>
-    {children}
-  </Stack>
-)
-
 const WhatLearn = () => (
   <>
     <h2>Fair Division Interactive Course</h2>
@@ -228,9 +222,8 @@ const FairDivision = () => {
         necessary, and are usually shared equally.
       </p>
       <ImageContainer>
-        <CakeImage flavor="chocolate" width={200}/>
-        {/* make them look overlapping, not perfect though */}
-        <CakeImage flavor="chocolate" width={200} sx={{ marginLeft: '-1px' }} />
+        <CakeImage flavor="chocolate" width={200} />
+        <CakeImage flavor="chocolate" width={200} />
       </ImageContainer>
 
       <p>
@@ -256,9 +249,20 @@ const SimpleCakeDivision = () => {
         pieces. Which piece do you want?
       </p>
 
-      <ImageContainer>
-        <CakeImage flavor="chocolate" width="200px" onClick={() => setSelected(true)} />
-        <CakeImage flavor="chocolate" width="200px" onClick={() => setSelected(true)} />
+      <ImageContainer spacing={1}>
+        <CakeImage
+          flavor="chocolate"
+          width="200px"
+          onClick={() => setSelected(true)}
+          sx={{ marginBottom: 2 }}
+        />
+        <Box borderLeft="4px dashed black" />
+        <CakeImage
+          flavor="chocolate"
+          width="200px"
+          onClick={() => setSelected(true)}
+          sx={{ marginBottom: 2 }}
+        />
       </ImageContainer>
       {selected ? (
         <>
@@ -308,15 +312,8 @@ const TwoFlavorCake = ({ preferredFlavor, setPreferredFlavor }: CommonProps) => 
         This cake is <strong>heterogenous</strong> (made of different things).
       </p>
       <ImageContainer>
-        <CakeImage
-          flavor="vanilla"
-          width="200px"
-        />
-        <CakeImage
-          flavor="chocolate"
-          width="200px"
-          sx={{marginLeft: '-1px'}}
-        />
+        <CakeImage flavor="vanilla" width="200px" />
+        <CakeImage flavor="chocolate" width="200px" />
       </ImageContainer>
 
       <CharacterImage character="Aki" sx={{ float: 'right' }} />
@@ -329,16 +326,19 @@ const TwoFlavorCake = ({ preferredFlavor, setPreferredFlavor }: CommonProps) => 
         <em>Which piece do you want?</em>
       </p>
 
-      <ImageContainer>
+      <ImageContainer spacing={1}>
         <CakeImage
           flavor="vanilla"
           width="200px"
           onClick={() => setPreferredFlavor('vanilla')}
+          sx={{ marginBottom: 2 }}
         />
+        <Box borderLeft="4px dashed black" />
         <CakeImage
           flavor="chocolate"
           width="200px"
           onClick={() => setPreferredFlavor('chocolate')}
+          sx={{ marginBottom: 2 }}
         />
       </ImageContainer>
       {preferredFlavor && (
@@ -487,6 +487,13 @@ const MeasuringPreference = () => {
     setAlgoResults(results)
   }
   const drawingComplete = isDrawingComplete(segments, cakeSize)
+
+  const activeCutlineProps = {
+    role: 'button',
+    tabIndex: 0,
+    onClick: runAlgo,
+    'aria-label': `Cut the cake here, at ${(cutPoint / cakeSize) * 100}%`,
+  }
   return (
     <>
       <h2>Measuring Preference</h2>
@@ -494,20 +501,14 @@ const MeasuringPreference = () => {
       <p>Here's a strawberry and vanilla cake</p>
       <ImageContainer>
         <CakeImage flavor="strawberry" width={drawingInnerWidth / 2} />
-        <CakeImage
-          flavor="vanilla"
-          width={drawingInnerWidth / 2}
-          // makes the pieces look attached
-          sx={{ marginLeft: '-2px' }}
-        />
+        <CakeImage flavor="vanilla" width={drawingInnerWidth / 2} />
       </ImageContainer>
       <p>This time you cut and Aki chooses.</p>
 
       {cutPoint ? null : (
         <p>
-          First, <strong>mark</strong> how much you like each flavor on the graph below.
-          The scale goes from 0-10 with higher numbers meaning that flavor is higher value
-          to you.
+          First, <strong>mark</strong> how much you like each flavor on the graph below
+          with 0 meaning being "hate it" and 10 meaning "love it".
         </p>
       )}
 
@@ -565,13 +566,41 @@ const MeasuringPreference = () => {
       </GraphContext.Provider>
 
       {cutPoint && !algoResults ? (
-        <p>
-          Based on your preferences, this dotted line is where you should cut the cake so
-          that each piece is worth <sup>1</sup>
-          &frasl;
-          <sub>2</sub> the cake to you. This way you'll get a fair portion of the cake no
-          matter which part Aki chooses.
-        </p>
+        <>
+          <p>
+            Based on your preferences, this dotted line is where you should cut the cake
+            so that each piece is worth <sup>1</sup>
+            &frasl;
+            <sub>2</sub> the cake to you. This way you'll get a fair portion of the cake
+            no matter which part Aki chooses.
+          </p>
+          <p>
+            Now click the dotted line to <strong>cut the cake!</strong>
+          </p>
+
+          <Box width="fit-content" marginX="auto" position="relative">
+            <CakeImage flavor="strawberry" width="200px" />
+            <CakeImage flavor="vanilla" width="200px" />
+            {/* Dotted line for cutting */}
+            <Box
+              {...(algoResults ? {} : activeCutlineProps)}
+              position="absolute"
+              left={(100 * cutPoint) / cakeSize + '%'}
+              top={0}
+              sx={{
+                cursor: 'pointer',
+                transform: 'translateX(-50%)',
+                '&:hover, &:focus': {
+                  transform: 'translateX(-50%) scaleX(1.5)',
+                },
+              }}
+              paddingX={2}
+              height="100%"
+            >
+              <Box borderLeft="4px dashed black" height="100%" />
+            </Box>
+          </Box>
+        </>
       ) : null}
 
       {cutPoint ? null : (
@@ -590,7 +619,16 @@ const MeasuringPreference = () => {
           <Box component="p" marginTop={4}>
             Nice! Let's see which piece Aki chooses:
           </Box>
+
           <CharacterImage character="Aki" sx={{ marginY: 2, marginX: 'auto' }} />
+
+          <p>
+            It turns out Aki likes strawberry even more than vanilla
+            {algoResults[1].edges[0][0] === 0
+              ? ' so she chose the left piece.'
+              : ', yet despite that, the right part looks better to her based on where you cut the cake.'}
+          </p>
+
           <GraphContext.Provider
             value={{
               ...createScales({
@@ -611,13 +649,6 @@ const MeasuringPreference = () => {
               namesPossessive={['Your', "Aki's"]}
             />
           </GraphContext.Provider>
-
-          <Box component="p" marginTop={6}>
-            It turns out Aki likes strawberry even more than vanilla
-            {algoResults[1].edges[0][0] === 0
-              ? ' so she chose the left piece.'
-              : ', yet despite that, the right part looks better to her.'}
-          </Box>
 
           <p>
             She says her piece is worth{' '}
@@ -818,7 +849,8 @@ const EnvyFree = () => {
         <sub>n</sub> of the whole.
       </p>
       <p>
-        This is easy with 2 people, but splitting a cake with 3 or more gets a bit tricky.
+        Cut and Choose is proportional and envy-free, but this gets trickier with more
+        people.
       </p>
     </>
   )
@@ -836,7 +868,7 @@ const SelfridgeConway = () => {
         This method is now called the <strong>Selfridge-Conway Method.</strong>
       </p>
       <p>
-        The steps of the method are a bit involved, but the simplified version looks like
+        The steps of the method are a bit involved, but the simple version looks like
         this:
       </p>
       <ol>
@@ -855,13 +887,14 @@ const SelfridgeConway = () => {
       <p>
         If you're curious, you can{' '}
         <Link href={Algorithms.selfridgeConway.link}>
-          learn more about the Selfridge-Conway Method.
+          learn the full Selfridge-Conway Method.
         </Link>
       </p>
       <p></p>
     </>
   )
 }
+// should add an interactive part here.
 const ThreeWayDivision = () => {
   return (
     <>
@@ -911,13 +944,13 @@ const ThreeWayDivision = () => {
             Aki gets these two pieces
           </OverlayText>
           <OverlayText justifySelf="center" character="Bruno" gridArea="b">
-            Bruno gets this one plus a sliver at the end
+            Bruno gets this piece
           </OverlayText>
           <OverlayText justifySelf="flex-end" character="Chloe" gridArea="c1">
             Chloe gets this piece
           </OverlayText>
           <OverlayText justifySelf="flex-end" character="Chloe" gridArea="c2">
-            Chloe algo gets this piece
+            Chloe also gets this piece
           </OverlayText>
         </Box>
       </Box>
@@ -944,17 +977,18 @@ const ParetoOptimal = () => {
         about <em>optimal</em> fairness?
       </p>
       <p>
-        Although this solution to the last problem is fair by the envy-free definition, it
-        could be even better.
+        Although this solution to the last problem is fair by the envy-free definition,
+        with a slight adjustment to the portions more value could be extracted.
       </p>
       <p>
         A solution where no change would give someone more value without taking value away
         from someone else is called <strong>Pareto-optimal</strong>.
       </p>
       <p>
-        Unfortunately, <strong>Pareto-optimal solutions</strong> can be very difficult to
-        calculate. For this reason, finding an envy-free solution is a much more realistic
-        goal.
+        Pareto-optimal solutions aren't necessarily envy-free, but a solution that
+        achieves both is a bit closer to ideal. Unfortunately, such solutions can be
+        difficult to calculate. For this reason, finding an envy-free solution is a much
+        more realistic goal.
       </p>
       <p>
         For more info,{' '}
