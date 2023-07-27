@@ -25,11 +25,11 @@ export const ResultsTable = ({ preferences, results }: ResultsTableProps) => {
   return (
     <section>
       <h2>Portion Values</h2>
-      <TableContainer>
+      <TableContainer sx={{marginTop: 4}}>
         <Table
           sx={{
             maxWidth: results.length > 3 ? 'none' : '700px',
-            th: { border: 'none', paddingTop: 0, fontSize: 18 },
+            th: { border: 'none', paddingTop: 0, fontSize: 22 },
             td: {
               border: '2px solid black',
               borderLeft: 'none',
@@ -45,13 +45,13 @@ export const ResultsTable = ({ preferences, results }: ResultsTableProps) => {
         >
           <TableHead>
             <TableRow>
-              <TableCell colSpan={2} />
+              <TableCell />
               <TableCell colSpan={numPeople} align="center">
-                Portion Value
+                Perceived Portion Value
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell colSpan={2}>{}</TableCell>
+              <TableCell />
               {results.map((portion, i) => {
                 return (
                   <TableCell key={i}>
@@ -76,13 +76,16 @@ export const ResultsTable = ({ preferences, results }: ResultsTableProps) => {
               const color = getAgentColor(rowAgent)
               return (
                 <TableRow key={rowAgent}>
-                  {rowAgent === 0 ? (
+                  {/* {rowAgent === 0 ? (
                     <TableCell rowSpan={numPeople} className="valueLabel" align="center">
-                      Perceived Value
+                      {/* Perceived Value
                     </TableCell>
-                  ) : null}
+                  ) : null} */}
 
-                  <TableCell className="rowLabel">Person {rowAgent + 1}<PersonCellLabel color={color}/></TableCell>
+                  <TableCell className="rowLabel">
+                    Person {rowAgent + 1}
+                    <PersonCellLabel color={color} />
+                  </TableCell>
                   {results.map((portion, colAgent) => {
                     const selected = colAgent === rowAgent
                     return (

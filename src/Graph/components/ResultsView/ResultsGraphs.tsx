@@ -25,11 +25,11 @@ import { TextContainer } from '../../../Layouts'
 import { PersonCellLabel } from './ResultsTable'
 
 const spaceBetween = 20
-const cuttingLineExtension = 5
+const cuttingLineExtension = 10
 
 const margin = {
-  top: 20,
-  bottom: 35,
+  top: 25,
+  bottom: cuttingLineExtension + 32,
   left: 170,
   right: 110,
 }
@@ -102,10 +102,10 @@ export const ResultsGraphs = ({
         />
       </Box>
 
-      <Box component="svg" width={totalWidth} height={totalHeight} sx={{ fontSize: 18 }}>
+      <Box component="svg" width={totalWidth} height={totalHeight} sx={{ fontSize: 18 }} marginBottom={6}>
         {/* Portion Size (percentage) label */}
         <text textAnchor="end" x={totalWidth} y={0} dominantBaseline={'hanging'}>
-          Portion Size
+         Percent of Total
         </text>
 
         {showLabels ? <TinySectionLabels margin={margin} height={totalHeight} /> : null}
@@ -161,6 +161,7 @@ export const ResultsGraphs = ({
           {/* Cut lines */}
           {allCutlines.map((cut, i) => {
             const offset = i % 2 === 0 ? cuttingLineExtension : cuttingLineExtension + 15
+            const point = 100 * cut / cakeSize
             return (
               <g transform={`translate(${xScale(cut)}, 0)`} key={cut}>
                 <line
@@ -175,15 +176,16 @@ export const ResultsGraphs = ({
                   textAnchor="middle"
                   dominantBaseline="hanging"
                 >
-                  <title>{formatNumber(cut)}</title>
-                  {cut.toFixed(cakeSize >= 10 ? 0 : 1)}
+                  <title>{formatNumber(point)}</title>
+                  {point.toFixed(0)}%
+                  {/* {cut.toFixed(cakeSize >= 10 ? 0 : 1)} */}
                 </text>
               </g>
             )
           })}
 
           {/* Numbers at beginning and end of cake to give cut lines some context */}
-          <text
+          {/* <text
             x={0}
             y={innerHeight + cuttingLineExtension}
             textAnchor="middle"
@@ -198,10 +200,11 @@ export const ResultsGraphs = ({
             dominantBaseline="hanging"
           >
             {cakeSize}
-          </text>
+          </text> */}
         </g>
       </Box>
-      <Accordion sx={{ maxWidth: totalWidth, marginTop: 4 }}>
+
+      <Accordion sx={{ maxWidth: totalWidth }}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="details-panel"
@@ -210,15 +213,13 @@ export const ResultsGraphs = ({
           Resource Split Details
         </AccordionSummary>
         <AccordionDetails>
-          <p>Resource size: {cakeSize}</p>
-
           <TableContainer>
             <Table size="small">
               <TableHead>
                 <TableRow>
                   <TableCell sx={{ fontWeight: 'bold' }}>Portion Owner</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold' }}>Range [start - end]</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold' }}>Portion Size</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold' }}>Start/End Points</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold' }}>Percent of Total</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -232,7 +233,7 @@ export const ResultsGraphs = ({
                         .map(
                           (range) =>
                             '[' +
-                            range.map((edge) => formatNumber(edge)).join(' - ') +
+                            range.map((edge) => formatNumber(100*edge/cakeSize)+ '%').join(' - ') +
                             ']'
                         )
                         .join('\n')}
