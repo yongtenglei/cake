@@ -22,6 +22,7 @@ import { createScales, isDrawingComplete } from '../../Graph/graphUtils'
 import { InteractionContainer } from '../../Layouts'
 import { C_STRAWBERRY, C_VANILLA } from '../../colors'
 import { ButtonLink, Link } from '../../components/Link'
+import cake2PrefAki from '../../images/preference/aki-two-flavor.png'
 import cake3PrefAki from '../../images/preference/aki.png'
 import cake3PrefBruno from '../../images/preference/bruno.png'
 import cake3PrefChloe from '../../images/preference/chloe.png'
@@ -267,12 +268,19 @@ const SimpleCakeDivision = () => {
       {selected ? (
         <>
           <p>Yum!</p>
-          <p>Since both pieces are identical, you get a fair portion either way.</p>
           <p>
-            This cake division solution is fair because both you and Aki receive{' '}
-            <sup>1</sup>
+            This cake division is fair because both you and Aki receive <sup>1</sup>
             &frasl;
             <sub>2</sub> of the cake.
+          </p>
+          <p>
+            When something is entirely make of the the same type of thing, it's{' '}
+            <strong>homogenous</strong>, like this single-flavor cake.
+          </p>
+          <p>
+            Dividing <strong>homogenous</strong> cakes fairly is simple. If you have a
+            number of people—we'll call this <em>n</em>—then simply divide the cake into{' '}
+            <em>n</em> equal pieces. Easy!
           </p>
         </>
       ) : null}
@@ -286,19 +294,18 @@ const MeaningOfFair = () => {
       <h2>The Meaning of Fair</h2>
       <p>But what does “fair” really mean?</p>
       <p>
-        One way to define fair is <strong>proportionality</strong>. A solution to a
-        division problem is <strong>proportional</strong> if for <em>n</em> people, each
-        person receives <sup>1</sup>&frasl;<sub>n</sub> of the resource.
+        One way to define fair is <strong>proportionality</strong>. A cake division is{' '}
+        <strong>proportional</strong> if for <em>n</em> people, each person receives{' '}
+        <sup>1</sup>&frasl;<sub>n</sub> of the cake.
       </p>
       <p>
         For example, with 2 people each get <sup>1</sup>&frasl;
-        <sub>2</sub> of the resource, with 3 people, each get <sup>1</sup>&frasl;
+        <sub>2</sub> of the cake, with 3 people, each get <sup>1</sup>&frasl;
         <sub>3</sub>.
       </p>
       <p>
-        With a <strong>homogenous</strong> cake (made of the same thing) all the pieces
-        are identical so this is simple. But this gets tricky when a cake has multiple
-        flavors.
+        This is simple with a <strong>homogenous</strong> cake because all the pieces are
+        identical, but this gets trickier with <strong>heterogenous</strong> cakes.
       </p>
     </>
   )
@@ -350,9 +357,9 @@ const TwoFlavorCake = ({ preferredFlavor, setPreferredFlavor }: CommonProps) => 
             Aki is happy to take the other piece because she likes both flavors equally.
           </p>
           <p>
-            This solution is <strong>proportional</strong> because Aki got a piece worth{' '}
+            This solution is <strong>proportional</strong> because Aki gets a piece worth{' '}
             <sup>1</sup>&frasl;
-            <sub>2</sub> the cake to her and you got a piece worth <sup>1</sup>&frasl;
+            <sub>2</sub> the cake to her and you get a piece worth <sup>1</sup>&frasl;
             <sub>2</sub> the cake to you.
           </p>
         </>
@@ -416,7 +423,7 @@ const CutAndChoose = () => {
         <li>
           The second person <strong>chooses</strong> which piece they personally prefer.
           This piece may be worth more to them than <sup>1</sup>&frasl;
-          <sub>2</sub> of cake.
+          <sub>2</sub> of the whole cake.
         </li>
       </ol>
       <p>
@@ -430,48 +437,54 @@ const CutAndChoose = () => {
 }
 
 const akisPreferences = [
-  { id: 1, start: 0, end: 1, startValue: 10, endValue: 10 },
+  { id: 1, start: 0, end: 1, startValue: 7, endValue: 7 },
   { id: 2, start: 1, end: 2, startValue: 5, endValue: 5 },
 ]
+const label0 = {
+  id: 1,
+  name: 'Strawberry',
+  start: 0,
+  end: 1,
+  color: C_STRAWBERRY,
+}
+
+const label1 = {
+  id: 2,
+  name: 'Vanilla',
+  start: 0,
+  end: 1,
+  color: C_VANILLA,
+}
+
 const MeasuringPreference = () => {
-  const cakeSize = 2
-  const labels = [
-    {
-      id: 1,
-      name: 'strawberry',
-      start: 0,
-      end: 1,
-      color: C_STRAWBERRY,
-    },
-    {
-      id: 2,
-      name: 'vanilla',
-      start: 1,
-      end: 2,
-      color: C_VANILLA,
-    },
-  ]
-  const drawingWidth = 500
+  const drawingWidth = 300
   const drawingHeight = 300
   const drawingInnerWidth = getInnerWidth(drawingWidth)
   const drawingScales = createScales({
     innerWidth: drawingInnerWidth,
     innerHeight: getInnerHeight(drawingHeight),
-    cakeSize,
+    cakeSize: 1,
   })
   const outputWidth = 400
   const outputHeight = 150
 
+  // Draw each half cake individually. A bit of a hack but helpful for learners.
+  const [segment0, setSegment0] = useState<Segment[]>([])
+  const [segment1, setSegment1] = useState<Segment[]>([])
+
   const [algoResults, setAlgoResults] = useState<Portion[] | undefined>(undefined)
-  const [segments, setSegments] = useState<Segment[]>([])
   const [cutPoint, setCutPoint] = useState<number | undefined>(undefined)
+  const segments = [...segment0, ...segment1.map((seg) => ({ ...seg, start: 1, end: 2 }))]
   const redoMarking = () => {
-    setSegments([])
+    setSegment0([])
+    setSegment1([])
     setCutPoint(undefined)
     setAlgoResults(undefined)
   }
-  const onChangeSegments = (segs: Segment[]) => {
-    setSegments(segs.filter((seg) => seg.end > seg.start))
+  const onChangeSegments = (flavor: number) => (segs: Segment[]) => {
+    console.log(flavor, segs)
+    const s = segs.filter((seg) => seg.end > seg.start)
+    flavor === 0 ? setSegment0(s) : setSegment1(s)
     setCutPoint(undefined)
     setAlgoResults(undefined)
   }
@@ -482,13 +495,13 @@ const MeasuringPreference = () => {
     const results = await runDivisionAlgorithm(
       [segments, akisPreferences],
       'cutAndChoose',
-      cakeSize
+      2
     )
     setAlgoResults(results)
   }
-  const drawingComplete = isDrawingComplete(segments, cakeSize)
+  const drawingComplete = segments.length === 2
 
-  const cutPointPercent = (100 * cutPoint) / cakeSize
+  const cutPointPercent = (100 * cutPoint) / 2 // 2 is cake size
 
   const activeCutlineProps = {
     role: 'button',
@@ -505,8 +518,8 @@ const MeasuringPreference = () => {
 
       <p>Here's a strawberry and vanilla cake</p>
       <ImageContainer>
-        <CakeImage flavor="strawberry" width={drawingInnerWidth / 2} />
-        <CakeImage flavor="vanilla" width={drawingInnerWidth / 2} />
+        <CakeImage flavor="strawberry" width={drawingInnerWidth} />
+        <CakeImage flavor="vanilla" width={drawingInnerWidth} />
       </ImageContainer>
       <p>This time you cut and Aki chooses.</p>
 
@@ -517,34 +530,61 @@ const MeasuringPreference = () => {
         </p>
       )}
 
-      <GraphContext.Provider
-        value={{
-          ...drawingScales,
-          height: drawingHeight,
-          width: drawingWidth,
-          labels,
-          cakeSize,
-        }}
+      <Stack
+        direction="row"
+        marginX="auto"
+        justifyContent="center"
+        flexWrap={{ xs: 'wrap', md: 'nowrap' }}
       >
-        <Box
-          marginX="auto"
-          paddingRight={margin.left - margin.right + 'px'}
-          width="fit-content"
+        <GraphContext.Provider
+          value={{
+            ...drawingScales,
+            height: drawingHeight,
+            width: drawingWidth,
+            labels: [label0],
+            cakeSize: 1,
+          }}
         >
           {cutPoint ? (
-            <ViewGraph segments={segments} agent={0} />
+            <ViewGraph segments={segment0} agent={0} />
           ) : (
             <DrawingLayer
-              segments={segments}
-              setSegments={onChangeSegments}
+              segments={segment0}
+              setSegments={onChangeSegments(0)}
               currentAgent={0}
               isComplete={drawingComplete}
             />
           )}
-        </Box>
-      </GraphContext.Provider>
+        </GraphContext.Provider>
+        <GraphContext.Provider
+          value={{
+            ...drawingScales,
+            height: drawingHeight,
+            width: drawingWidth,
+            labels: [label1],
+            cakeSize: 1,
+          }}
+        >
+          {cutPoint ? (
+            <ViewGraph segments={segment1} agent={0} />
+          ) : (
+            <DrawingLayer
+              segments={segment1}
+              setSegments={onChangeSegments(1)}
+              currentAgent={0}
+              isComplete={drawingComplete}
+            />
+          )}
+        </GraphContext.Provider>
+      </Stack>
 
-      <Stack justifyContent={'center'} direction="row" spacing={2} marginY={2}>
+      <Stack
+        justifyContent={'center'}
+        direction="row"
+        spacing={2}
+        marginTop={2}
+        marginBottom={6}
+      >
         <Button variant="outlined" disabled={!drawingComplete} onClick={redoMarking}>
           Redo
         </Button>
@@ -560,14 +600,10 @@ const MeasuringPreference = () => {
       {cutPoint ? (
         <>
           <p>
-            Based on your preferences, this dotted line is where you should cut the cake
-            so that each piece is worth <sup>1</sup>
+            Based on how you marked the values, the cake on <strong>either side</strong>{' '}
+            of this dotted line equal to you, <sup>1</sup>
             &frasl;
-            <sub>2</sub> the cake to you. This way you'll get a fair portion of the cake
-            no matter which part Aki chooses.
-          </p>
-          <p>
-            Now click the dotted line to <strong>cut the cake!</strong>
+            <sub>2</sub> of the total cake. We don't know which piece Aki will choose yet.
           </p>
 
           <Box width="fit-content" marginX="auto" position="relative">
@@ -592,6 +628,9 @@ const MeasuringPreference = () => {
               <Box borderLeft="4px dashed black" height="100%" />
             </Box>
           </Box>
+          <p>
+            Now click the dotted line to <strong>cut the cake!</strong>
+          </p>
         </>
       ) : null}
 
@@ -603,8 +642,8 @@ const MeasuringPreference = () => {
 
           <CharacterImage character="Aki" sx={{ marginY: 2, marginX: 'auto' }} />
 
-          {/* This is a bit of a magic trick */}
-          {/* The outer container hides anything outside its bounds */}
+          {/* This is a bit of a magic trick and took a lot of experimenting to get right. */}
+          {/* The outer container hides anything outside its bounds. */}
           <Box
             width="fit-content"
             marginX="auto"
@@ -612,7 +651,7 @@ const MeasuringPreference = () => {
             overflow="hidden"
             sx={{
               transform: `translateX(${
-                (akiLikesLeft ? -cutPointPercent : cutPointPercent) / 2
+                (-1 * (akiLikesLeft ? 100 - cutPointPercent : -cutPointPercent)) / 2
               }%)`,
             }}
           >
@@ -642,14 +681,33 @@ const MeasuringPreference = () => {
               </>
             ) : (
               <>
-                , yet despite that, the <strong>right piece</strong> looks better to her based on where you
-                cut the cake.
+                , yet despite that, the <strong>right piece</strong> looks better to her
+                based on where you cut the cake.
               </>
             )}
           </p>
+          <p>
+            She says although her piece is physically{' '}
+            {formatNumber(akiLikesLeft ? cutPointPercent : 100 - cutPointPercent, 2)}% of the cake, it's
+            worth{' '}
+            {formatNumber(
+              algoResults.find((portion: Portion) => portion.owner === 1)
+                .percentValues[1] * 100,
+              2
+            )}
+            % of the total cake value to her.
+          </p>
 
-          <Box component="p" marginTop={6}>
-            Here are the details of the cut and the cake value each person receives.
+          <p>If you are curious, these are Aki's preferences:</p>
+
+          <img
+            src={cake2PrefAki}
+            alt=""
+            style={{ maxHeight: 300, margin: 'auto', display: 'block' }}
+          />
+
+          <Box component="p" marginTop={8}>
+            Here's a more detailed view if you're curious about the exact numbers.
           </Box>
 
           <GraphContext.Provider
@@ -657,12 +715,12 @@ const MeasuringPreference = () => {
               ...createScales({
                 innerWidth: outputWidth,
                 innerHeight: outputHeight,
-                cakeSize,
+                cakeSize: 2,
               }),
               height: outputHeight,
               width: outputWidth,
-              labels,
-              cakeSize,
+              labels: [label0, { ...label1, start: 1, end: 2 }],
+              cakeSize: 2,
             }}
           >
             <ResultsGraphs
@@ -672,16 +730,6 @@ const MeasuringPreference = () => {
               namesPossessive={['Your', "Aki's"]}
             />
           </GraphContext.Provider>
-
-          <p>
-            She says her piece is worth{' '}
-            {formatNumber(
-              algoResults.find((portion: Portion) => portion.owner === 1)
-                .percentValues[1] * 100,
-              2
-            )}
-            % of the cake to her.
-          </p>
 
           <p>Feel free to experiment with different values. </p>
           <Stack alignItems={'center'}>
@@ -695,6 +743,7 @@ const MeasuringPreference = () => {
     </>
   )
 }
+
 const Recap1 = () => {
   return (
     <>

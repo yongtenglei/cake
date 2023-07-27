@@ -4,10 +4,7 @@ import { getAgentColor } from '../../colors'
 import { DrawnSegment, Segment } from '../../types'
 import { GraphContext } from '../GraphContext'
 import { getInnerHeight, getInnerWidth, margin } from '../graphConstants'
-import {
-  useConvertSegFromPixels,
-  useConvertSegToPixels,
-} from '../graphUtils'
+import { useConvertSegFromPixels, useConvertSegToPixels } from '../graphUtils'
 import { AxisBottom, AxisLeft } from './Axes'
 import { HorizontalResizeHandles, VerticalResizeBubbles } from './ResizeHandles'
 import { SectionLabels } from './SectionLabels'
@@ -29,7 +26,12 @@ interface DrawingLayerProps {
   isComplete: boolean
 }
 
-export const DrawingLayer = ({ segments, setSegments, currentAgent, isComplete }: DrawingLayerProps) => {
+export const DrawingLayer = ({
+  segments,
+  setSegments,
+  currentAgent,
+  isComplete,
+}: DrawingLayerProps) => {
   const convertToPixels = useConvertSegToPixels()
   const convertFromPixels = useConvertSegFromPixels()
   const [mouseX, setMouseX] = useState(0)
@@ -38,8 +40,7 @@ export const DrawingLayer = ({ segments, setSegments, currentAgent, isComplete }
   const [yMovingId, setYMovingId] = useState<number | null>(null)
   const [xMovingId, setXMovingId] = useState<number | null>(null)
   const [cornerMovingId, setCornerMovingId] = useState<[number, number] | null>(null)
-  const { xScale, yScale, height, width, cakeSize } =
-    useContext(GraphContext)
+  const { xScale, yScale, height, width, cakeSize } = useContext(GraphContext)
 
   const isDrawing = !isComplete
 
@@ -120,20 +121,24 @@ export const DrawingLayer = ({ segments, setSegments, currentAgent, isComplete }
   }
 
   let segsWithDrawing = [...segments]
+
+  const pixelSegs: DrawnSegment[] = segsWithDrawing.map(convertToPixels)
   // Add the segment currently being drawn to the display data
   // but only if the user is in drawing mode and mouse is in undrawn territory
   if (isDrawing && mouseX > lastSegmentEnd) {
-    segsWithDrawing.push(
+    // convert back and forth to get proper rounding
+    const drawnSeg = convertToPixels(
       convertFromPixels({
         id: id + 1,
         x1: lastSegmentEnd,
-        y1: mouseY,
         x2: mouseX,
+        y1: mouseY,
         y2: mouseY,
       })
     )
+    drawnSeg.currentlyDrawing = true
+    pixelSegs.push(drawnSeg)
   }
-  const pixelSegs: DrawnSegment[] = segsWithDrawing.map(convertToPixels)
 
   return (
     <>
@@ -151,7 +156,11 @@ export const DrawingLayer = ({ segments, setSegments, currentAgent, isComplete }
             <AxisBottom />
             <AxisLeft />
 
-            <Segments segments={pixelSegs} color={getAgentColor(currentAgent)} showWidth={cakeSize > 10} />
+            <Segments
+              segments={pixelSegs}
+              color={getAgentColor(currentAgent)}
+              showWidth={cakeSize > 10}
+            />
 
             <HorizontalResizeHandles
               segments={pixelSegs}
@@ -168,11 +177,6 @@ export const DrawingLayer = ({ segments, setSegments, currentAgent, isComplete }
           </g>
         </svg>
       </div>
-
-      {/* <EditableValueBrackets
-        segments={segsWithDrawing}
-        setSegmentWidth={setSegmentWidth}
-      /> */}
     </>
   )
 }

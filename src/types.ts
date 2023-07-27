@@ -17,6 +17,7 @@ export type DrawnSegment = {
   x2: number
   y1: number
   y2: number
+  currentlyDrawing?: boolean
 }
 
 export type Preferences = Segment[][]

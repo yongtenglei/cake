@@ -37,11 +37,13 @@ export const VerticalResizeBubbles = ({
 }: VerticalResizeHandlesProps) => {
   return (
     <>
-      {segments.map(({ id, x1, x2, y1, y2 }, i) => {
+      {segments.map(({ id, x1, x2, y1, y2, currentlyDrawing }, i) => {
+
         // don't create grab handles on segment currently being drawn
-        if (isDrawing && i === segments.length - 1) {
-          return null
+        if (currentlyDrawing) {
+          return <ValueBubble x={x1 + (x2 - x1) / 2} y={y1} />
         }
+        
         const sloped = y1 !== y2
         const cornerClass = 'ResizeCornerHandle' + (sloped ? ' visible' : '')
         return (

@@ -103,12 +103,14 @@ export const ResultsGraphs = ({
       </Box>
 
       <Box component="svg" width={totalWidth} height={totalHeight} sx={{ fontSize: 18 }} marginBottom={6}>
+        
+        {/* Section labels. Off by default because they clutter up the visual */}
+        {showLabels ? <TinySectionLabels margin={margin} height={totalHeight} /> : null}
+
         {/* Portion Size (percentage) label */}
         <text textAnchor="end" x={totalWidth} y={0} dominantBaseline={'hanging'}>
          Percent of Total
         </text>
-
-        {showLabels ? <TinySectionLabels margin={margin} height={totalHeight} /> : null}
 
         <g transform={`translate(${margin.left}, ${margin.top})`}>
           {preferences.map((segments, i) => {
@@ -218,7 +220,7 @@ export const ResultsGraphs = ({
               <TableHead>
                 <TableRow>
                   <TableCell sx={{ fontWeight: 'bold' }}>Portion Owner</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold' }}>Start/End Points</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold' }}>Start - End Point</TableCell>
                   <TableCell sx={{ fontWeight: 'bold' }}>Percent of Total</TableCell>
                 </TableRow>
               </TableHead>
