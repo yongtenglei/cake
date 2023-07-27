@@ -43,7 +43,7 @@ export const cutSlice = (
 /**
  * Sorts big to small by one agent's value function
  */
-export const sortSlicesDecending = (
+export const sortSlicesDescending = (
   agent: number,
   slices: UnassignedSlice[]
 ) => {

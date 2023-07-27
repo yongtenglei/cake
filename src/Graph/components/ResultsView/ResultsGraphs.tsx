@@ -53,9 +53,10 @@ export const ResultsGraphs = ({
   const { labels, cakeSize, width, height, xScale } = useContext(GraphContext)
 
   const [showLabels, setShowLabels] = useState(false)
+  const [showAllPreferences, setShowAllPreferences] = useState(false)
 
   const totalHeight =
-    (height * preferences.length) +
+    height * preferences.length +
     (spaceBetween * preferences.length - 1) +
     margin.top +
     margin.bottom
@@ -71,8 +72,8 @@ export const ResultsGraphs = ({
   return (
     <section>
       <h2>Resource Split</h2>
-      {labels.length ? (
-        <Box>
+      <Box>
+        {labels.length ? (
           <FormControlLabel
             control={
               <Switch
@@ -82,8 +83,19 @@ export const ResultsGraphs = ({
             }
             label="Show labels"
           />
-        </Box>
-      ) : null}
+        ) : null}
+        
+        <FormControlLabel
+          control={
+            <Switch
+              onChange={(e) => setShowAllPreferences(e.target.checked)}
+              checked={showAllPreferences}
+            />
+          }
+          label="Show all preferences"
+        />
+      </Box>
+      
       <Box component="svg" width={totalWidth} height={totalHeight} sx={{ fontSize: 18 }}>
         {/* Portion Size (percentage) label */}
         <text textAnchor="end" x={totalWidth} y={0} dominantBaseline={'hanging'}>
@@ -102,6 +114,7 @@ export const ResultsGraphs = ({
                   height={height}
                   result={results[i]}
                   agent={i}
+                  showAllPreferences={showAllPreferences}
                 />
 
                 {/* Graph Owner */}
@@ -132,7 +145,7 @@ export const ResultsGraphs = ({
 
           {/* Cut lines */}
           {allCutlines.map((cut, i) => {
-            const offset = i % 2 === 0 ? 0 : 18
+            const offset = i % 2 === 0 ? 0 : 20
             return (
               <g transform={`translate(${xScale(cut)}, ${-margin.top})`} key={cut}>
                 <line
@@ -148,9 +161,15 @@ export const ResultsGraphs = ({
               </g>
             )
           })}
+
+          <text x={0} y={totalHeight - 30 - margin.top} textAnchor="middle">
+            0
+          </text>
+          <text x={width} y={totalHeight - 30 - margin.top} textAnchor="middle">
+            {cakeSize}
+          </text>
         </g>
       </Box>
-
       <Accordion sx={{ maxWidth: totalWidth }}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -204,9 +223,16 @@ interface TinyGraphProps {
   height: number
   result: Portion
   agent: number
+  showAllPreferences: boolean
 }
 
-const TinyGraph = ({ segments, height, result, agent }: TinyGraphProps) => {
+const TinyGraph = ({
+  segments,
+  height,
+  result,
+  agent,
+  showAllPreferences,
+}: TinyGraphProps) => {
   const { width, xScale } = useContext(GraphContext)
   const convertToPixels = useConvertSegToPixels()
   const maskId = `resultMask${agent}`
@@ -220,7 +246,9 @@ const TinyGraph = ({ segments, height, result, agent }: TinyGraphProps) => {
   return (
     <>
       {/* Segments display in semi-gray */}
-      <g fill={Color(getAgentColor(agent)).desaturate(0.5).lightness(85)}>{segSvg}</g>
+      {showAllPreferences ? (
+        <g fill={Color(getAgentColor(agent)).desaturate(0.6).lightness(88)}>{segSvg}</g>
+      ) : null}
 
       {/* Mask colored sections to match segments */}
       <mask id={maskId}>

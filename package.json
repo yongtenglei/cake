@@ -58,6 +58,9 @@
     ]
   },
   "devDependencies": {
+    "@types/lodash.clamp": "^4.0.7",
+    "@types/lodash.maxby": "^4.6.7",
+    "@types/lodash.remove": "^4.7.7",
     "@types/react-router-dom": "^5.3.3",
     "jest-expect-message": "^1.1.3"
   }

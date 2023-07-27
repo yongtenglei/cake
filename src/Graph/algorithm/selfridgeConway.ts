@@ -1,7 +1,7 @@
 import remove from 'lodash.remove'
 import { Preferences, Slice, UnassignedSlice } from '../../types'
 import { findCutLineByValue, findCutLineByPercent } from './getValue'
-import { cutSlice, sortSlicesDecending, removeBestSlice } from './sliceUtils'
+import { cutSlice, sortSlicesDescending, removeBestSlice } from './sliceUtils'
 
 // Keep in mind that this is written with a 0-based index, but descriptions of the
 // Selfridge-Conway method use a 1-based index because that's, you know, normal.
@@ -31,7 +31,7 @@ export const selfridgeConway = (
   console.log('Slices are ', tempSlices)
 
   // P1 assesses the two largest slices
-  slices = sortSlicesDecending(1, tempSlices)
+  slices = sortSlicesDescending(1, tempSlices)
   const p1LargestValue = slices[0].values[1]
   const p1SecondLargestValue = slices[1].values[1]
 
