@@ -21,14 +21,16 @@ import { formatNumber } from '../../../utils/formatUtils'
 import { GraphContext } from '../../GraphContext'
 import { useConvertSegToPixels } from '../../graphUtils'
 import { TinySectionLabels } from '../SectionLabels'
+import { TextContainer } from '../../../Layouts'
+import { PersonCellLabel } from './ResultsTable'
 
 const spaceBetween = 20
-const cuttingLineExtension = 25
+const cuttingLineExtension = 5
 
 const margin = {
-  top: cuttingLineExtension,
-  bottom: cuttingLineExtension + 10,
-  left: 165,
+  top: 20,
+  bottom: 35,
+  left: 170,
   right: 110,
 }
 
@@ -55,11 +57,9 @@ export const ResultsGraphs = ({
   const [showLabels, setShowLabels] = useState(false)
   const [showAllPreferences, setShowAllPreferences] = useState(false)
 
-  const totalHeight =
-    height * preferences.length +
-    (spaceBetween * preferences.length - 1) +
-    margin.top +
-    margin.bottom
+  const innerHeight =
+    height * preferences.length + spaceBetween * (preferences.length - 1)
+  const totalHeight = innerHeight + margin.top + margin.bottom
   const totalWidth = width + margin.left + margin.right
 
   const allCutlines = results
@@ -72,6 +72,12 @@ export const ResultsGraphs = ({
   return (
     <section>
       <h2>Resource Split</h2>
+      <TextContainer>
+        <p>
+          This shows where to divide the resource, the portion each person receives, and
+          the value each person marked.
+        </p>
+      </TextContainer>
       <Box>
         {labels.length ? (
           <FormControlLabel
@@ -84,7 +90,7 @@ export const ResultsGraphs = ({
             label="Show labels"
           />
         ) : null}
-        
+
         <FormControlLabel
           control={
             <Switch
@@ -92,10 +98,10 @@ export const ResultsGraphs = ({
               checked={showAllPreferences}
             />
           }
-          label="Show all preferences"
+          label="Show all values"
         />
       </Box>
-      
+
       <Box component="svg" width={totalWidth} height={totalHeight} sx={{ fontSize: 18 }}>
         {/* Portion Size (percentage) label */}
         <text textAnchor="end" x={totalWidth} y={0} dominantBaseline={'hanging'}>
@@ -117,13 +123,22 @@ export const ResultsGraphs = ({
                   showAllPreferences={showAllPreferences}
                 />
 
-                {/* Graph Owner */}
-                <text textAnchor="end" x={-10} y={height / 2}>
+                {/* Graph owner */}
+                <text textAnchor="end" x={-12} y={height / 2}>
                   {(namesPossessive[i] ?? `Person ${i + 1}'s`) + ' Portion'}
                 </text>
               </g>
             )
           })}
+
+          <text
+            textAnchor="end"
+            x={-12}
+            y={innerHeight + cuttingLineExtension}
+            dominantBaseline="hanging"
+          >
+            Dividing Points
+          </text>
 
           {/* Percentages */}
           {results.map((result, i) => {
@@ -145,16 +160,21 @@ export const ResultsGraphs = ({
 
           {/* Cut lines */}
           {allCutlines.map((cut, i) => {
-            const offset = i % 2 === 0 ? 0 : 20
+            const offset = i % 2 === 0 ? cuttingLineExtension : cuttingLineExtension + 15
             return (
-              <g transform={`translate(${xScale(cut)}, ${-margin.top})`} key={cut}>
+              <g transform={`translate(${xScale(cut)}, 0)`} key={cut}>
                 <line
-                  y2={totalHeight - cuttingLineExtension - offset}
-                  strokeDasharray={8}
+                  y1={-margin.top}
+                  y2={innerHeight + offset}
+                  strokeDasharray={6}
                   stroke="#666"
                   strokeWidth={1.5}
                 />
-                <text y={totalHeight - offset - 10} textAnchor="middle">
+                <text
+                  y={innerHeight + offset}
+                  textAnchor="middle"
+                  dominantBaseline="hanging"
+                >
                   <title>{formatNumber(cut)}</title>
                   {cut.toFixed(cakeSize >= 10 ? 0 : 1)}
                 </text>
@@ -162,15 +182,26 @@ export const ResultsGraphs = ({
             )
           })}
 
-          <text x={0} y={totalHeight - 30 - margin.top} textAnchor="middle">
+          {/* Numbers at beginning and end of cake to give cut lines some context */}
+          <text
+            x={0}
+            y={innerHeight + cuttingLineExtension}
+            textAnchor="middle"
+            dominantBaseline="hanging"
+          >
             0
           </text>
-          <text x={width} y={totalHeight - 30 - margin.top} textAnchor="middle">
+          <text
+            x={width}
+            y={innerHeight + cuttingLineExtension}
+            textAnchor="middle"
+            dominantBaseline="hanging"
+          >
             {cakeSize}
           </text>
         </g>
       </Box>
-      <Accordion sx={{ maxWidth: totalWidth }}>
+      <Accordion sx={{ maxWidth: totalWidth, marginTop: 4 }}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="details-panel"
@@ -179,6 +210,8 @@ export const ResultsGraphs = ({
           Resource Split Details
         </AccordionSummary>
         <AccordionDetails>
+          <p>Resource size: {cakeSize}</p>
+
           <TableContainer>
             <Table size="small">
               <TableHead>

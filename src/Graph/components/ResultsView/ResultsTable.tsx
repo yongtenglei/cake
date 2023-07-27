@@ -82,19 +82,7 @@ export const ResultsTable = ({ preferences, results }: ResultsTableProps) => {
                     </TableCell>
                   ) : null}
 
-                  <TableCell className="rowLabel">
-                    Person {rowAgent + 1}
-                    <Box
-                      sx={{
-                        position: 'absolute',
-                        right: 8,
-                        top: '10%',
-                        backgroundColor: color,
-                        width: 6,
-                        height: '80%',
-                      }}
-                    />
-                  </TableCell>
+                  <TableCell className="rowLabel">Person {rowAgent + 1}<PersonCellLabel color={color}/></TableCell>
                   {results.map((portion, colAgent) => {
                     const selected = colAgent === rowAgent
                     return (
@@ -184,3 +172,16 @@ const TinyChartLine = ({ x }: { x: number }) =>
       }}
     />
   )
+
+export const PersonCellLabel = ({ color }) => (
+  <Box
+    sx={{
+      position: 'absolute',
+      right: 8,
+      top: '10%',
+      backgroundColor: color,
+      width: 6,
+      height: '80%',
+    }}
+  />
+)
