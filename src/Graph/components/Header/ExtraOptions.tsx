@@ -100,7 +100,7 @@ export const ExtraOptions = ({
           <ListItemIcon>
             <ExportImageIcon fontSize="small" />
           </ListItemIcon>
-          Export Image
+          Download as Image
         </MenuItem>
         <MenuItem
           component={forwardRef((props, ref) => (

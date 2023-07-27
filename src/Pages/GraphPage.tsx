@@ -50,7 +50,7 @@ export const GraphPage = (props) => {
 
  
 
-      <Box marginTop={10} marginBottom={20} id="graph-content">
+      <Box marginTop={10} marginBottom={10} id="graph-content">
         <ErrorBoundary FallbackComponent={SectionErrorDisplay}>
           <Graph {...props} />
         </ErrorBoundary>

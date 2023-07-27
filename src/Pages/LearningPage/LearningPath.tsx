@@ -618,6 +618,7 @@ const MeasuringPreference = () => {
           >
             {/* The inner container moves based on the cut line and which piece aki chooses 
               so that only Aki's piece is visible.
+              Unfortunately, this doesn't work well on small screen sizes so may need adjustments.
             */}
             <Box
               display="flex"

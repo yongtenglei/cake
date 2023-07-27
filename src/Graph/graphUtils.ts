@@ -41,9 +41,9 @@ export const useConvertSegFromPixels = () => {
   return (seg: DrawnSegment): Segment => {
     const { x1, y1, x2, y2, id } = seg
     return {
-      start: Math.round(xScale.invert(x1)),
+      start: Math.ceil(xScale.invert(x1)),
       startValue: roundValue(yScale.invert(y1)),
-      end: Math.round(xScale.invert(x2)),
+      end: Math.ceil(xScale.invert(x2)),
       endValue: roundValue(yScale.invert(y2)),
       id,
     }

@@ -1,7 +1,10 @@
-import { Stack } from '@mui/material'
+import { Box, Button, Stack } from '@mui/material'
+import { useState } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
+import { LoadingModal } from '../../../components/LoadingModal'
 import { SectionErrorDisplay } from '../../../components/SectionErrorDisplay'
 import { Portion, Preferences, SectionLabel } from '../../../types'
+import { downloadScreenshot } from '../../../utils/export'
 import { GraphContext } from '../../GraphContext'
 import { AlgoName } from '../../graphConstants'
 import { createScales } from '../../graphUtils'
@@ -31,31 +34,46 @@ export const ResultsView = ({
     innerHeight: height,
     cakeSize,
   })
+  const [loading, setLoading] = useState<boolean>(false)
+
+  const onClickExportImage = async () => {
+    setLoading(true)
+    await downloadScreenshot('results')
+    setLoading(false)
+  }
 
   // The subsections do a lot of work, so in case there are bugs
   // the error boundaries will prevent errors from ruining the whole page.
   return (
-    <Stack spacing={8} marginTop={8}>
-      <ErrorBoundary FallbackComponent={SectionErrorDisplay}>
-        <GraphContext.Provider
-          value={{
-            yScale,
-            xScale,
-            height,
-            width,
-            labels: sectionLabels,
-            cakeSize,
-          }}
-        >
-          <ResultsGraphs results={results} preferences={preferences} />
-        </GraphContext.Provider>
-      </ErrorBoundary>
-      <ErrorBoundary FallbackComponent={SectionErrorDisplay}>
-        <ResultsTable results={results} preferences={preferences} />
-      </ErrorBoundary>
-      <ErrorBoundary FallbackComponent={SectionErrorDisplay}>
-        <SolutionInfo algoUsed={algoUsed} results={results} />
-      </ErrorBoundary>
-    </Stack>
+    <>
+      <LoadingModal open={loading} title="Exporting Image" />
+      <Stack spacing={8} marginTop={8} id="results">
+        <ErrorBoundary FallbackComponent={SectionErrorDisplay}>
+          <GraphContext.Provider
+            value={{
+              yScale,
+              xScale,
+              height,
+              width,
+              labels: sectionLabels,
+              cakeSize,
+            }}
+          >
+            <ResultsGraphs results={results} preferences={preferences} />
+          </GraphContext.Provider>
+        </ErrorBoundary>
+        <ErrorBoundary FallbackComponent={SectionErrorDisplay}>
+          <ResultsTable results={results} preferences={preferences} />
+        </ErrorBoundary>
+        <ErrorBoundary FallbackComponent={SectionErrorDisplay}>
+          <SolutionInfo algoUsed={algoUsed} results={results} />
+        </ErrorBoundary>
+      </Stack>
+      <Stack alignItems="center" marginTop={6}>
+        <Button onClick={onClickExportImage} variant="outlined">
+          Download Results as Image
+        </Button>
+      </Stack>
+    </>
   )
 }

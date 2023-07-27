@@ -46,6 +46,9 @@ export const VerticalResizeBubbles = ({
         const cornerClass = 'ResizeCornerHandle' + (sloped ? ' visible' : '')
         return (
           <React.Fragment key={id}>
+            {/* little circle to aid in discovery of corner handles. */}
+            {/* Ideally this transitions into the bigger circle when focused */}
+            <circle r={3} fill="black" cx={x1} cy={y1} />
             <MovableValueBubble
               className={cornerClass}
               onMouseDown={() => setCornerMovingId([id, 1])}
@@ -60,6 +63,7 @@ export const VerticalResizeBubbles = ({
                 y={y1}
               />
             )}
+            <circle r={3} fill="black" cx={x2} cy={y2} />
             <MovableValueBubble
               className={cornerClass}
               onMouseDown={() => setCornerMovingId([id, 2])}
