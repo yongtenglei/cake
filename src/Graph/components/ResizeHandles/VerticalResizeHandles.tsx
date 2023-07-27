@@ -41,7 +41,7 @@ export const VerticalResizeBubbles = ({
 
         // don't create grab handles on segment currently being drawn
         if (currentlyDrawing) {
-          return <ValueBubble x={x1 + (x2 - x1) / 2} y={y1} />
+          return <ValueBubble x={x1 + (x2 - x1) / 2} y={y1} key={id}/>
         }
         
         const sloped = y1 !== y2

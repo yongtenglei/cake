@@ -7,6 +7,7 @@ import vanillaCake from '../../images/cake/cake_vanilla edgeless.png'
 import akiChar from '../../images/character/aki.svg'
 import brunoChar from '../../images/character/bruno.svg'
 import chloeChar from '../../images/character/chloe.svg'
+import brunoSadChar from '../../images/character/bruno sad.svg'
 
 interface ImageContainerProps {
   children: ReactNode
@@ -64,10 +65,11 @@ const characterImageMap = {
   Aki: akiChar,
   Bruno: brunoChar,
   Chloe: chloeChar,
+  'Bruno Sad': brunoSadChar,
 }
 
 interface CharacterImageProps {
-  character: 'Aki' | 'Bruno' | 'Chloe'
+  character: 'Aki' | 'Bruno' | 'Chloe' | 'Bruno Sad'
   width?: string | number
   hideName?: boolean
   sx?: ComponentProps<typeof Box>['sx']
@@ -79,7 +81,7 @@ export const CharacterImage = ({
   sx = {},
 }: CharacterImageProps) => (
   <Box width={width} textAlign="center" sx={sx}>
-    <img src={characterImageMap[character]} alt="" />
+    <img src={characterImageMap[character]} alt={character} />
     {hideName ? null : character}
   </Box>
 )

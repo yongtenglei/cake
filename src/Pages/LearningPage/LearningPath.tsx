@@ -1,8 +1,18 @@
-import { Box, Button, Stack, Tooltip } from '@mui/material'
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Button,
+  Stack,
+  Tooltip,
+} from '@mui/material'
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBackIos'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForwardIos'
 import ReplayIcon from '@mui/icons-material/Replay'
+import InfoIcon from '@mui/icons-material/Info'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 import { useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
@@ -688,8 +698,8 @@ const MeasuringPreference = () => {
           </p>
           <p>
             She says although her piece is physically{' '}
-            {formatNumber(akiLikesLeft ? cutPointPercent : 100 - cutPointPercent, 2)}% of the cake, it's
-            worth{' '}
+            {formatNumber(akiLikesLeft ? cutPointPercent : 100 - cutPointPercent, 2)}% of
+            the cake, it's worth{' '}
             {formatNumber(
               algoResults.find((portion: Portion) => portion.owner === 1)
                 .percentValues[1] * 100,
@@ -866,37 +876,50 @@ const EnterPlayer3 = () => {
           </OverlayText>
         </Box>
       </Box>
+
+      <Stack direction="row" marginY={4} spacing={2} color="#666">
+        <InfoIcon fontSize="large" />
+        <Box component="p" flexGrow={1} marginTop={0}>
+          Yes, we know it's a bit silly for someone to value part of a cake at 0 (unless
+          perhaps they are allergic to a flavor) but simple examples make the math easier,
+          so bear with us.
+        </Box>
+      </Stack>
+
+      <p>Here's how they value their portions:</p>
       <ul>
         <li>
-          Aki's piece is worth <sup>2</sup>&frasl;
-          <sub>3</sub> to her, lucky!
+          <strong>Aki's</strong> piece is worth <sup>2</sup>&frasl;
+          <sub>3</sub> of the cake to her, lucky!
         </li>
         <li>
-          Bruno's piece is worth <sup>1</sup>&frasl;
-          <sub>3</sub> to him.
+          <strong>Bruno's</strong> piece is worth <sup>1</sup>&frasl;
+          <sub>3</sub> of the cake to him.
         </li>
         <li>
-          Chloe's piece is worth <sup>1</sup>&frasl;
-          <sub>3</sub> to her.
+          <strong>Chloe's</strong> piece is worth <sup>1</sup>&frasl;
+          <sub>3</sub> of the cake to her.
         </li>
       </ul>
 
       <p>
-        This is a <strong>proportional solution</strong> because everyone gets at least{' '}
-        <sup>1</sup>&frasl;
-        <sub>3</sub>.
+        This solution is <strong>proportionally fair</strong> because everyone gets at
+        least <sup>1</sup>&frasl;
+        <sub>3</sub> of the cake's value.
       </p>
 
       <p>
         <em>However,</em> this solution doesn't seem fair to Bruno. From his perspective,
-        Chloe's piece is worth <sup>2</sup>&frasl;
-        <sub>3</sub> while his own is only worth <sup>1</sup>&frasl;
-        <sub>3</sub>.
+        Chloe's piece is higher value than his own.
       </p>
       <p>
         He <strong>envies</strong> her share and feels cheated.
-        {/* tear drop image? */}
       </p>
+      <CharacterImage
+        character="Bruno Sad"
+        hideName
+        sx={{ display: 'block', margin: 'auto' }}
+      />
     </>
   )
 }
@@ -939,26 +962,55 @@ const SelfridgeConway = () => {
         This method is now called the <strong>Selfridge-Conway Method.</strong>
       </p>
       <p>
-        The steps of the method are a bit involved, but the simple version looks like
-        this:
+        The steps are more complex than Cut and Choose, you can read them below if you are
+        curious.
       </p>
-      <ol>
-        <li>Person 1 divides the cake into 3 pieces they consider equal.</li>
-        <li>
-          Person 2 trims a bit off what they consider the largest piece until it matches
-          the second largest.
-        </li>
-        <li>Person 3 chooses a piece to keep, then person 2, then person 1.</li>
-        <li>
-          Then, the remaining trimmings are divided up between everyone (there's a few
-          more steps involved with this part).{' '}
-        </li>
-      </ol>
+      <p>
+        The important thing to know is that when using this method each person may get two
+        pieces from different parts of the cake.
+      </p>
+
+      <Accordion sx={{ marginY: 4 }}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="selfridge-panel"
+          id="selfridge-panel-header"
+        >
+          Selfridge-Conway Steps
+        </AccordionSummary>
+        <AccordionDetails>
+          <ol>
+            <li>Person 1 divides the cake into 3 pieces they consider equal.</li>
+            <li>
+              Person 2 trims a bit off what they consider the largest piece until it
+              matches the second largest (if needed). The trimmings are set aside.
+            </li>
+            <li>Person 3 chooses a piece to keep.</li>
+            <li>
+              Person 2 chooses a piece to keep, but must pick the trimmed piece if
+              available. <em>Keep note of who picked the trimmed piece.</em>
+            </li>
+            <li>Person 1 takes the last piece.</li>
+            <li>
+              If there are trimmings, the trimmings are then divided up between everyone.
+            </li>
+            <li>
+              Between person 2 and 3, the person who didn't pick the trimmed piece divides
+              the trimmings into thirds.
+            </li>
+            <li>
+              The person who <em>did</em> pick the trimmed piece then chooses a piece.
+            </li>
+            <li>Person 1 chooses a piece.</li>
+            <li>The last person chooses a piece.</li>
+          </ol>
+        </AccordionDetails>
+      </Accordion>
 
       <p>
-        If you're curious, you can{' '}
+        For an explanation as to why this is guaranteed to be envy-free, see{' '}
         <Link href={Algorithms.selfridgeConway.link}>
-          learn the full Selfridge-Conway Method.
+          the wikipedia page for the Selfridge-Conway Method.
         </Link>
       </p>
       <p></p>
@@ -1115,8 +1167,8 @@ const Ending = () => {
 
       <p>Give it a try, experiment!</p>
       <p>
-        Split a 10-flavor cake! Make a resource with 1000 increments! See if you can find
-        better solutions than the algorithm can!
+        Split a 10-flavor cake! See if you can find better solutions than the algorithm
+        can!
       </p>
       <p>
         The tool uses <strong>Cut and Choose</strong> for 2 people and{' '}

@@ -22,7 +22,6 @@ import { GraphContext } from '../../GraphContext'
 import { useConvertSegToPixels } from '../../graphUtils'
 import { TinySectionLabels } from '../SectionLabels'
 import { TextContainer } from '../../../Layouts'
-import { PersonCellLabel } from './ResultsTable'
 
 const spaceBetween = 20
 const cuttingLineExtension = 10

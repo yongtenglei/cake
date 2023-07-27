@@ -13,10 +13,10 @@ export const GraphPage = (props) => {
       <Stack direction={{ xs: 'column-reverse', sm: 'row' }}>
         <TextContainer>
           <p>
-            Welcome to our innovative, visual <strong>Resource Splitting Tool</strong>, the
-            first of its kind! Using this tool you can visually express the value you
-            assign to each part of a resource, which our intelligent{' '}
-            <strong>algorithm</strong> will then split evenly among all users.
+            Welcome to our visual <strong>Resource Splitting Tool</strong>, the first of
+            its kind! Using this tool you can visually express the value you assign to
+            parts of a resource, which our intelligent <strong>algorithm</strong> will
+            then split evenly among all users.
           </p>
           <p>
             Using this tool, you can split a resource fairly based on the preferences of
@@ -24,9 +24,14 @@ export const GraphPage = (props) => {
             allowing you to fairly divide a tasty cake, allocate time slots, or apportion
             land.
           </p>
+
           <p>
             Currently, our algorithms support 2-3 participants. In the future we plan to
             introduce new algorithms for indivisible items and for more participants.
+          </p>
+          <p>
+            This is primarily an <strong>educational tool</strong>, but the concepts you
+            will learn about fairness can help in real life too.
           </p>
           <p>
             Explore our{' '}
@@ -48,8 +53,6 @@ export const GraphPage = (props) => {
         </Box>
       </Stack>
 
- 
-
       <Box marginTop={10} marginBottom={10} id="graph-content">
         <ErrorBoundary FallbackComponent={SectionErrorDisplay}>
           <Graph {...props} />
@@ -58,9 +61,9 @@ export const GraphPage = (props) => {
 
       <h3>Feeling Lost?</h3>
       <p>
-        See the <Link href="/learn">Interactive Course</Link> for an introduction
-        to fair division or the <Link href="/help">Help Page</Link> for clarification on
-        how this tool works.
+        See the <Link href="/learn">Interactive Course</Link> for an introduction to fair
+        division or the <Link href="/help">Help Page</Link> for clarification on how this
+        tool works.
       </p>
     </>
   )
