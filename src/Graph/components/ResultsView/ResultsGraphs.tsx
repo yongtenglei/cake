@@ -30,7 +30,7 @@ const margin = {
   top: 25,
   bottom: cuttingLineExtension + 32,
   left: 170,
-  right: 110,
+  right: 100,
 }
 
 interface ResultsGraphsProps {
@@ -104,11 +104,11 @@ export const ResultsGraphs = ({
       <Box component="svg" width={totalWidth} height={totalHeight} sx={{ fontSize: 18 }} marginBottom={6}>
         
         {/* Section labels. Off by default because they clutter up the visual */}
-        {showLabels ? <TinySectionLabels margin={margin} height={totalHeight} /> : null}
+        {showLabels ? <TinySectionLabels margin={margin} height={innerHeight} /> : null}
 
         {/* Portion Size (percentage) label */}
         <text textAnchor="end" x={totalWidth} y={0} dominantBaseline={'hanging'}>
-         Percent of Total
+         % of Total
         </text>
 
         <g transform={`translate(${margin.left}, ${margin.top})`}>

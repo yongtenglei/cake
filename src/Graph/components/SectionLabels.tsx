@@ -76,7 +76,7 @@ export const TinySectionLabels = ({ margin, height }: TinySectionLabelsProps) =>
               y={margin.top}
               x={x1}
               width={width}
-              height={height - margin.top - margin.bottom - 20}
+              height={height}
               fill={label.color}
               fillOpacity={0.4}
             />

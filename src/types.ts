@@ -35,14 +35,15 @@ export type UnassignedSlice = {
   end: number
   values: number[]
   assign: (agent: number) => Readonly<Slice>
+  note: string | undefined
 }
 
 export type Slice = {
   owner: number
   start: number
   end: number
-  value: number // cut this field?
   values: number[]
+  note?: string | undefined
 }
 
 // This represents all slices assigned to a certain person.

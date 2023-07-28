@@ -17,8 +17,8 @@ test('splits a uniform flat value graph evenly in half', () => {
   // Each agent values the cake uniformly for a total of 1000 value.
   // The results should be an even 500/500 split.
   // Actual order doesn't matter but it's difficult to test that.
-  expect(result[0]).toMatchObject({ owner: 1, start: 0, end: 50, value: 500 })
-  expect(result[1]).toMatchObject({ owner: 0, start: 50, end: 100, value: 500 })
+  expect(result[0]).toMatchObject({ owner: 1, start: 0, end: 50, values: [500, 500] })
+  expect(result[1]).toMatchObject({ owner: 0, start: 50, end: 100, values: [500, 500] })
   testIfEnvyFree(2, result)
 })
 
@@ -29,12 +29,11 @@ test('splits a seesaw-like graph in an envy-free way', () => {
   expect(result).toHaveLength(2)
   // The slices should be 375 value on both sides for person 0,
   // but the second slice is better for person 1.
-  expect(result[0]).toMatchObject({ owner: 0, start: 0, end: 37.5, value: 375 })
+  expect(result[0]).toMatchObject({ owner: 0, start: 0, end: 37.5 })
   expect(result[1]).toMatchObject({
     owner: 1,
     start: 37.5,
     end: 100,
-    value: 562.5,
   })
   testIfEnvyFree(2, result)
 })
@@ -48,7 +47,7 @@ test('splits a seesaw-like sloped graph in an envy-free way', () => {
   // with `toMatchObject` and `expect.closeTo` so doing things the verbose way.
   expect(result[0].owner).toBe(0)
   expect(result[0].end).toBeCloseTo(100 - halfwayPointOfTriangleArea)
-  expect(result[0].value).toBeCloseTo(250)
+  expect(result[0].values[0]).toBeCloseTo(250)
 
   expect(result[1].owner).toBe(1)
   testIfEnvyFree(2, result)
@@ -56,11 +55,7 @@ test('splits a seesaw-like sloped graph in an envy-free way', () => {
 
 // This case fails if we only slice on whole numbers
 test('splits a tricky case in an envy-free way', () => {
-  const person1 = [
-    genFlatSeg(0, 40, 1),
-    genFlatSeg(40, 65, 8.3),
-    genFlatSeg(65, 100, 1),
-  ]
+  const person1 = [genFlatSeg(0, 40, 1), genFlatSeg(40, 65, 8.3), genFlatSeg(65, 100, 1)]
   const person2 = [
     genFlatSeg(0, 30, 4),
     genFlatSeg(30, 50, 8),
@@ -83,22 +78,14 @@ test('splits a tricky sloped case in an envy-free way', () => {
 })
 
 test('splits randomly generated preferences fairly', () => {
-  const segs = [
-    genRandomSegs(cakeSize),
-    genRandomSegs(cakeSize),
-  ]
+  const segs = [genRandomSegs(cakeSize), genRandomSegs(cakeSize)]
   const result = cutAndChoose(segs, cakeSize)
   testIfEnvyFree(2, result)
 })
 
-
-
 test('splits randomly generated preferences fairly on a smaller cake size', () => {
   const smallCake = 3
-  const segs = [
-    genRandomSegs(smallCake),
-    genRandomSegs(smallCake),
-  ]
+  const segs = [genRandomSegs(smallCake), genRandomSegs(smallCake)]
   const result = cutAndChoose(segs, smallCake)
   testIfEnvyFree(2, result)
 })

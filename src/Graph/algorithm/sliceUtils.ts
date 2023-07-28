@@ -1,17 +1,18 @@
 import maxBy from 'lodash.maxby'
 import remove from 'lodash.remove'
-import { Segment, Preferences, UnassignedSlice, Slice } from '../../types'
-import { getValueForInterval, getTotalValue } from './getValue'
+import { Preferences, UnassignedSlice, Slice } from '../../types'
+import { getValueForInterval } from './getValue'
 
 /**
  * Creates an `UnassignedSlice` from between the start and end value.
  * See the type definition in `types.ts` for more info.
+ * Zero-width slices are technically valid as some methods require them in edge cases.
  */
 export const cutSlice = (
   preferences: Preferences,
   start: number,
   end: number,
-  type?: string
+  note?: string
 ): Readonly<UnassignedSlice> => {
   if (start > end) {
     console.trace()
@@ -20,22 +21,22 @@ export const cutSlice = (
     )}`
   }
   // Getting and saving every agent's evaluations for this slice makes later calculation much simpler
-  const allEvaluationsForSlice = preferences.map((segments) =>
+  const values = preferences.map((segments) =>
     getValueForInterval(segments, start, end)
   )
   // Freeze the created `UnassignedSlice` to enforce immutability.
   return Object.freeze({
     start,
     end,
-    values: allEvaluationsForSlice,
-    assign: (agent: number): Slice => {
-      const value = allEvaluationsForSlice[agent]
+    values,
+    note,
+    assign: (agent: number, noteOverride?: string): Slice => {
       return Object.freeze({
         start,
         end,
-        value,
-        values: allEvaluationsForSlice,
+        values,
         owner: agent,
+        note: noteOverride ?? note
       })
     },
   })

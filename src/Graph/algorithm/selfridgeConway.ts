@@ -61,10 +61,7 @@ export const selfridgeConway = (
   )
 
   const trimming = cutSlice(preferences, start, cutLine)
-  
-  // Note, this thrown the "end == start" error if the second biggest piece is worth nothing
-  // because it's trying to cut a 0-value piece. Will find a way to fix this at some point.
-  const trimmedPiece = cutSlice(preferences, cutLine, end) 
+  const trimmedPiece = cutSlice(preferences, cutLine, end, 'Trimmed') 
   slices[0] = trimmedPiece
 
   console.log('Picking slices')
@@ -116,9 +113,9 @@ const assignTrimmings = (
     startBound: trimming.start,
     endBound: trimming.end,
   })
-  const piece1 = cutSlice(preferences, trimming.start, cut1)
-  const piece2 = cutSlice(preferences, cut1, cut2)
-  const piece3 = cutSlice(preferences, cut2, trimming.end)
+  const piece1 = cutSlice(preferences, trimming.start, cut1, 'Trimming')
+  const piece2 = cutSlice(preferences, cut1, cut2, 'Trimming')
+  const piece3 = cutSlice(preferences, cut2, trimming.end, 'Trimming')
 
   console.log('Trimming divided into', [piece1, piece2, piece3])
   
