@@ -31,7 +31,7 @@ export const findCutLineByValue = (
       runningTotal += segValue
     }
   }
-  throw 'No cutline in segment'
+  throw 'No cut line in segment'
 }
 
 /**

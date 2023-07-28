@@ -109,6 +109,27 @@ test('splits a simple "trimming needed" cake fairly', () => {
   { end: 40, start: 35, values: [25, 50, 25] }
 */
 
+// The zero-value segment issue stumped me for a long time.
+// The solution is that you are allow to have 0-width, "empty" slices
+// even though they have zero value
+test('splits a cake containing 0 value evaluations', () => {
+  const person0 = [ genFlatSeg(0, 60, 10), genFlatSeg(60, 90, 0),]
+  const person1 = [ genFlatSeg(0, 60, 0), genFlatSeg(60, 90, 10),]
+  const person2 = [ genFlatSeg(0, 90, 10),]  
+  const result = selfridgeConway([person0, person1, person2], 90)
+
+  testIfEnvyFree(3, result)
+})
+
+test('splits a very empty cake', () => {
+  const person0 = [ genFlatSeg(0, 5, 10), genFlatSeg(5, 90, 0),]
+  const person1 = [ genFlatSeg(0, 89, 0), genFlatSeg(89, 90, 10),]
+  const person2 = [ genFlatSeg(0, 50, 0),genFlatSeg(50, 51, 1), genFlatSeg(51, 90, 0)]  
+  const result = selfridgeConway([person0, person1, person2], 90)
+
+  testIfEnvyFree(3, result)
+})
+
 // This test is non-deterministic so run it many times 
 // to ensure edge cases are (probably) covered.
 test('splits randomly generated preferences fairly', () => {

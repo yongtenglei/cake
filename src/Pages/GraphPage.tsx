@@ -22,12 +22,9 @@ export const GraphPage = (props) => {
             Using this tool, you can split a resource fairly based on the preferences of
             each person. This tool works with <strong>divisible resources</strong>,
             allowing you to fairly divide a tasty cake, allocate time slots, or apportion
-            land.
-          </p>
-
-          <p>
-            Currently, our algorithms support 2-3 participants. In the future we plan to
-            introduce new algorithms for indivisible items and for more participants.
+            land. Currently, our algorithms support 2-3 participants. In the future we
+            plan to introduce new algorithms for indivisible items and for more
+            participants.
           </p>
           <p>
             This is primarily an <strong>educational tool</strong>, but the concepts you
@@ -38,7 +35,7 @@ export const GraphPage = (props) => {
             <strong>
               <Link href="/learn">Interactive Course</Link>
             </strong>{' '}
-            to understand how fair division works.
+            to learn how fair division works.
           </p>
         </TextContainer>
         <Box marginX={6}>

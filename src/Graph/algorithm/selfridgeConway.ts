@@ -50,7 +50,7 @@ export const selfridgeConway = (
   // P1 trims largest slice so two largest slices are equal, trimmings set aside
   const { start, end } = slices[0]
 
-  console.log('Trimming piece', {...slices[0]})
+  console.log('Trimming piece', slices[0])
   const cutLine = findCutLineByValue(
     p1Prefs,
     p1LargestValue - p1SecondLargestValue,
@@ -59,6 +59,7 @@ export const selfridgeConway = (
       endBound: end,
     }
   )
+
   const trimming = cutSlice(preferences, start, cutLine)
   
   // Note, this thrown the "end == start" error if the second biggest piece is worth nothing

@@ -10,9 +10,10 @@ import { getValueForInterval, getTotalValue } from './getValue'
 export const cutSlice = (
   preferences: Preferences,
   start: number,
-  end: number
+  end: number,
+  type?: string
 ): Readonly<UnassignedSlice> => {
-  if (start >= end) {
+  if (start > end) {
     console.trace()
     throw `Start cannot be before end. Start ${start}, end ${end}, preferences ${JSON.stringify(
       preferences

@@ -114,7 +114,6 @@ export const LearningPath = () => {
         display="grid"
         gridTemplateColumns={{ xs: '50% 50%', sm: '1fr 4fr 1fr' }}
         alignItems="center"
-        // justifyContent="space-between"
         justifyItems="center"
       >
         {/* Put the buttons next to each other for better accessibility, then the dots */}
@@ -492,7 +491,6 @@ const MeasuringPreference = () => {
     setAlgoResults(undefined)
   }
   const onChangeSegments = (flavor: number) => (segs: Segment[]) => {
-    console.log(flavor, segs)
     const s = segs.filter((seg) => seg.end > seg.start)
     flavor === 0 ? setSegment0(s) : setSegment1(s)
     setCutPoint(undefined)

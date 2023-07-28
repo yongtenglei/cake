@@ -58,7 +58,7 @@ export const DrawingHeaderButtons = ({
       </MenuButton>
       <Tooltip
         title={
-          cantAddMoreAgents ? `Cannot add more than ${maxAgents} people` : 'Add Person'
+          cantAddMoreAgents ? `Cannot add more than ${maxAgents} people` : null
         }
       >
         <span>

@@ -129,6 +129,7 @@ export const Graph = ({ v1 }: { v1?: boolean }) => {
       setAlgoResults(results)
       setViewMode('results')
     } catch (e) {
+      console.error(e)
       alert('Sorry, something has gone wrong\n\n' + e.message)
     }
 
