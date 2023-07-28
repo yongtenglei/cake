@@ -243,7 +243,7 @@ const FairDivision = () => {
       <p>
         For this discussion, we'll focus on <strong>divisible resources</strong>.
       </p>
-      <p>Let's explore an example.</p>
+      <p>Let's explore some examples using (metaphorical) cake.</p>
     </>
   )
 }
@@ -349,7 +349,7 @@ const TwoFlavorCake = ({ preferredFlavor, setPreferredFlavor }: CommonProps) => 
           onClick={() => setPreferredFlavor('vanilla')}
           sx={{ marginBottom: 2 }}
         />
-        <Box borderLeft="4px dashed black" />
+        <Box borderLeft="4px dashed black" className="blinkLine" />
         <CakeImage
           flavor="chocolate"
           width="200px"
@@ -862,15 +862,15 @@ const EnterPlayer3 = () => {
           textAlign="center"
         >
           <OverlayText justifySelf="flex-start" character="Aki">
-            Aki gets the left third.
+            Aki gets the left piece.
           </OverlayText>
           <OverlayText justifySelf="center" character="Bruno">
-            Bruno gets the middle third,
+            Bruno gets the middle piece,
             <br />
             which includes a part he doesn't value.
           </OverlayText>
           <OverlayText justifySelf="flex-end" character="Chloe">
-            Chloe gets the right third.
+            Chloe gets the right piece.
           </OverlayText>
         </Box>
       </Box>
