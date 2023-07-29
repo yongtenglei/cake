@@ -33,7 +33,9 @@ import { sampleLabels3Flavor } from './sampleData'
 
 export const Graph = ({ v1 }: { v1?: boolean }) => {
   const [cakeSize, setCakeSize] = useState<number>(defaultCakeSize)
-  const [sectionLabels, setSectionLabels] = useState<SectionLabel[]>([sampleLabels3Flavor[0]])
+  const [sectionLabels, setSectionLabels] = useState<SectionLabel[]>([
+    sampleLabels3Flavor[0],
+  ])
   const [algoUsed, setAlgoUsed] = useState<AlgoName | null>(null)
   const [algoResults, setAlgoResults] = useState<Portion[] | []>(null)
   const [preferences, setPreferences] = useState<Preferences>([[]])
@@ -73,9 +75,12 @@ export const Graph = ({ v1 }: { v1?: boolean }) => {
 
   const uploadInput = (pref: Preferences) => {
     resetInput()
-    const maxEndpoint = maxBy(pref, (segs: Segment[]) =>
-      maxBy(segs, (seg: Segment) => seg.end)
-    )
+    let maxEndpoint = 0
+    pref.forEach((segs: Segment[]) => {
+      segs.forEach((seg: Segment) => {
+        maxEndpoint = Math.max(maxEndpoint, seg.end)
+      })
+    })
     setPreferences(pref)
     setCakeSize(maxEndpoint)
   }
@@ -147,8 +152,12 @@ export const Graph = ({ v1 }: { v1?: boolean }) => {
   if (viewMode === 'setup') {
     body = v1 ? (
       <Setup onCompleteSetup={onCompleteSetup} setNewData={resetInput} />
-      ) : (
-      <SectionConfig onCompleteSetup={onCompleteSetup} initialSections={sectionLabels} cakeSize={cakeSize} />
+    ) : (
+      <SectionConfig
+        onCompleteSetup={onCompleteSetup}
+        initialSections={sectionLabels}
+        cakeSize={cakeSize}
+      />
     )
   } else if (viewMode === 'results') {
     body = (
