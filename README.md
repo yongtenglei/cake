@@ -4,7 +4,7 @@ This is a single page application for educating about the problem of fair dividi
 
 It was bootstrapped with [Create React App](https://github.com/facebook/create-react-app) which simplifies app set up.
 
-It is hosted from github using Netlify. View it live at https://cake-division.netlify.app/
+It is hosted from github using Netlify. View it live at https://fairslice.netlify.app/.app/
 
 ## Libraries
 
