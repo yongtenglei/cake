@@ -1,18 +1,17 @@
-import { useState } from 'react'
 import {
-  Radio,
-  RadioGroup,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   FormControlLabel,
   FormLabel,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  DialogContentText,
-  Button,
-  Box,
+  Radio,
+  RadioGroup
 } from '@mui/material'
-import { Algorithms, Algorithm, AlgoName } from '../graphConstants'
+import { useState } from 'react'
+import { AlgoName, Algorithm, Algorithms } from '../algorithm/types'
 import { AlgoExplanationModal } from './AlgoExplanationModal'
 
 interface SelectAlgoModalProps {
@@ -68,8 +67,7 @@ const SelectAlgoModalGuts = ({
     totalAgents >= algo.minAgents && totalAgents <= algo.maxAgents
 
   const bestOption =
-    Object.values(Algorithms).find(algoIsSelectable)?.key ??
-    Algorithms.cutAndChoose.key
+    Object.values(Algorithms).find(algoIsSelectable)?.key ?? Algorithms.cutAndChoose.key
 
   const [selectedAlgo, setSelectedAlgo] = useState<AlgoName>(bestOption)
 
@@ -89,9 +87,7 @@ const SelectAlgoModalGuts = ({
               key={algo.key}
               value={algo.key}
               control={
-                <Radio
-                  onChange={(e) => setSelectedAlgo(e.target.value as AlgoName)}
-                />
+                <Radio onChange={(e) => setSelectedAlgo(e.target.value as AlgoName)} />
               }
               label={algo.name + ' - ' + algo.numAgentsText}
               checked={algo.key === selectedAlgo}

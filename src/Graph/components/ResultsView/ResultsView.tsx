@@ -1,4 +1,4 @@
-import { Box, Button, Stack } from '@mui/material'
+import { Button, Stack } from '@mui/material'
 import { useState } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { LoadingModal } from '../../../components/LoadingModal'
@@ -6,9 +6,10 @@ import { SectionErrorDisplay } from '../../../components/SectionErrorDisplay'
 import { Portion, Preferences, SectionLabel } from '../../../types'
 import { downloadScreenshot } from '../../../utils/export'
 import { GraphContext } from '../../GraphContext'
-import { AlgoName } from '../../graphConstants'
+import { AlgoName } from '../../algorithm/types'
 import { createScales } from '../../graphUtils'
 import { ResultsGraphs } from './ResultsGraphs'
+import { ResultsSteps } from './ResultsSteps'
 import { ResultsTable } from './ResultsTable'
 import { SolutionInfo } from './SolutionInfo'
 
@@ -28,7 +29,7 @@ export const ResultsView = ({
   cakeSize,
 }: ResultsViewProps) => {
   const width = 560
-  const height = 100
+  const height = 120
   const { yScale, xScale } = createScales({
     innerWidth: width,
     innerHeight: height,
@@ -61,6 +62,9 @@ export const ResultsView = ({
           >
             <ResultsGraphs results={results} preferences={preferences} />
           </GraphContext.Provider>
+        </ErrorBoundary>
+        <ErrorBoundary FallbackComponent={SectionErrorDisplay}>
+          <ResultsSteps algoUsed={algoUsed} results={results} />
         </ErrorBoundary>
         <ErrorBoundary FallbackComponent={SectionErrorDisplay}>
           <ResultsTable results={results} preferences={preferences} />

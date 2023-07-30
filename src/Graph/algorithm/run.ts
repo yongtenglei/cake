@@ -1,4 +1,4 @@
-import { AlgoName } from '../graphConstants'
+import { AlgoName } from './types'
 import { Preferences, Slice, Portion } from '../../types'
 import { validateSegments } from './validation'
 import { cutAndChoose } from './cutAndChoose'
@@ -25,7 +25,7 @@ export const runDivisionAlgorithm = async (
   let result: null | Slice[] = null
   switch (algo) {
     case 'cutAndChoose':
-      result = cutAndChoose(preferences, cakeSize)
+      result = cutAndChoose(preferences, cakeSize).solution
       break
     case 'selfridgeConway':
       result = selfridgeConway(preferences, cakeSize)
@@ -45,20 +45,20 @@ export const runDivisionAlgorithm = async (
   // Combine all slices assigned to each user into one "Portion"
   const totalValues = preferences.map(getTotalValue)
 
-const portions = result.reduce((acc, slice) => {
+  const portions = result.reduce((acc, slice) => {
     const owner = slice.owner
     if (!acc[owner]) {
       acc[owner] = { owner, percentValues: Array(numPeople).fill(0), edges: [] }
     }
     acc[owner].edges.push([slice.start, slice.end])
     acc[owner].percentValues = slice.values.map(
-      (val, i) => acc[owner].percentValues[i] + (val / totalValues[i])
+      (val, i) => acc[owner].percentValues[i] + val / totalValues[i]
     )
     return acc
   }, Array<Portion>(numPeople))
 
   // Sort edges by start
-  portions.forEach(portion => portion.edges.sort((a,b) => a[0] - b[0]))
+  portions.forEach((portion) => portion.edges.sort((a, b) => a[0] - b[0]))
   console.log('Portions', portions)
   return portions
 }

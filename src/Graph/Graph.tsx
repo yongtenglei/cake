@@ -20,13 +20,13 @@ import { SwitchAgentHeader } from './components/Header/SwitchAgentHeader'
 import { ResultsView } from './components/ResultsView/ResultsView'
 import { SelectAlgoModal } from './components/SelectAlgoModal'
 import {
-  AlgoName,
   defaultCakeSize,
   defaultGraphHeight,
   defaultGraphWidth,
   getInnerHeight,
   getInnerWidth,
 } from './graphConstants'
+import { AlgoName } from './algorithm/types'
 import { createScales, isDrawingComplete } from './graphUtils'
 import { SectionConfig } from './SectionConfig'
 import { sampleLabels3Flavor } from './sampleData'

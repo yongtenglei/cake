@@ -101,14 +101,19 @@ export const ResultsGraphs = ({
         />
       </Box>
 
-      <Box component="svg" width={totalWidth} height={totalHeight} sx={{ fontSize: 18 }} marginBottom={6}>
-        
+      <Box
+        component="svg"
+        width={totalWidth}
+        height={totalHeight}
+        sx={{ fontSize: 18 }}
+        marginBottom={6}
+      >
         {/* Section labels. Off by default because they clutter up the visual */}
         <TinySectionLabels margin={margin} height={innerHeight} full={showFullLabels} />
 
         {/* Portion Size (percentage) label */}
         <text textAnchor="end" x={totalWidth} y={0} dominantBaseline={'hanging'}>
-         % of Total
+          % of Total
         </text>
 
         <g transform={`translate(${margin.left}, ${margin.top})`}>
@@ -162,7 +167,7 @@ export const ResultsGraphs = ({
           {/* Cut lines */}
           {allCutlines.map((cut, i) => {
             const offset = i % 2 === 0 ? cuttingLineExtension : cuttingLineExtension + 15
-            const point = 100 * cut / cakeSize
+            const point = (100 * cut) / cakeSize
             return (
               <g transform={`translate(${xScale(cut)}, 0)`} key={cut}>
                 <line
@@ -178,8 +183,7 @@ export const ResultsGraphs = ({
                   dominantBaseline="hanging"
                 >
                   <title>{formatNumber(point)}</title>
-                  {point.toFixed(0)}%
-                  {/* {cut.toFixed(cakeSize >= 10 ? 0 : 1)} */}
+                  {point.toFixed(0)}%{/* {cut.toFixed(cakeSize >= 10 ? 0 : 1)} */}
                 </text>
               </g>
             )
@@ -234,7 +238,9 @@ export const ResultsGraphs = ({
                         .map(
                           (range) =>
                             '[' +
-                            range.map((edge) => formatNumber(100*edge/cakeSize)+ '%').join(' - ') +
+                            range
+                              .map((edge) => formatNumber((100 * edge) / cakeSize) + '%')
+                              .join(' - ') +
                             ']'
                         )
                         .join('\n')}

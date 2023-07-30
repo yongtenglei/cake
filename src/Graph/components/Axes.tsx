@@ -9,7 +9,7 @@ import { GraphContext } from '../GraphContext'
 
 const gridColor = '#ddd'
 const labelColor = '#333'
-const labelSize = '24px'
+const labelSize = '22px'
 
 interface AxisProps {
   simple?: boolean
@@ -28,7 +28,7 @@ export const AxisLeft = ({ simple = false }: AxisProps) => {
         fill={labelColor}
         style={{ fontSize: labelSize }}
       >
-        Preference Values
+        Preference Value
       </text>
 
       {yScale.ticks(simple ? 5 : 10).map((tickValue) => (

@@ -4,7 +4,7 @@ import ContentCutIcon from '@mui/icons-material/ContentCut'
 import WarningIcon from '@mui/icons-material/Warning'
 import { Box, Stack, SvgIconProps } from '@mui/material'
 import { Portion } from '../../../types'
-import { AlgoName, Algorithms } from '../../graphConstants'
+import { AlgoName, Algorithms } from '../../algorithm/types'
 import { Link } from '../../../components/Link'
 
 interface SolutionInfoProps {

@@ -22,12 +22,9 @@ import { runDivisionAlgorithm } from '../../Graph/algorithm/run'
 import { DrawingLayer } from '../../Graph/components/DrawingLayer'
 import { ResultsGraphs } from '../../Graph/components/ResultsView/ResultsGraphs'
 import { ViewGraph } from '../../Graph/components/ViewGraph'
-import {
-  Algorithms,
-  getInnerHeight,
-  getInnerWidth,
-  margin,
-} from '../../Graph/graphConstants'
+import { getInnerHeight, getInnerWidth, margin } from '../../Graph/graphConstants'
+import { Algorithms } from '../../Graph/algorithm/types'
+
 import { createScales, isDrawingComplete } from '../../Graph/graphUtils'
 import { InteractionContainer } from '../../Layouts'
 import { C_STRAWBERRY, C_VANILLA } from '../../colors'
@@ -38,6 +35,7 @@ import cake3PrefBruno from '../../images/preference/bruno.png'
 import cake3PrefChloe from '../../images/preference/chloe.png'
 import selfridgeResults from '../../images/results/selfridgeresults.png'
 import simple3Results from '../../images/results/simple3results.png'
+import akiThinking from '../../images/aki thinking.png'
 import toolExample from '../../images/tool example.png'
 import { Portion, Segment } from '../../types'
 import { formatNumber } from '../../utils/formatUtils'
@@ -83,6 +81,7 @@ export const LearningPath = () => {
     [TwoFlavorCake, '2-Flavor Cake'],
     [BetterThanHalf, 'Better Than Half'],
     [CutAndChoose, 'Cut and Choose'],
+    [Clarification, 'Clarification'],
     [MeasuringPreference, 'Measuring Preference'],
     [Recap1, 'Recap'],
     [EnterPlayer3, 'Enter Player 3'],
@@ -444,6 +443,40 @@ const CutAndChoose = () => {
     </>
   )
 }
+// We use cake cutting for examples of fair division.
+const Clarification = () => {
+  return (
+    <>
+      <h2>Clarification</h2>
+      <p>Just a quick note on sharing cake.</p>
+      <p>
+        In the study of fair division we make some assumptions, mainly that everyone wants{' '}
+        <strong>as much cake as possible</strong> so we need a method to ensure everyone
+        gets a fair share.
+      </p>
+      <p>
+        Since people value parts of the cake differently, fair might mean one person gets
+        a smaller piece but of a popular part of the cake. "Fair" doesn't mean equal sized
+        pieces for everyone, it means <strong>equal value</strong> pieces for everyone.
+      </p>
+      <img
+        src={akiThinking}
+        alt="Aki the cat thinking about the choice between a vanilla piece or a sliver of vanilla and a chocolate piece"
+        style={{ maxHeight: 300, display: 'block', margin: 'auto' }}
+      />
+      <p>
+        The amazing thing is, even though everyone has their own subjective preferences
+        about the cake, fair division methods <em>always</em> give everyone a piece worth{' '}
+        <sup>1</sup>&frasl;
+        <sub>n</sub> of the cake value from their own perspective!
+      </p>
+      <p>
+        Keep in mind that this is an economic model, part of game theory. In real life you
+        make more friends by being generous, especially if you're sharing a birthday cake!
+      </p>
+    </>
+  )
+}
 
 const akisPreferences = [
   { id: 1, start: 0, end: 1, startValue: 7, endValue: 7 },
@@ -611,12 +644,12 @@ const MeasuringPreference = () => {
             Based on <strong>how you marked your preferences</strong>, the cake on both
             sides of this dotted line are each worth <sup>1</sup>
             &frasl;
-            <sub>2</sub> of the total cake to you. Remember, we don't know which piece Aki will
-            choose yet.
+            <sub>2</sub> of the total cake to you. Remember, we don't know which piece Aki
+            will choose yet.
           </p>
           <p>
-            If you wouldn't be happy receiving the left or right piece, feel free to{' '}
-            <em>Redo</em> your preferences.
+            If you wouldn't be happy receiving the left or right piece, feel free to REDO
+            your preferences.
           </p>
 
           <Box width="fit-content" marginX="auto" position="relative">
@@ -686,7 +719,7 @@ const MeasuringPreference = () => {
           </Box>
 
           <p>
-            It turns out Aki likes strawberry even more than vanilla
+            It turns out Aki likes strawberry more than vanilla
             {akiLikesLeft ? (
               <>
                 {' '}

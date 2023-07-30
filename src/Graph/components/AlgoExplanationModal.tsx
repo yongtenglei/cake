@@ -6,7 +6,7 @@ import {
   DialogContentText,
   Button,
 } from '@mui/material'
-import { Algorithms } from '../graphConstants'
+import { Algorithms } from '../algorithm/types'
 import { Link } from '../../components/Link'
 
 export const AlgoExplanationModal = ({ open, onClose }) => {
