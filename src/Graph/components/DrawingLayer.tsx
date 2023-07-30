@@ -83,7 +83,7 @@ export const DrawingLayer = ({
     }
   }
 
-  const onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const segs = changeSegmentWithKeyboard(
       event,
       segments,
@@ -147,7 +147,7 @@ export const DrawingLayer = ({
         onMouseMove={onMouseMove}
         onMouseDown={onMouseDown}
         onClick={onClick}
-        onKeyUp={onKeyUp}
+        onKeyDown={onKeyDown}
         onBlur={onBlur}
       >
         <svg width={width} height={height}>

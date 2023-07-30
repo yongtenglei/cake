@@ -79,7 +79,7 @@ export const DrawingHeaderButtons = ({
 
       <MenuButton disabled={!allComplete || totalAgents < 2} onClick={onClickDone}>
         <CheckIcon />
-        Done
+        Split
       </MenuButton>
 
       <ExtraOptions uploadInput={uploadInput} preferences={preferences} resetInput={resetInput}/>

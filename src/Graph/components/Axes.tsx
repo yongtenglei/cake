@@ -28,7 +28,7 @@ export const AxisLeft = ({ simple = false }: AxisProps) => {
         fill={labelColor}
         style={{ fontSize: labelSize }}
       >
-        Value
+        Preference Values
       </text>
 
       {yScale.ticks(simple ? 5 : 10).map((tickValue) => (

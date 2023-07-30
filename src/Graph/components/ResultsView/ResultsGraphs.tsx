@@ -53,7 +53,7 @@ export const ResultsGraphs = ({
 }: ResultsGraphsProps) => {
   const { labels, cakeSize, width, height, xScale } = useContext(GraphContext)
 
-  const [showLabels, setShowLabels] = useState(false)
+  const [showFullLabels, setShowFullLabels] = useState(false)
   const [showAllPreferences, setShowAllPreferences] = useState(false)
 
   const innerHeight =
@@ -82,11 +82,11 @@ export const ResultsGraphs = ({
           <FormControlLabel
             control={
               <Switch
-                onChange={(e) => setShowLabels(e.target.checked)}
-                checked={showLabels}
+                onChange={(e) => setShowFullLabels(e.target.checked)}
+                checked={showFullLabels}
               />
             }
-            label="Show labels"
+            label="Show label colors"
           />
         ) : null}
 
@@ -104,7 +104,7 @@ export const ResultsGraphs = ({
       <Box component="svg" width={totalWidth} height={totalHeight} sx={{ fontSize: 18 }} marginBottom={6}>
         
         {/* Section labels. Off by default because they clutter up the visual */}
-        {showLabels ? <TinySectionLabels margin={margin} height={innerHeight} /> : null}
+        <TinySectionLabels margin={margin} height={innerHeight} full={showFullLabels} />
 
         {/* Portion Size (percentage) label */}
         <text textAnchor="end" x={totalWidth} y={0} dominantBaseline={'hanging'}>
@@ -166,14 +166,14 @@ export const ResultsGraphs = ({
             return (
               <g transform={`translate(${xScale(cut)}, 0)`} key={cut}>
                 <line
-                  y1={-margin.top}
+                  y1={-3}
                   y2={innerHeight + offset}
                   strokeDasharray={6}
                   stroke="#666"
                   strokeWidth={1.5}
                 />
                 <text
-                  y={innerHeight + offset}
+                  y={innerHeight + offset + 2}
                   textAnchor="middle"
                   dominantBaseline="hanging"
                 >

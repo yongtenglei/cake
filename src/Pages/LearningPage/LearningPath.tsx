@@ -608,10 +608,15 @@ const MeasuringPreference = () => {
       {cutPoint ? (
         <>
           <p>
-            Based on how you marked the values, the cake on <strong>either side</strong>{' '}
-            of this dotted line equal to you, <sup>1</sup>
+            Based on <strong>how you marked your preferences</strong>, the cake on both
+            sides of this dotted line are each worth <sup>1</sup>
             &frasl;
-            <sub>2</sub> of the total cake. We don't know which piece Aki will choose yet.
+            <sub>2</sub> of the total cake to you. Remember, we don't know which piece Aki will
+            choose yet.
+          </p>
+          <p>
+            If you wouldn't be happy receiving the left or right piece, feel free to{' '}
+            <em>Redo</em> your preferences.
           </p>
 
           <Box width="fit-content" marginX="auto" position="relative">

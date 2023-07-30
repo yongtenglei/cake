@@ -100,6 +100,8 @@ export const changeSegmentWithKeyboard = (
     if (!val) {
       return
     }
+    // prevent arrow keys from scrolling
+    event.preventDefault()
     const seg = segments.find((seg) => seg.id === xMovingId)
     if(seg === undefined) {
       return segments
@@ -119,6 +121,8 @@ export const changeSegmentWithKeyboard = (
     if (!val) {
       return
     }
+    // prevent arrow keys from scrolling
+    event.preventDefault()
     // flat
     if (yMovingId) {
       return segments.map((seg) => {
