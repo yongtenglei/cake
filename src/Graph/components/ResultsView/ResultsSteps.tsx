@@ -11,7 +11,6 @@ interface ResultsStepsProps {
 
 export const ResultsSteps = ({ algoUsed, result }: ResultsStepsProps) => {
   const { width, height, xScale, names = []  } = useContext(GraphContext)
-  console.log(JSON.stringify(result))
 
   return (
     <Box component={'section'}>

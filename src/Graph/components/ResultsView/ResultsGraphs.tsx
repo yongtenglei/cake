@@ -49,7 +49,6 @@ export const ResultsGraphs = ({
 }: ResultsGraphsProps) => {
   const { labels, cakeSize, width, height, xScale, names = [], namesPossessive = [] } = useContext(GraphContext)
 
-
   const [showFullLabels, setShowFullLabels] = useState(false)
   const [showAllPreferences, setShowAllPreferences] = useState(false)
 
