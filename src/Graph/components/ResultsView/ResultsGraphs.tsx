@@ -17,7 +17,7 @@ import Color from 'color'
 import { useContext, useState } from 'react'
 import { getAgentColor } from '../../../colors'
 import { Portion, Preferences, Segment } from '../../../types'
-import { formatNumber } from '../../../utils/formatUtils'
+import { formatNumber, makePercentage } from '../../../utils/formatUtils'
 import { GraphContext } from '../../GraphContext'
 import { useConvertSegToPixels } from '../../graphUtils'
 import { TinySectionLabels } from '../SectionLabels'
@@ -42,7 +42,7 @@ interface ResultsGraphsProps {
 
 const getPortionSize = (result: Portion, cakeSize: number) => {
   const totalArea = result.edges.reduce((total, [start, end]) => total + end - start, 0)
-  return (totalArea / cakeSize) * 100
+  return totalArea / cakeSize
 }
 
 export const ResultsGraphs = ({
@@ -157,8 +157,8 @@ export const ResultsGraphs = ({
                   textAnchor="middle"
                   dominantBaseline="middle"
                 >
-                  <title>{formatNumber(totalSharePercent)}%</title>
-                  {formatNumber(totalSharePercent, 2)}%
+                  <title>{makePercentage(totalSharePercent)}</title>
+                  {makePercentage(totalSharePercent, 2)}
                 </text>
               </g>
             )
@@ -171,7 +171,7 @@ export const ResultsGraphs = ({
             return (
               <g transform={`translate(${xScale(cut)}, 0)`} key={cut}>
                 <line
-                  y1={-3}
+                  y1={0}
                   y2={innerHeight + offset}
                   strokeDasharray={6}
                   stroke="#666"
@@ -183,7 +183,7 @@ export const ResultsGraphs = ({
                   dominantBaseline="hanging"
                 >
                   <title>{formatNumber(point)}</title>
-                  {point.toFixed(0)}%{/* {cut.toFixed(cakeSize >= 10 ? 0 : 1)} */}
+                  {point.toFixed(0)}%
                 </text>
               </g>
             )
@@ -215,7 +215,7 @@ export const ResultsGraphs = ({
           aria-controls="details-panel"
           id="details-panel-header"
         >
-          Resource Split Details
+          Exact Numbers
         </AccordionSummary>
         <AccordionDetails>
           <TableContainer>
@@ -239,14 +239,14 @@ export const ResultsGraphs = ({
                           (range) =>
                             '[' +
                             range
-                              .map((edge) => formatNumber((100 * edge) / cakeSize) + '%')
+                              .map((edge) => makePercentage(edge / cakeSize))
                               .join(' - ') +
                             ']'
                         )
                         .join('\n')}
                     </TableCell>
                     <TableCell>
-                      {formatNumber(getPortionSize(result, cakeSize))}%
+                      {makePercentage(getPortionSize(result, cakeSize))}
                     </TableCell>
                   </TableRow>
                 ))}

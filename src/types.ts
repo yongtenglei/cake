@@ -33,20 +33,19 @@ export type Preferences = Segment[][]
  * 
  * These should only be used internally in algorithm code
  */
-export type UnassignedSlice = {
+export interface Slice {
   start: number
   end: number
   values: number[]
-  assign: (agent: number) => Readonly<Slice>
-  note: string | undefined
+  note?: string
 }
 
-export type Slice = {
+export type UnassignedSlice = Slice & {
+  assign: (agent: number) => Readonly<AssignedSlice>
+}
+
+export type AssignedSlice = Slice & {
   owner: number
-  start: number
-  end: number
-  values: number[]
-  note?: string | undefined
 }
 
 // This represents all slices assigned to a certain person.

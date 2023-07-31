@@ -1,6 +1,6 @@
 import maxBy from 'lodash.maxby'
 import remove from 'lodash.remove'
-import { Preferences, UnassignedSlice, Slice } from '../../types'
+import { Preferences, UnassignedSlice, AssignedSlice } from '../../types'
 import { getValueForInterval } from './getValue'
 
 /**
@@ -30,7 +30,7 @@ export const cutSlice = (
     end,
     values,
     note,
-    assign: (agent: number, noteOverride?: string): Slice => {
+    assign: (agent: number, noteOverride?: string): AssignedSlice => {
       return Object.freeze({
         start,
         end,

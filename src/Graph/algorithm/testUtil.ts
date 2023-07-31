@@ -1,4 +1,4 @@
-import { Segment, Slice } from '../../types'
+import { Segment, AssignedSlice } from '../../types'
 
 export const halfwayPointOfTriangleArea = 70.710678
 
@@ -58,7 +58,7 @@ export const genRandomSegs = (cakeSize: number) => {
   return segs
 }
 
-export const testIfEnvyFree = (numPeople: number, result: Slice[]) => {
+export const testIfEnvyFree = (numPeople: number, result: AssignedSlice[]) => {
   for (let a = 0; a < numPeople; a++) {
     // Using agent `a`'s evaluations, collect each person's slice values into an array.
     // This does collect an agent's own slices but that's fine.

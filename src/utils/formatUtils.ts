@@ -1,4 +1,7 @@
-import { Preferences, Portion } from "../types"
+import { Preferences, Portion } from '../types'
+
+export const makePercentage = (num: number, precision = 8): string =>
+  formatNumber(num * 100, precision) + '%'
 
 export const formatNumber = (num: number, precision = 8): string => {
   const numLength = String(num).match(/\d/g).length

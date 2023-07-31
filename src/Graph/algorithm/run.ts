@@ -1,5 +1,5 @@
 import { AlgoName, Result, Step } from './types'
-import { Preferences, Slice, Portion } from '../../types'
+import { Preferences, AssignedSlice, Portion } from '../../types'
 import { validateSegments } from './validation'
 import { cutAndChoose } from './cutAndChoose'
 import { selfridgeConway } from './selfridgeConway'
@@ -22,7 +22,7 @@ export const runDivisionAlgorithm = async (
   // The UI validates enough but if people upload their own data,
   // who knows what could happen...
 
-  let result: null | { solution: Slice[]; steps: Step[] } = null
+  let result: null | { solution: AssignedSlice[]; steps: Step[] } = null
   switch (algo) {
     case 'cutAndChoose':
       result = cutAndChoose(preferences, cakeSize)

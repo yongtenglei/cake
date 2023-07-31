@@ -1,7 +1,8 @@
 import remove from 'lodash.remove'
-import { Preferences, Slice, UnassignedSlice } from '../../types'
+import { Preferences, AssignedSlice, UnassignedSlice } from '../../types'
 import { findCutLineByValue, findCutLineByPercent } from './getValue'
 import { cutSlice, sortSlicesDescending, removeBestSlice } from './sliceUtils'
+import { makePercentage } from '../../utils/formatUtils'
 import { Step } from './types'
 
 // Keep in mind that this is written with a 0-based index, but descriptions of the
@@ -9,10 +10,11 @@ import { Step } from './types'
 export const selfridgeConway = (
   preferences: Preferences,
   cakeSize: number
-): { solution: Slice[]; steps: Step[] } => {
+): { solution: AssignedSlice[]; steps: Step[] } => {
   if (preferences.length !== 3) {
     throw 'Divide and choose only works with three agents'
   }
+  const steps = []
   let p0BestSlice = null
   let p1BestSlice = null
   let p2BestSlice = null
@@ -98,7 +100,7 @@ const assignTrimmings = (
   trimming: UnassignedSlice,
   trimmedPicker: number,
   preferences: Preferences
-): Slice[] => {
+): AssignedSlice[] => {
   console.log('Dividing trimming', trimming)
   const nonTrimmedPicker = trimmedPicker === 1 ? 2 : 1
   const cutterPrefs = preferences[nonTrimmedPicker]

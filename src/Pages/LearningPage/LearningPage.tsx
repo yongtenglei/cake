@@ -8,14 +8,14 @@ export const LearningPage = () => {
   return (
     <article>
       <Box component="h1">Learn About Fair Division</Box>
-      <Stack direction={{ xs: 'column-reverse', md: 'row' }}>
+      <Stack direction={{ xs: 'column-reverse', md: 'row' }} spacing={4}>
         <TextContainer sx={{ marginBottom: 8 }}>
           <p>
             Fair division meaning dividing resources in a way that's{' '}
-            <strong>provably fair </strong> for everyone involved . Since Hugo Steinhaus
-            first described the “cake cutting” problem in 1944,
-            researchers in Economics, Mathematics, and Computer Science have developed{' '}
-            <em>hundreds</em> of methods for mathematically fair sharing!
+            <strong>provably fair </strong> for everyone involved. Since Hugo Steinhaus
+            first described the “cake cutting” problem in 1944, researchers in Economics,
+            Mathematics, and Computer Science have developed <em>hundreds</em> of methods
+            for mathematically fair sharing!
           </p>
           <p>
             Most of these methods are math theories, but a few are quite useful for
@@ -46,18 +46,17 @@ export const LearningPage = () => {
           </p>
           <p>
             If you are curious to learn the logic behind provably fair solutions, I've
-            developed a <strong>fun, interactive course</strong>. You'll get to explore the famous cake
-            cutting problem, which is the heart of the fair division field. Please check
-            it out!
+            developed a <strong>fun, interactive course</strong>. You'll get to explore
+            the famous cake cutting problem, which is the heart of the fair division
+            field. Please check it out!
           </p>
         </TextContainer>
-        <Stack marginX={6} justifyContent="center" flexShrink={0} paddingY={4}>
+        <Stack paddingTop={{ xs: 4, md: 0 }} justifyContent="center" flexShrink={0}>
           <Box
             component="img"
             src={cake}
             alt="A happy cartoon cat with a slice of vanilla cake and a happy cartoon raccoon with a slice of chocolate cake"
             width={300}
-
           />
         </Stack>
       </Stack>
