@@ -12,6 +12,7 @@ export const cutSlice = (
   preferences: Preferences,
   start: number,
   end: number,
+  id: number,
   note?: string
 ): Readonly<UnassignedSlice> => {
   if (start > end) {
@@ -30,12 +31,14 @@ export const cutSlice = (
     end,
     values,
     note,
+    id,
     assign: (agent: number, noteOverride?: string): AssignedSlice => {
       return Object.freeze({
         start,
         end,
         values,
         owner: agent,
+        id,
         note: noteOverride ?? note
       })
     },

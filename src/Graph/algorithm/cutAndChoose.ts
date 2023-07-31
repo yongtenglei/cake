@@ -18,8 +18,8 @@ export const cutAndChoose = (
   const cutPoint = findCutLineByPercent(preferences[0], 0.5)
   steps.push([0, `says the middle of the resource is ${makePercentage(cutPoint / cakeSize, 3)}`])
 
-  const slice1 = cutSlice(preferences, 0, cutPoint)
-  const slice2 = cutSlice(preferences, cutPoint, cakeSize)
+  const slice1 = cutSlice(preferences, 0, cutPoint, 1)
+  const slice2 = cutSlice(preferences, cutPoint, cakeSize, 2)
   steps.push([0, `cuts the resource into two pieces at ${makePercentage(cutPoint / cakeSize, 3)}`])
 
   // agent 1 chooses
@@ -29,16 +29,20 @@ export const cutAndChoose = (
       1,
       `chooses piece 1 because it is worth ${
         makePercentage(slice1.values[1] / agent1TotalValue, 3)
-      } of the resource to them`,
+      } of the resource to them`, [slice1]
     ])
+    steps.push([0, 'takes remaining piece', [slice2]])
+    
     return { solution: [slice1.assign(1), slice2.assign(0)], steps }
   } else {
     steps.push([
       1,
       `chooses piece 2 because it is worth ${
         makePercentage(slice2.values[1] / agent1TotalValue, 3)
-      } of the resource to them`,
+      } of the resource to them`, [slice2]
     ])
+    steps.push([0, 'takes remaining piece', [slice1]])
+    
     return { solution: [slice1.assign(0), slice2.assign(1)], steps }
   }
 }

@@ -28,13 +28,11 @@ export const ResultsView = ({
   sectionLabels,
   cakeSize,
 }: ResultsViewProps) => {
-  const width = 560
-  const height = 120
-  const { yScale, xScale } = createScales({
-    innerWidth: width,
-    innerHeight: height,
-    cakeSize,
-  })
+  const graphWidth = 560
+  const graphHeight = 120
+  const stepWidth = 300
+  const stepHeight = 80
+
   const [loading, setLoading] = useState<boolean>(false)
 
   const onClickExportImage = async () => {
@@ -48,14 +46,34 @@ export const ResultsView = ({
   return (
     <>
       <LoadingModal open={loading} title="Exporting Image" />
-      <Stack spacing={8} marginTop={8} id="results">
+      <Stack spacing={8} marginTop={2} id="results">
         <ErrorBoundary FallbackComponent={SectionErrorDisplay}>
           <GraphContext.Provider
             value={{
-              yScale,
-              xScale,
-              height,
-              width,
+              ...createScales({
+                innerWidth: stepWidth,
+                innerHeight: stepHeight,
+                cakeSize,
+              }),
+              width: stepWidth,
+              height: stepHeight,
+              labels: sectionLabels,
+              cakeSize,
+            }}
+          >
+            <ResultsSteps algoUsed={algoUsed} result={result} />
+          </GraphContext.Provider>
+        </ErrorBoundary>
+        <ErrorBoundary FallbackComponent={SectionErrorDisplay}>
+          <GraphContext.Provider
+            value={{
+              ...createScales({
+                innerWidth: graphWidth,
+                innerHeight: graphHeight,
+                cakeSize,
+              }),
+              width: graphWidth,
+              height: graphHeight,
               labels: sectionLabels,
               cakeSize,
             }}
@@ -63,9 +81,7 @@ export const ResultsView = ({
             <ResultsGraphs solution={result.solution} preferences={preferences} />
           </GraphContext.Provider>
         </ErrorBoundary>
-        <ErrorBoundary FallbackComponent={SectionErrorDisplay}>
-          <ResultsSteps algoUsed={algoUsed} result={result} />
-        </ErrorBoundary>
+
         <ErrorBoundary FallbackComponent={SectionErrorDisplay}>
           <ResultsTable solution={result.solution} preferences={preferences} />
         </ErrorBoundary>

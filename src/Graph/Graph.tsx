@@ -1,13 +1,14 @@
-import maxBy from 'lodash.maxby'
 import { useState } from 'react'
 
 import { Box } from '@mui/material'
 import { C_PRIMARY_LIGHT, getAgentColor } from '../colors'
 import { LoadingModal } from '../components/LoadingModal'
-import { Portion, Preferences, SectionLabel, Segment } from '../types'
+import { Preferences, SectionLabel, Segment } from '../types'
 import { GraphContext } from './GraphContext'
+import { SectionConfig } from './SectionConfig'
 import { Setup } from './Setup'
 import { runDivisionAlgorithm } from './algorithm/run'
+import { AlgoName, Result } from './algorithm/types'
 import { CompareViewGraph } from './components/CompareViewGraph'
 import { DrawingLayer } from './components/DrawingLayer'
 import {
@@ -26,9 +27,7 @@ import {
   getInnerHeight,
   getInnerWidth,
 } from './graphConstants'
-import { AlgoName, Result } from './algorithm/types'
 import { createScales, isDrawingComplete } from './graphUtils'
-import { SectionConfig } from './SectionConfig'
 import { sampleLabels3Flavor } from './sampleData'
 
 export const Graph = ({ v1 }: { v1?: boolean }) => {

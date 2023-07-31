@@ -37,6 +37,7 @@ export interface Slice {
   start: number
   end: number
   values: number[]
+  id: number
   note?: string
 }
 
