@@ -36,8 +36,6 @@ const margin = {
 interface ResultsGraphsProps {
   preferences: Preferences
   solution: Portion[]
-  names?: string[]
-  namesPossessive?: string[]
 }
 
 const getPortionSize = (result: Portion, cakeSize: number) => {
@@ -48,10 +46,9 @@ const getPortionSize = (result: Portion, cakeSize: number) => {
 export const ResultsGraphs = ({
   solution,
   preferences,
-  names = [],
-  namesPossessive = [],
 }: ResultsGraphsProps) => {
-  const { labels, cakeSize, width, height, xScale } = useContext(GraphContext)
+  const { labels, cakeSize, width, height, xScale, names = [], namesPossessive = [] } = useContext(GraphContext)
+
 
   const [showFullLabels, setShowFullLabels] = useState(false)
   const [showAllPreferences, setShowAllPreferences] = useState(false)
@@ -77,7 +74,7 @@ export const ResultsGraphs = ({
           the value each person marked.
         </p>
       </TextContainer>
-      <Box>
+      <Box marginBottom={2}>
         {labels.length ? (
           <FormControlLabel
             control={

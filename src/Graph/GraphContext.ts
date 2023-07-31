@@ -10,13 +10,16 @@ interface Graph {
   width: number
   labels: SectionLabel[]
   cakeSize: number
+  names?: string[] | undefined
+  namesPossessive?: string[] | undefined
 }
-
 export const GraphContext = createContext<Graph>({
   yScale: scaleLinear(),
   xScale: scaleLinear(),
   height: defaultGraphHeight,
   width: defaultGraphWidth,
   labels: [],
-  cakeSize: defaultCakeSize
+  cakeSize: defaultCakeSize,
+  names: [],
+  namesPossessive: []
 })

@@ -10,7 +10,8 @@ interface ResultsStepsProps {
 }
 
 export const ResultsSteps = ({ algoUsed, result }: ResultsStepsProps) => {
-  const { width, height, xScale } = useContext(GraphContext)
+  const { width, height, xScale, names = []  } = useContext(GraphContext)
+  console.log(JSON.stringify(result))
 
   return (
     <Box component={'section'}>
@@ -21,7 +22,7 @@ export const ResultsSteps = ({ algoUsed, result }: ResultsStepsProps) => {
         {result.steps.map(([person, action, pieces]) => (
           <li key={action}>
             <div>
-              <strong>Person {person + 1}:</strong> {action}
+              <strong>{names?.[person] ?? `Person ${person + 1}`}:</strong> {action}.
             </div>
 
             {pieces ? (

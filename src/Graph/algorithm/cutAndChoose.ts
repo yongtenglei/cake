@@ -16,11 +16,11 @@ export const cutAndChoose = (
 
   // agent 0 cuts
   const cutPoint = findCutLineByPercent(preferences[0], 0.5)
-  steps.push([0, `says the middle of the resource is ${makePercentage(cutPoint / cakeSize, 3)}`])
+  steps.push([0, `judges the middle of the resource to be ${makePercentage(cutPoint / cakeSize, 3)}`])
 
   const slice1 = cutSlice(preferences, 0, cutPoint, 1)
   const slice2 = cutSlice(preferences, cutPoint, cakeSize, 2)
-  steps.push([0, `cuts the resource into two pieces at ${makePercentage(cutPoint / cakeSize, 3)}`])
+  steps.push([0, `cut the resource into two pieces at ${makePercentage(cutPoint / cakeSize, 3)}`])
 
   // agent 1 chooses
   const agent1TotalValue = getTotalValue(preferences[1])

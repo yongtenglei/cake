@@ -3,43 +3,33 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
-  Button,
   Stack,
   Tooltip,
 } from '@mui/material'
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBackIos'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForwardIos'
-import ReplayIcon from '@mui/icons-material/Replay'
-import InfoIcon from '@mui/icons-material/Info'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import InfoIcon from '@mui/icons-material/Info'
 
 import { useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 import { GraphContext } from '../../Graph/GraphContext'
-import { findCutLineByPercent } from '../../Graph/algorithm/getValue'
-import { runDivisionAlgorithm } from '../../Graph/algorithm/run'
-import { DrawingLayer } from '../../Graph/components/DrawingLayer'
-import { ResultsGraphs } from '../../Graph/components/ResultsView/ResultsGraphs'
-import { ViewGraph } from '../../Graph/components/ViewGraph'
-import { getInnerHeight, getInnerWidth, margin } from '../../Graph/graphConstants'
-import { Algorithms, Result } from '../../Graph/algorithm/types'
-
-import { createScales, isDrawingComplete } from '../../Graph/graphUtils'
+import { Algorithms } from '../../Graph/algorithm/types'
+import { ResultsSteps } from '../../Graph/components/ResultsView/ResultsSteps'
+import { createScales } from '../../Graph/graphUtils'
+import { sample3PersonResults, sampleLabels3Flavor } from '../../Graph/sampleData'
 import { InteractionContainer } from '../../Layouts'
-import { C_STRAWBERRY, C_VANILLA } from '../../colors'
 import { ButtonLink, Link } from '../../components/Link'
-import cake2PrefAki from '../../images/preference/aki-two-flavor.png'
-import cake3PrefAki from '../../images/preference/aki.png'
-import cake3PrefBruno from '../../images/preference/bruno.png'
-import cake3PrefChloe from '../../images/preference/chloe.png'
-import selfridgeResults from '../../images/results/selfridgeresults.png'
-import simple3Results from '../../images/results/simple3results.png'
 import akiThinking from '../../images/aki thinking.png'
-import toolExample from '../../images/tool example.png'
-import { Portion, Segment } from '../../types'
-import { formatNumber } from '../../utils/formatUtils'
+import toolExample from '../../images/intro/corner.png'
+import cake3PrefAki from '../../images/selfridge/aki.png'
+import cake3PrefBruno from '../../images/selfridge/bruno.png'
+import cake3PrefChloe from '../../images/selfridge/chloe.png'
+import selfridgeResults from '../../images/selfridge/selfridge results.png'
+import simple3Results from '../../images/selfridge/simple results.png'
 import { CakeFlavor, CakeImage, CharacterImage, ImageContainer } from './Images'
+import { MeasuringStep } from './MeasuringStep'
 
 interface CommonProps {
   preferredFlavor: CakeFlavor | null
@@ -82,7 +72,7 @@ export const LearningPath = () => {
     [BetterThanHalf, 'Better Than Half'],
     [CutAndChoose, 'Cut and Choose'],
     [Clarification, 'Clarification'],
-    [MeasuringPreference, 'Measuring Preference'],
+    [MeasuringStep, 'Measuring Preference'],
     [Recap1, 'Recap'],
     [EnterPlayer3, 'Enter Player 3'],
     [EnvyFree, 'Envy Free'],
@@ -192,12 +182,24 @@ export const LearningPath = () => {
   )
 }
 
+// side-note info box
+const Info = ({ children }) => {
+  return (
+    <Stack direction="row" marginY={4} spacing={2} color="#666">
+      <InfoIcon fontSize="large" />
+      <Box component="p" flexGrow={1} marginTop={0}>
+        {children}
+      </Box>
+    </Stack>
+  )
+}
+
 const WhatLearn = () => (
   <>
     <h2>Fair Division Interactive Course</h2>
     <p>Time: about 10 minutes</p>
 
-    <Stack direction={{ xs: 'column', md: 'row' }} alignItems='flex-start'>
+    <Stack direction={{ xs: 'column', md: 'row' }} alignItems="flex-start">
       <div>
         <h3>What you'll learn</h3>
         <ol>
@@ -483,317 +485,7 @@ const Clarification = () => {
   )
 }
 
-const akisPreferences = [
-  { id: 1, start: 0, end: 1, startValue: 7, endValue: 7 },
-  { id: 2, start: 1, end: 2, startValue: 5, endValue: 5 },
-]
-const label0 = {
-  id: 1,
-  name: 'Strawberry',
-  start: 0,
-  end: 1,
-  color: C_STRAWBERRY,
-}
-
-const label1 = {
-  id: 2,
-  name: 'Vanilla',
-  start: 0,
-  end: 1,
-  color: C_VANILLA,
-}
-
-const MeasuringPreference = () => {
-  const drawingWidth = 300
-  const drawingHeight = 300
-  const drawingInnerWidth = getInnerWidth(drawingWidth)
-  const drawingScales = createScales({
-    innerWidth: drawingInnerWidth,
-    innerHeight: getInnerHeight(drawingHeight),
-    cakeSize: 1,
-  })
-  const outputWidth = 400
-  const outputHeight = 150
-
-  // Draw each half cake individually. A bit of a hack but helpful for learners.
-  const [segment0, setSegment0] = useState<Segment[]>([])
-  const [segment1, setSegment1] = useState<Segment[]>([])
-
-  const [algoResults, setAlgoResults] = useState<Result | undefined>(undefined)
-  const [cutPoint, setCutPoint] = useState<number | undefined>(undefined)
-  const segments = [...segment0, ...segment1.map((seg) => ({ ...seg, start: 1, end: 2 }))]
-  const redoMarking = () => {
-    setSegment0([])
-    setSegment1([])
-    setCutPoint(undefined)
-    setAlgoResults(undefined)
-  }
-  const onChangeSegments = (flavor: number) => (segs: Segment[]) => {
-    const s = segs.filter((seg) => seg.end > seg.start)
-    flavor === 0 ? setSegment0(s) : setSegment1(s)
-    setCutPoint(undefined)
-    setAlgoResults(undefined)
-  }
-  const runCutAlgo = () => {
-    setCutPoint(findCutLineByPercent(segments, 0.5))
-  }
-  const runAlgo = async () => {
-    const results = await runDivisionAlgorithm(
-      [segments, akisPreferences],
-      'cutAndChoose',
-      2
-    )
-    setAlgoResults(results)
-  }
-  const drawingComplete = segments.length === 2
-
-  const cutPointPercent = (100 * cutPoint) / 2 // 2 is cake size
-
-  const activeCutlineProps = {
-    role: 'button',
-    tabIndex: 0,
-    onClick: runAlgo,
-    'aria-label': `Cut the cake here, at ${cutPointPercent}%`,
-  }
-  const akiLikesLeft =
-    algoResults?.solution.find((result) => result.owner === 1)?.edges[0][0] === 0
-
-  return (
-    <>
-      <h2>Measuring Preference</h2>
-
-      <p>Here's a strawberry and vanilla cake</p>
-      <ImageContainer>
-        <CakeImage flavor="strawberry" width={drawingInnerWidth} />
-        <CakeImage flavor="vanilla" width={drawingInnerWidth} />
-      </ImageContainer>
-      <p>This time you cut and Aki chooses.</p>
-
-      {cutPoint ? null : (
-        <p>
-          First, <strong>mark</strong> how much you like each flavor on the graph below
-          with 0 meaning being "hate it" and 10 meaning "love it".
-        </p>
-      )}
-
-      <Stack
-        direction="row"
-        marginX="auto"
-        justifyContent="center"
-        flexWrap={{ xs: 'wrap', md: 'nowrap' }}
-      >
-        <GraphContext.Provider
-          value={{
-            ...drawingScales,
-            height: drawingHeight,
-            width: drawingWidth,
-            labels: [label0],
-            cakeSize: 1,
-          }}
-        >
-          {cutPoint ? (
-            <ViewGraph segments={segment0} agent={0} />
-          ) : (
-            <DrawingLayer
-              segments={segment0}
-              setSegments={onChangeSegments(0)}
-              currentAgent={0}
-              isComplete={drawingComplete}
-            />
-          )}
-        </GraphContext.Provider>
-        <GraphContext.Provider
-          value={{
-            ...drawingScales,
-            height: drawingHeight,
-            width: drawingWidth,
-            labels: [label1],
-            cakeSize: 1,
-          }}
-        >
-          {cutPoint ? (
-            <ViewGraph segments={segment1} agent={0} />
-          ) : (
-            <DrawingLayer
-              segments={segment1}
-              setSegments={onChangeSegments(1)}
-              currentAgent={0}
-              isComplete={drawingComplete}
-            />
-          )}
-        </GraphContext.Provider>
-      </Stack>
-
-      <Stack
-        justifyContent={'center'}
-        direction="row"
-        spacing={2}
-        marginTop={2}
-        marginBottom={6}
-      >
-        <Button variant="outlined" disabled={!drawingComplete} onClick={redoMarking}>
-          Redo
-        </Button>
-        <Button
-          variant="contained"
-          disabled={!drawingComplete || !!cutPoint}
-          onClick={runCutAlgo}
-        >
-          Done marking
-        </Button>
-      </Stack>
-
-      {cutPoint ? (
-        <>
-          <p>
-            Based on <strong>how you marked your preferences</strong>, the cake on both
-            sides of this dotted line are each worth <sup>1</sup>
-            &frasl;
-            <sub>2</sub> of the total cake to you. Remember, we don't know which piece Aki
-            will choose yet.
-          </p>
-          <p>
-            If you wouldn't be happy receiving the left or right piece, feel free to REDO
-            your preferences.
-          </p>
-
-          <Box width="fit-content" marginX="auto" position="relative">
-            <CakeImage flavor="strawberry" width="200px" />
-            <CakeImage flavor="vanilla" width="200px" />
-            {/* Dotted line for cutting */}
-            <Box
-              {...(algoResults ? {} : activeCutlineProps)}
-              position="absolute"
-              left={cutPointPercent + '%'}
-              top={0}
-              sx={{
-                cursor: 'pointer',
-                transform: 'translateX(-50%)',
-                '&:hover, &:focus': {
-                  transform: 'translateX(-50%) scaleX(1.5)',
-                },
-              }}
-              paddingX={2}
-              height="100%"
-            >
-              <Box borderLeft="4px dashed black" height="100%" />
-            </Box>
-          </Box>
-          <p>
-            Now click the dotted line to <strong>cut the cake!</strong>
-          </p>
-        </>
-      ) : null}
-
-      {algoResults ? (
-        <>
-          <Box component="p" marginTop={4}>
-            Nice! Let's see which piece Aki chooses:
-          </Box>
-
-          <CharacterImage character="Aki" sx={{ marginY: 2, marginX: 'auto' }} />
-
-          {/* This is a bit of a magic trick and took a lot of experimenting to get right. */}
-          {/* The outer container hides anything outside its bounds. */}
-          <Box
-            width="fit-content"
-            marginX="auto"
-            position="relative"
-            overflow="hidden"
-            sx={{
-              transform: `translateX(${
-                (-1 * (akiLikesLeft ? 100 - cutPointPercent : -cutPointPercent)) / 2
-              }%)`,
-            }}
-          >
-            {/* The inner container moves based on the cut line and which piece aki chooses 
-              so that only Aki's piece is visible.
-              Unfortunately, this doesn't work well on small screen sizes so may need adjustments.
-            */}
-            <Box
-              display="flex"
-              sx={{
-                transform: `translateX(${
-                  akiLikesLeft ? 100 - cutPointPercent : -cutPointPercent
-                }%)`,
-              }}
-            >
-              <CakeImage flavor="strawberry" width="200px" />
-              <CakeImage flavor="vanilla" width="200px" />
-            </Box>
-          </Box>
-
-          <p>
-            It turns out Aki likes strawberry more than vanilla
-            {akiLikesLeft ? (
-              <>
-                {' '}
-                so she chose the <strong>left piece</strong>.
-              </>
-            ) : (
-              <>
-                , yet despite that, the <strong>right piece</strong> looks better to her
-                based on where you cut the cake.
-              </>
-            )}
-          </p>
-          <p>
-            She says although her piece is physically{' '}
-            {formatNumber(akiLikesLeft ? cutPointPercent : 100 - cutPointPercent, 2)}% of
-            the cake, it's worth{' '}
-            {formatNumber(
-              algoResults.solution.find((portion: Portion) => portion.owner === 1)
-                .percentValues[1] * 100,
-              2
-            )}
-            % of the total cake value to her.
-          </p>
-
-          <p>If you are curious, these are Aki's preferences:</p>
-
-          <img
-            src={cake2PrefAki}
-            alt=""
-            style={{ maxHeight: 300, margin: 'auto', display: 'block' }}
-          />
-
-          <Box component="p" marginTop={8}>
-            Here's a more detailed view if you're curious about the exact numbers.
-          </Box>
-
-          <GraphContext.Provider
-            value={{
-              ...createScales({
-                innerWidth: outputWidth,
-                innerHeight: outputHeight,
-                cakeSize: 2,
-              }),
-              height: outputHeight,
-              width: outputWidth,
-              labels: [label0, { ...label1, start: 1, end: 2 }],
-              cakeSize: 2,
-            }}
-          >
-            <ResultsGraphs
-              preferences={[segments, akisPreferences]}
-              solution={algoResults.solution}
-              names={['You', 'Aki']}
-              namesPossessive={['Your', "Aki's"]}
-            />
-          </GraphContext.Provider>
-
-          <p>Feel free to experiment with different values. </p>
-          <Stack alignItems={'center'}>
-            <Button variant="contained" disabled={!drawingComplete} onClick={redoMarking}>
-              <ReplayIcon sx={{ marginRight: 1 / 2 }} />
-              Reset
-            </Button>
-          </Stack>
-        </>
-      ) : null}
-    </>
-  )
-}
+// The Measuring step would be here but it's complex enough to warrant its own file './MeasuringStep.tsx'
 
 const Recap1 = () => {
   return (
@@ -835,19 +527,19 @@ const threePreferences = (
     <img src={cake3PrefAki} style={{ maxHeight: 200 }} />
     <Stack alignItems="center">
       <CharacterImage character="Aki" hideName />
-      Aki likes vanilla
+      Aki likes both vanilla and chocolate
     </Stack>
 
     <img src={cake3PrefBruno} style={{ maxHeight: 200 }} />
     <Stack alignItems="center">
       <CharacterImage character="Bruno" hideName />
-      Bruno likes chocolate
+      Bruno prefers vanilla
     </Stack>
 
     <img src={cake3PrefChloe} style={{ maxHeight: 200 }} />
     <Stack alignItems="center">
       <CharacterImage character="Chloe" hideName />
-      Chloe likes both equally
+      Chloe prefers chocolate
     </Stack>
   </Box>
 )
@@ -898,7 +590,6 @@ const EnterPlayer3 = () => {
           left={0}
           height="100%"
           width="100%"
-          paddingX="10px"
           paddingBottom="70px"
           paddingTop="20px"
           sx={{ gridRowGap: '12px' }}
@@ -910,7 +601,7 @@ const EnterPlayer3 = () => {
           <OverlayText justifySelf="center" character="Bruno">
             Bruno gets the middle piece,
             <br />
-            which includes a part he doesn't value.
+            which includes a part he doesn't value much.
           </OverlayText>
           <OverlayText justifySelf="flex-end" character="Chloe">
             Chloe gets the right piece.
@@ -918,28 +609,19 @@ const EnterPlayer3 = () => {
         </Box>
       </Box>
 
-      <Stack direction="row" marginY={4} spacing={2} color="#666">
-        <InfoIcon fontSize="large" />
-        <Box component="p" flexGrow={1} marginTop={0}>
-          Yes, we know it's a bit silly for someone to value part of a cake at 0 (unless
-          perhaps they are allergic to a flavor) but simple examples make the math easier,
-          so bear with us.
-        </Box>
-      </Stack>
-
       <p>Here's how they value their portions:</p>
       <ul>
         <li>
-          <strong>Aki's</strong> piece is worth <sup>2</sup>&frasl;
-          <sub>3</sub> of the cake to her, lucky!
+          <strong>Aki's</strong> piece is worth <sup>1</sup>&frasl;
+          <sub>3</sub> of the cake to her.
         </li>
         <li>
           <strong>Bruno's</strong> piece is worth <sup>1</sup>&frasl;
           <sub>3</sub> of the cake to him.
         </li>
         <li>
-          <strong>Chloe's</strong> piece is worth <sup>1</sup>&frasl;
-          <sub>3</sub> of the cake to her.
+          <strong>Chloe's</strong> piece is worth over <sup>1</sup>&frasl;
+          <sub>2</sub> of the cake to her, lucky!
         </li>
       </ul>
 
@@ -951,7 +633,7 @@ const EnterPlayer3 = () => {
 
       <p>
         <em>However,</em> this solution doesn't seem fair to Bruno. From his perspective,
-        Chloe's piece is higher value than his own.
+        Chloe's piece is worth much more than his own.
       </p>
       <p>
         He <strong>envies</strong> her share and feels cheated.
@@ -1068,11 +750,33 @@ const ThreeWayDivision = () => {
 
       {threePreferences}
 
-      <p>The cake is split using the Selfridge-Conway Method.</p>
+      <Box component="p" marginY={6}>The cake is split using the Selfridge-Conway Method.</Box>
 
-      <p>
+      <GraphContext.Provider
+        value={{
+          ...createScales({
+            innerWidth: 300,
+            innerHeight: 80,
+            cakeSize: 2,
+          }),
+          width: 300,
+          height: 80,
+          labels: sampleLabels3Flavor,
+          cakeSize: 2,
+          names: ['Aki', 'Bruno', 'Chloe'],
+          namesPossessive: ["Aki's", "Bruno's", "Chloe's"],
+        }}
+      >
+        {/* 
+          Probably better to actually run the algo than use saved results.
+          If we change the phrasing in the steps, this will be stale.
+        */}
+        <ResultsSteps algoUsed="selfridgeConway" result={sample3PersonResults} />
+      </GraphContext.Provider>
+
+      <Box component="p" marginY={6}>
         Due to the trimming step, the cake has been cut into more pieces than before.{' '}
-      </p>
+      </Box>
 
       <Box position="relative" width="fit-content" marginX="auto">
         <Box
@@ -1091,30 +795,32 @@ const ThreeWayDivision = () => {
           height="100%"
           width="100%"
           paddingX="10px"
-          paddingBottom="70px"
-          paddingTop="20px"
+          paddingY="30px"
           sx={{
-            gridTemplateColumns: 'repeat(5,1fr)',
+            gridTemplateColumns: 'repeat(3,1fr)',
             gridTemplateRows: 'repeat(3,1fr)',
             gridTemplateAreas: `
-              ". a a . ." 
-              ". . b b b" 
-              "c1 . . . c2"`,
+              "a1 a2 ." 
+              "b . ." 
+              "c1 . c2"`,
             gridRowGap: '12px',
           }}
           textAlign="center"
         >
-          <OverlayText justifySelf="flex-start" character="Aki" gridArea="a">
-            Aki gets these two pieces
+          <OverlayText justifySelf="flex-start" character="Aki" gridArea="a1">
+            Aki gets this piece
           </OverlayText>
-          <OverlayText justifySelf="center" character="Bruno" gridArea="b">
+          <OverlayText justifySelf="center" character="Aki" gridArea="a2">
+            and this piece
+          </OverlayText>
+          <OverlayText justifySelf="flex-end" character="Bruno" gridArea="b">
             Bruno gets this piece
           </OverlayText>
-          <OverlayText justifySelf="flex-end" character="Chloe" gridArea="c1">
+          <OverlayText justifySelf="flex-start" character="Chloe" gridArea="c1">
             Chloe gets this piece
           </OverlayText>
-          <OverlayText justifySelf="flex-end" character="Chloe" gridArea="c2">
-            Chloe also gets this piece
+          <OverlayText justifySelf="center" character="Chloe" gridArea="c2">
+            and this piece
           </OverlayText>
         </Box>
       </Box>

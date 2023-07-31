@@ -5,12 +5,23 @@ import { TextContainer } from '../Layouts'
 import { Link } from '../components/Link'
 import { SectionErrorDisplay } from '../components/SectionErrorDisplay'
 import cake from '../images/cake/cake divided.png'
+import toolAdjust from '../images/intro/corner.png'
 
 export const GraphPage = (props) => {
   return (
     <>
       <h1>Resource Splitting Tool</h1>
-      <Stack direction={{ xs: 'column-reverse', sm: 'row' }}>
+
+      <Box
+          component="img"
+          src={toolAdjust}
+          alt="The fair division tool. A graph shows two rectangular segments and the mouse moving the corner of an angled segment."
+          maxWidth={550}
+          width={'100%'}
+          sx={{float: {xs:'none', lg: 'right'}}}
+          marginLeft={{xs: 0, lg: 4}}
+          marginY={2}
+        />
         <TextContainer>
           <p>
             Welcome to our visual <strong>Resource Splitting Tool</strong>, the first of
@@ -18,6 +29,9 @@ export const GraphPage = (props) => {
             parts of a resource, which our intelligent <strong>algorithm</strong> will
             then split evenly among all users.
           </p>
+        </TextContainer>
+
+        <TextContainer>
           <p>
             Using this tool, you can split a resource fairly based on the preferences of
             each person. This tool works with <strong>divisible resources</strong>,
@@ -38,17 +52,7 @@ export const GraphPage = (props) => {
             to learn how fair division works.
           </p>
         </TextContainer>
-        <Box marginX={6}>
-          <Box
-            component="img"
-            src={cake}
-            alt="A cartoon cake with dividing lines through it"
-            maxWidth={250}
-            width={'100%'}
-            minWidth={200}
-          />
-        </Box>
-      </Stack>
+
 
       <Box marginTop={10} marginBottom={10} id="graph-content">
         <ErrorBoundary FallbackComponent={SectionErrorDisplay}>
