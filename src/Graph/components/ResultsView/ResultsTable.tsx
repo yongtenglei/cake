@@ -16,10 +16,10 @@ import { formatNumber } from '../../../utils/formatUtils'
 
 interface ResultsTableProps {
   preferences: Preferences
-  results: Portion[]
+  solution: Portion[]
 }
 
-export const ResultsTable = ({ preferences, results }: ResultsTableProps) => {
+export const ResultsTable = ({ preferences, solution }: ResultsTableProps) => {
   const numPeople = preferences.length
 
   return (
@@ -28,7 +28,7 @@ export const ResultsTable = ({ preferences, results }: ResultsTableProps) => {
       <TableContainer sx={{marginTop: 4}}>
         <Table
           sx={{
-            maxWidth: results.length > 3 ? 'none' : '700px',
+            maxWidth: solution.length > 3 ? 'none' : '700px',
             th: { border: 'none', paddingTop: 0, fontSize: 22 },
             td: {
               border: '2px solid black',
@@ -52,7 +52,7 @@ export const ResultsTable = ({ preferences, results }: ResultsTableProps) => {
             </TableRow>
             <TableRow>
               <TableCell />
-              {results.map((portion, i) => {
+              {solution.map((portion, i) => {
                 return (
                   <TableCell key={i}>
                     <div
@@ -72,7 +72,7 @@ export const ResultsTable = ({ preferences, results }: ResultsTableProps) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {results.map((_, rowAgent) => {
+            {solution.map((_, rowAgent) => {
               const color = getAgentColor(rowAgent)
               return (
                 <TableRow key={rowAgent}>
@@ -86,7 +86,7 @@ export const ResultsTable = ({ preferences, results }: ResultsTableProps) => {
                     Person {rowAgent + 1}
                     <PersonCellLabel color={color} />
                   </TableCell>
-                  {results.map((portion, colAgent) => {
+                  {solution.map((portion, colAgent) => {
                     const selected = colAgent === rowAgent
                     return (
                       <Tooltip

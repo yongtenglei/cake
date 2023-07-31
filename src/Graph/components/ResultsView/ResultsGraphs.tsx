@@ -35,7 +35,7 @@ const margin = {
 
 interface ResultsGraphsProps {
   preferences: Preferences
-  results: Portion[]
+  solution: Portion[]
   names?: string[]
   namesPossessive?: string[]
 }
@@ -46,7 +46,7 @@ const getPortionSize = (result: Portion, cakeSize: number) => {
 }
 
 export const ResultsGraphs = ({
-  results,
+  solution,
   preferences,
   names = [],
   namesPossessive = [],
@@ -61,7 +61,7 @@ export const ResultsGraphs = ({
   const totalHeight = innerHeight + margin.top + margin.bottom
   const totalWidth = width + margin.left + margin.right
 
-  const allCutlines = results
+  const allCutlines = solution
     .reduce((acc, result) => [...acc, ...result.edges.map((edge) => edge[0])], [])
     .sort()
 
@@ -124,7 +124,7 @@ export const ResultsGraphs = ({
                 <TinyGraph
                   segments={segments}
                   height={height}
-                  result={results[i]}
+                  result={solution[i]}
                   agent={i}
                   showAllPreferences={showAllPreferences}
                 />
@@ -147,7 +147,7 @@ export const ResultsGraphs = ({
           </text>
 
           {/* Percentages */}
-          {results.map((result, i) => {
+          {solution.map((result, i) => {
             const totalSharePercent = getPortionSize(result, cakeSize)
             return (
               <g transform={`translate(${width},${(height + spaceBetween) * i})`} key={i}>
@@ -228,7 +228,7 @@ export const ResultsGraphs = ({
                 </TableRow>
               </TableHead>
               <TableBody>
-                {results.map((result) => (
+                {solution.map((result) => (
                   <TableRow key={result.owner}>
                     <TableCell>
                       {names[result.owner] ?? 'Person ' + (result.owner + 1)}

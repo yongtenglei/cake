@@ -1,3 +1,5 @@
+import { Portion, Slice } from "../../types";
+
 export type AlgoName = 'cutAndChoose' | 'selfridgeConway';
 
 export interface Algorithm {
@@ -9,6 +11,8 @@ export interface Algorithm {
   shortDescription: string
   link: string
 }
+
+export type Result = { solution: Portion[], steps: Step[]}
 
 // The form of a step is [agent number (0-indexed), action taken]
 export type Step  = [number, string]

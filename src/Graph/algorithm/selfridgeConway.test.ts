@@ -1,63 +1,54 @@
 import { selfridgeConway } from './selfridgeConway'
-import {
-  genFlatSeg,
-  genSlopedSeg,
-  testIfEnvyFree,
-  genRandomSegs,
-} from './testUtil'
+import { genFlatSeg, testIfEnvyFree, genRandomSegs } from './testUtil'
 
 test('splits a "no trimming needed" uniform evaluation cake into even (almost) thirds', () => {
   // Use a cake size of 90 so it's evenly divisible into thirds.
   const person0 = [genFlatSeg(0, 90, 10)] // 900
   const person1 = [genFlatSeg(0, 90, 10)] // 900
   const person2 = [genFlatSeg(0, 90, 10)] // 900
-  const result = selfridgeConway([person0, person1, person2], 90)
+  const result = selfridgeConway([person0, person1, person2], 90).solution
 
   expect(result).toHaveLength(3)
   // not checking owner because order doesn't matter
   expect(result).toContainEqual(
-    expect.objectContaining({ start: 0, end: 30, value: 300 })
+    expect.objectContaining({ start: 0, end: 30, values: [300, 300, 300] })
   )
   expect(result).toContainEqual(
-    expect.objectContaining({ start: 30, end: 60, value: 300 })
+    expect.objectContaining({ start: 30, end: 60, values: [300, 300, 300]  })
   )
   expect(result).toContainEqual(
-    expect.objectContaining({ start: 60, end: 90, value: 300 })
+    expect.objectContaining({ start: 60, end: 90, values: [300, 300, 300]  })
   )
   testIfEnvyFree(3, result)
 })
 
-test('splits a "no trimming needed" asymetrical evaluation cake fairly', () => {
+test('splits a "no trimming needed" asymmetrical evaluation cake fairly', () => {
   // Person 0 has no preference so will divide evenly
   const person0 = [genFlatSeg(0, 90, 10)] // 900
   // Person 1 will have a tie for largest so won't trim
   const person1 = [genFlatSeg(0, 30, 5), genFlatSeg(30, 90, 10)] // 750
   // Person 2 prefers the last third
   const person2 = [genFlatSeg(0, 60, 5), genFlatSeg(60, 90, 10)] // 600
-  const result = selfridgeConway([person0, person1, person2], 90)
+  const result = selfridgeConway([person0, person1, person2], 90).solution
 
   expect(result).toHaveLength(3)
   expect(result).toContainEqual(
-    expect.objectContaining({ start: 0, end: 30, value: 300, owner: 0 })
+    expect.objectContaining({ start: 0, end: 30, owner: 0, values: [300, 150, 150]  })
   )
   expect(result).toContainEqual(
-    expect.objectContaining({ start: 30, end: 60, value: 300, owner: 1 })
+    expect.objectContaining({ start: 30, end: 60, owner: 1, values: [300, 300, 150]  })
   )
   expect(result).toContainEqual(
-    expect.objectContaining({ start: 60, end: 90, value: 300, owner: 2 })
+    expect.objectContaining({ start: 60, end: 90, owner: 2, values: [300, 300, 300]  })
   )
   testIfEnvyFree(3, result)
 })
 
 test('splits a simple "trimming needed" cake fairly', () => {
-  const person0 = [
-    genFlatSeg(0, 30, 10),
-    genFlatSeg(30, 60, 5),
-    genFlatSeg(60, 90, 10),
-  ]
+  const person0 = [genFlatSeg(0, 30, 10), genFlatSeg(30, 60, 5), genFlatSeg(60, 90, 10)]
   const person1 = [genFlatSeg(0, 90, 10)]
   const person2 = [genFlatSeg(0, 60, 5), genFlatSeg(60, 90, 10)]
-  const result = selfridgeConway([person0, person1, person2], 90)
+  const result = selfridgeConway([person0, person1, person2], 90).solution
 
   testIfEnvyFree(3, result)
 })
@@ -113,31 +104,27 @@ test('splits a simple "trimming needed" cake fairly', () => {
 // The solution is that you are allow to have 0-width, "empty" slices
 // even though they have zero value
 test('splits a cake containing 0 value evaluations', () => {
-  const person0 = [ genFlatSeg(0, 60, 10), genFlatSeg(60, 90, 0),]
-  const person1 = [ genFlatSeg(0, 60, 0), genFlatSeg(60, 90, 10),]
-  const person2 = [ genFlatSeg(0, 90, 10),]  
-  const result = selfridgeConway([person0, person1, person2], 90)
+  const person0 = [genFlatSeg(0, 60, 10), genFlatSeg(60, 90, 0)]
+  const person1 = [genFlatSeg(0, 60, 0), genFlatSeg(60, 90, 10)]
+  const person2 = [genFlatSeg(0, 90, 10)]
+  const result = selfridgeConway([person0, person1, person2], 90).solution
 
   testIfEnvyFree(3, result)
 })
 
 test('splits a very empty cake', () => {
-  const person0 = [ genFlatSeg(0, 5, 10), genFlatSeg(5, 90, 0),]
-  const person1 = [ genFlatSeg(0, 89, 0), genFlatSeg(89, 90, 10),]
-  const person2 = [ genFlatSeg(0, 50, 0),genFlatSeg(50, 51, 1), genFlatSeg(51, 90, 0)]  
-  const result = selfridgeConway([person0, person1, person2], 90)
+  const person0 = [genFlatSeg(0, 5, 10), genFlatSeg(5, 90, 0)]
+  const person1 = [genFlatSeg(0, 89, 0), genFlatSeg(89, 90, 10)]
+  const person2 = [genFlatSeg(0, 50, 0), genFlatSeg(50, 51, 1), genFlatSeg(51, 90, 0)]
+  const result = selfridgeConway([person0, person1, person2], 90).solution
 
   testIfEnvyFree(3, result)
 })
 
-// This test is non-deterministic so run it many times 
+// This test is non-deterministic so run it many times
 // to ensure edge cases are (probably) covered.
 test('splits randomly generated preferences fairly', () => {
-  const segs = [
-    genRandomSegs(100),
-    genRandomSegs(100),
-    genRandomSegs(100),
-  ]
-  const result = selfridgeConway(segs, 100)
+  const segs = [genRandomSegs(100), genRandomSegs(100), genRandomSegs(100)]
+  const result = selfridgeConway(segs, 100).solution
   testIfEnvyFree(3, result)
 })

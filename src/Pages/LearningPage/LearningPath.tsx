@@ -23,7 +23,7 @@ import { DrawingLayer } from '../../Graph/components/DrawingLayer'
 import { ResultsGraphs } from '../../Graph/components/ResultsView/ResultsGraphs'
 import { ViewGraph } from '../../Graph/components/ViewGraph'
 import { getInnerHeight, getInnerWidth, margin } from '../../Graph/graphConstants'
-import { Algorithms } from '../../Graph/algorithm/types'
+import { Algorithms, Result } from '../../Graph/algorithm/types'
 
 import { createScales, isDrawingComplete } from '../../Graph/graphUtils'
 import { InteractionContainer } from '../../Layouts'
@@ -195,17 +195,22 @@ export const LearningPath = () => {
 const WhatLearn = () => (
   <>
     <h2>Fair Division Interactive Course</h2>
-    {/* flavor image here */}
     <p>Time: about 10 minutes</p>
-    <h3>What you'll learn</h3>
-    <ol>
-      <li>What is fair division</li>
-      <li>Divisible vs indivisible resources</li>
-      <li>Proportional fairness and envy-free fairness</li>
-      <li>The Cut and Choose Method for fair division</li>
-      <li>The Selfridge-Conway Method for fair division</li>
-    </ol>
-    <p>Let's begin.</p>
+
+    <Stack direction={{ xs: 'column', md: 'row' }} alignItems='flex-start'>
+      <div>
+        <h3>What you'll learn</h3>
+        <ol>
+          <li>What is fair division</li>
+          <li>Divisible vs indivisible resources</li>
+          <li>Proportional fairness and envy-free fairness</li>
+          <li>The Cut and Choose Method for fair division</li>
+          <li>The Selfridge-Conway Method for fair division</li>
+        </ol>
+        <p>Let's begin.</p>
+      </div>
+      <img src={akiThinking} alt="" style={{ maxHeight: 250 }} />
+    </Stack>
   </>
 )
 
@@ -514,7 +519,7 @@ const MeasuringPreference = () => {
   const [segment0, setSegment0] = useState<Segment[]>([])
   const [segment1, setSegment1] = useState<Segment[]>([])
 
-  const [algoResults, setAlgoResults] = useState<Portion[] | undefined>(undefined)
+  const [algoResults, setAlgoResults] = useState<Result | undefined>(undefined)
   const [cutPoint, setCutPoint] = useState<number | undefined>(undefined)
   const segments = [...segment0, ...segment1.map((seg) => ({ ...seg, start: 1, end: 2 }))]
   const redoMarking = () => {
@@ -551,7 +556,7 @@ const MeasuringPreference = () => {
     'aria-label': `Cut the cake here, at ${cutPointPercent}%`,
   }
   const akiLikesLeft =
-    algoResults?.find((result) => result.owner === 1)?.edges[0][0] === 0
+    algoResults?.solution.find((result) => result.owner === 1)?.edges[0][0] === 0
 
   return (
     <>
@@ -737,7 +742,7 @@ const MeasuringPreference = () => {
             {formatNumber(akiLikesLeft ? cutPointPercent : 100 - cutPointPercent, 2)}% of
             the cake, it's worth{' '}
             {formatNumber(
-              algoResults.find((portion: Portion) => portion.owner === 1)
+              algoResults.solution.find((portion: Portion) => portion.owner === 1)
                 .percentValues[1] * 100,
               2
             )}
@@ -771,7 +776,7 @@ const MeasuringPreference = () => {
           >
             <ResultsGraphs
               preferences={[segments, akisPreferences]}
-              results={algoResults}
+              solution={algoResults.solution}
               names={['You', 'Aki']}
               namesPossessive={['Your', "Aki's"]}
             />

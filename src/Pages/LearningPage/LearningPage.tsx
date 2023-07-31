@@ -8,7 +8,7 @@ export const LearningPage = () => {
   return (
     <article>
       <Box component="h1">Learn About Fair Division</Box>
-      <Stack direction={{ xs: 'column-reverse', sm: 'row' }}>
+      <Stack direction={{ xs: 'column-reverse', md: 'row' }}>
         <TextContainer sx={{ marginBottom: 8 }}>
           <p>
             Fair division meaning dividing resources in a way that's{' '}
@@ -51,14 +51,13 @@ export const LearningPage = () => {
             it out!
           </p>
         </TextContainer>
-        <Stack marginX={6} justifyContent="center">
+        <Stack marginX={6} justifyContent="center" flexShrink={0} paddingY={4}>
           <Box
             component="img"
             src={cake}
             alt="A happy cartoon cat with a slice of vanilla cake and a happy cartoon raccoon with a slice of chocolate cake"
-            maxWidth={300}
-            width={'100%'}
-            minWidth={200}
+            width={300}
+
           />
         </Stack>
       </Stack>

@@ -26,7 +26,7 @@ import {
   getInnerHeight,
   getInnerWidth,
 } from './graphConstants'
-import { AlgoName } from './algorithm/types'
+import { AlgoName, Result } from './algorithm/types'
 import { createScales, isDrawingComplete } from './graphUtils'
 import { SectionConfig } from './SectionConfig'
 import { sampleLabels3Flavor } from './sampleData'
@@ -37,7 +37,7 @@ export const Graph = ({ v1 }: { v1?: boolean }) => {
     sampleLabels3Flavor[0],
   ])
   const [algoUsed, setAlgoUsed] = useState<AlgoName | null>(null)
-  const [algoResults, setAlgoResults] = useState<Portion[] | []>(null)
+  const [algoResults, setAlgoResults] = useState<Result | null>(null)
   const [preferences, setPreferences] = useState<Preferences>([[]])
 
   // Agents are zero-index in the code, but 1-indexed when displaying to users
@@ -177,7 +177,7 @@ export const Graph = ({ v1 }: { v1?: boolean }) => {
         />
 
         <ResultsView
-          results={algoResults}
+          result={algoResults}
           preferences={preferences}
           algoUsed={algoUsed}
           cakeSize={cakeSize}

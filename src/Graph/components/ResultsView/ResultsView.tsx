@@ -6,7 +6,7 @@ import { SectionErrorDisplay } from '../../../components/SectionErrorDisplay'
 import { Portion, Preferences, SectionLabel } from '../../../types'
 import { downloadScreenshot } from '../../../utils/export'
 import { GraphContext } from '../../GraphContext'
-import { AlgoName } from '../../algorithm/types'
+import { AlgoName, Result } from '../../algorithm/types'
 import { createScales } from '../../graphUtils'
 import { ResultsGraphs } from './ResultsGraphs'
 import { ResultsSteps } from './ResultsSteps'
@@ -15,14 +15,14 @@ import { SolutionInfo } from './SolutionInfo'
 
 interface ResultsViewProps {
   preferences: Preferences
-  results: Portion[]
+  result: Result
   algoUsed: AlgoName
   sectionLabels: SectionLabel[]
   cakeSize: number
 }
 
 export const ResultsView = ({
-  results,
+  result,
   preferences,
   algoUsed,
   sectionLabels,
@@ -60,17 +60,17 @@ export const ResultsView = ({
               cakeSize,
             }}
           >
-            <ResultsGraphs results={results} preferences={preferences} />
+            <ResultsGraphs solution={result.solution} preferences={preferences} />
           </GraphContext.Provider>
         </ErrorBoundary>
         <ErrorBoundary FallbackComponent={SectionErrorDisplay}>
-          <ResultsSteps algoUsed={algoUsed} results={results} />
+          <ResultsSteps algoUsed={algoUsed} result={result} />
         </ErrorBoundary>
         <ErrorBoundary FallbackComponent={SectionErrorDisplay}>
-          <ResultsTable results={results} preferences={preferences} />
+          <ResultsTable solution={result.solution} preferences={preferences} />
         </ErrorBoundary>
         <ErrorBoundary FallbackComponent={SectionErrorDisplay}>
-          <SolutionInfo algoUsed={algoUsed} results={results} />
+          <SolutionInfo algoUsed={algoUsed} solution={result.solution} />
         </ErrorBoundary>
       </Stack>
       <Stack alignItems="center" marginTop={6}>

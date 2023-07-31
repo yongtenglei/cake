@@ -2,13 +2,14 @@ import remove from 'lodash.remove'
 import { Preferences, Slice, UnassignedSlice } from '../../types'
 import { findCutLineByValue, findCutLineByPercent } from './getValue'
 import { cutSlice, sortSlicesDescending, removeBestSlice } from './sliceUtils'
+import { Step } from './types'
 
 // Keep in mind that this is written with a 0-based index, but descriptions of the
 // Selfridge-Conway method use a 1-based index because that's, you know, normal.
 export const selfridgeConway = (
   preferences: Preferences,
   cakeSize: number
-): Slice[] => {
+): { solution: Slice[]; steps: Step[] } => {
   if (preferences.length !== 3) {
     throw 'Divide and choose only works with three agents'
   }
@@ -44,24 +45,23 @@ export const selfridgeConway = (
     ;[p2BestSlice, slices] = removeBestSlice(2, slices) // P2 picks slice
     ;[p1BestSlice, slices] = removeBestSlice(1, slices) // P1 picks slice
     p0BestSlice = slices[0] // P0 picks last slice
-    return [p2BestSlice.assign(2), p1BestSlice.assign(1), p0BestSlice.assign(0)]
+    return {
+      solution: [p2BestSlice.assign(2), p1BestSlice.assign(1), p0BestSlice.assign(0)],
+      steps: [],
+    }
   }
 
   // P1 trims largest slice so two largest slices are equal, trimmings set aside
   const { start, end } = slices[0]
 
   console.log('Trimming piece', slices[0])
-  const cutLine = findCutLineByValue(
-    p1Prefs,
-    p1LargestValue - p1SecondLargestValue,
-    {
-      startBound: start,
-      endBound: end,
-    }
-  )
+  const cutLine = findCutLineByValue(p1Prefs, p1LargestValue - p1SecondLargestValue, {
+    startBound: start,
+    endBound: end,
+  })
 
   const trimming = cutSlice(preferences, start, cutLine)
-  const trimmedPiece = cutSlice(preferences, cutLine, end, 'Trimmed') 
+  const trimmedPiece = cutSlice(preferences, cutLine, end, 'Trimmed')
   slices[0] = trimmedPiece
 
   console.log('Picking slices')
@@ -85,14 +85,13 @@ export const selfridgeConway = (
   p0BestSlice = slices.pop()
 
   // Assign slices to their agents
-  let results = [
-    p2BestSlice.assign(2),
-    p1BestSlice.assign(1),
-    p0BestSlice.assign(0),
-  ]
+  let results = [p2BestSlice.assign(2), p1BestSlice.assign(1), p0BestSlice.assign(0)]
 
   // Assign trimmings and return results
-  return [...results, ...assignTrimmings(trimming, trimmedPicker, preferences)]
+  return {
+    solution: [...results, ...assignTrimmings(trimming, trimmedPicker, preferences)],
+    steps: [],
+  }
 }
 
 const assignTrimmings = (
@@ -118,15 +117,16 @@ const assignTrimmings = (
   const piece3 = cutSlice(preferences, cut2, trimming.end, 'Trimming')
 
   console.log('Trimming divided into', [piece1, piece2, piece3])
-  
+
   // Trimmed picker (P1 or P2) takes a slice
-  const [trimmedPickerSlice, remainingSlices1] = removeBestSlice(
-    trimmedPicker,
-    [piece1, piece2, piece3]
-  )
+  const [trimmedPickerSlice, remainingSlices1] = removeBestSlice(trimmedPicker, [
+    piece1,
+    piece2,
+    piece3,
+  ])
   // P0 takes a slice
   const [p0Slice, remainingSlices2] = removeBestSlice(0, remainingSlices1)
-  
+
   // Non-trimmed picker takes a slice
   const nonTrimmedPickerSlice = remainingSlices2[0]
   return [

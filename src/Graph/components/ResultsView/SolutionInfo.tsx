@@ -9,12 +9,12 @@ import { Link } from '../../../components/Link'
 
 interface SolutionInfoProps {
   algoUsed: AlgoName
-  results: Portion[]
+  solution: Portion[]
 }
 
-export const SolutionInfo = ({ algoUsed, results }: SolutionInfoProps) => {
-  const numPeople = results.length
-  const numSections = results.reduce((acc, result) => acc + result.edges.length, 0)
+export const SolutionInfo = ({ algoUsed, solution }: SolutionInfoProps) => {
+  const numPeople = solution.length
+  const numSections = solution.reduce((acc, result) => acc + result.edges.length, 0)
   const numCuts = numSections - 1
   const algo = Algorithms[algoUsed]
   return (

@@ -1,4 +1,4 @@
-import { AlgoName } from './types'
+import { AlgoName, Result, Step } from './types'
 import { Preferences, Slice, Portion } from '../../types'
 import { validateSegments } from './validation'
 import { cutAndChoose } from './cutAndChoose'
@@ -9,7 +9,7 @@ export const runDivisionAlgorithm = async (
   preferences: Preferences,
   algo: AlgoName,
   cakeSize
-): Promise<Portion[]> => {
+): Promise<Result> => {
   const numPeople = preferences.length
   console.log(`Running ${algo}...`)
   console.log('Cake size:', cakeSize)
@@ -22,10 +22,10 @@ export const runDivisionAlgorithm = async (
   // The UI validates enough but if people upload their own data,
   // who knows what could happen...
 
-  let result: null | Slice[] = null
+  let result: null | { solution: Slice[]; steps: Step[] } = null
   switch (algo) {
     case 'cutAndChoose':
-      result = cutAndChoose(preferences, cakeSize).solution
+      result = cutAndChoose(preferences, cakeSize)
       break
     case 'selfridgeConway':
       result = selfridgeConway(preferences, cakeSize)
@@ -40,12 +40,12 @@ export const runDivisionAlgorithm = async (
     default:
       throw new Error(`Algorithm not implemented: ${algo}`)
   }
-  console.log('Results', result)
+  console.log('results', result)
 
   // Combine all slices assigned to each user into one "Portion"
   const totalValues = preferences.map(getTotalValue)
 
-  const portions = result.reduce((acc, slice) => {
+  const portions = result.solution.reduce((acc, slice) => {
     const owner = slice.owner
     if (!acc[owner]) {
       acc[owner] = { owner, percentValues: Array(numPeople).fill(0), edges: [] }
@@ -60,5 +60,5 @@ export const runDivisionAlgorithm = async (
   // Sort edges by start
   portions.forEach((portion) => portion.edges.sort((a, b) => a[0] - b[0]))
   console.log('Portions', portions)
-  return portions
+  return { solution: portions, steps: result.steps }
 }
