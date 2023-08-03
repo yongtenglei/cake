@@ -520,9 +520,8 @@ const threePreferences = (
     display="grid"
     justifyItems="center"
     alignItems="center"
-    gridTemplateColumns={{ xs: 'auto', sm: 'auto auto' }}
-    maxWidth="600px"
-    sx={{ gridRowGap: '16px' }}
+    gridTemplateColumns={{ xs: 'auto', md: 'auto auto' }}
+    sx={{ gridRowGap: {xs: '40px', md: '16px'}, gridColumnGap: '16px' }}
   >
     <img src={cake3PrefAki} style={{ maxHeight: 200 }} />
     <Stack alignItems="center">

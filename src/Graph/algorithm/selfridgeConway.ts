@@ -5,7 +5,7 @@ import { cutSlice, sortSlicesDescending, removeBestSlice } from './sliceUtils'
 import { makePercentage } from '../../utils/formatUtils'
 import { Step } from './types'
 
-// Keep in mind that this is written with a 0-based index, but descriptions of the
+// Note that this is written with a 0-based index, but descriptions of the
 // Selfridge-Conway method use a 1-based index because that's, you know, normal.
 export const selfridgeConway = (
   preferences: Preferences,
