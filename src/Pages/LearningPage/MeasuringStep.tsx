@@ -194,7 +194,7 @@ export const MeasuringStep = () => {
             will choose yet.
           </p>
           <p>
-            If you wouldn't be happy receiving the left or right piece, feel free to REDO
+            If you wouldn't be happy receiving either the left or right piece, feel free to REDO
             your preferences.
           </p>
 

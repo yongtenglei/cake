@@ -197,7 +197,7 @@ const Info = ({ children }) => {
 const WhatLearn = () => (
   <>
     <h2>Fair Division Interactive Course</h2>
-    <p>Time: about 10 minutes</p>
+    <p>Time: about 15 minutes</p>
 
     <Stack direction={{ xs: 'column', md: 'row' }} alignItems="flex-start">
       <div>
@@ -294,8 +294,8 @@ const SimpleCakeDivision = () => {
           </p>
           <p>
             Dividing <strong>homogenous</strong> cakes fairly is simple. If you have a
-            number of people—we'll call this <em>n</em>—then simply divide the cake into{' '}
-            <em>n</em> equal pieces. Easy!
+            number of people, which we'll call <em>n</em>, then simply divide the cake
+            into <em>n</em> equal pieces. Easy!
           </p>
         </>
       ) : null}
@@ -377,6 +377,8 @@ const TwoFlavorCake = ({ preferredFlavor, setPreferredFlavor }: CommonProps) => 
             <sub>2</sub> the cake to her and you get a piece worth <sup>1</sup>&frasl;
             <sub>2</sub> the cake to you.
           </p>
+          <p>But actually, your share might be worth more than <sup>1</sup>&frasl;
+            <sub>2</sub>.</p>
         </>
       )}
     </>
@@ -521,7 +523,7 @@ const threePreferences = (
     justifyItems="center"
     alignItems="center"
     gridTemplateColumns={{ xs: 'auto', md: 'auto auto' }}
-    sx={{ gridRowGap: {xs: '40px', md: '16px'}, gridColumnGap: '16px' }}
+    sx={{ gridRowGap: { xs: '40px', md: '16px' }, gridColumnGap: '16px' }}
   >
     <img src={cake3PrefAki} style={{ maxHeight: 200 }} />
     <Stack alignItems="center">
@@ -632,7 +634,7 @@ const EnterPlayer3 = () => {
 
       <p>
         <em>However,</em> this solution doesn't seem fair to Bruno. From his perspective,
-        Chloe's piece is worth much more than his own.
+        Aki's piece is worth much more than his own.
       </p>
       <p>
         He <strong>envies</strong> her share and feels cheated.
@@ -749,7 +751,9 @@ const ThreeWayDivision = () => {
 
       {threePreferences}
 
-      <Box component="p" marginY={6}>The cake is split using the Selfridge-Conway Method.</Box>
+      <Box component="p" marginY={6}>
+        The cake is split using the Selfridge-Conway Method.
+      </Box>
 
       <GraphContext.Provider
         value={{
@@ -856,7 +860,7 @@ const ParetoOptimal = () => {
       <p>
         Pareto-optimal solutions aren't necessarily envy-free, but a solution that
         achieves both is a bit closer to ideal. Unfortunately, such solutions can be
-        difficult to calculate. For this reason, finding an envy-free solution is a much
+        difficult to calculate. For this reason, finding an envy-free solution is a
         more realistic goal.
       </p>
       <p>
