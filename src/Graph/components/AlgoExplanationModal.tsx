@@ -16,19 +16,19 @@ export const AlgoExplanationModal = ({ open, onClose }) => {
       <DialogContent>
         <DialogContentText component="div">
           <p>
-            Since the 1940s people have developed over a hundred methods for
-            dividing resources fairly. Only a few of these are implemented here.
+            Since the 1940s researchers have developed hundreds of methods for dividing
+            resources fairly. Only a few of these are implemented here.
           </p>
           <p>
-            Each implementation has certain trade offs, such as only working for
-            a set certain of participants.
+            Each implementation has trade offs, such as only working for a set certain of
+            participants.
           </p>
           {Object.values(Algorithms).map((algo) => (
             <div key={algo.key}>
               <h3>{algo.name}</h3>
               <p>{algo.shortDescription}</p>
 
-              <Link href={algo.link}>Learn about this method</Link>
+              <Link href={algo.link} forceNewTab>Learn about this method</Link>
             </div>
           ))}
         </DialogContentText>

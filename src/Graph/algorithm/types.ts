@@ -25,8 +25,8 @@ export const Algorithms: Record<AlgoName, Algorithm> = {
     minAgents: 2,
     maxAgents: 2,
     shortDescription:
-      'A simple method for envy-free division between two people. One divides, the other chooses.',
-    link: 'https://en.wikipedia.org/wiki/Divide_and_choose',
+      'A simple method for envy-free division between two people. One cuts, the other chooses.',
+    link: '/learn/7',
   },
   selfridgeConway: {
     key: 'selfridgeConway',
@@ -35,7 +35,7 @@ export const Algorithms: Record<AlgoName, Algorithm> = {
     minAgents: 3,
     maxAgents: 3,
     shortDescription:
-      'A method for envy-free division between three people. Maximum of five cucts.',
-    link: 'https://en.wikipedia.org/wiki/Selfridge%E2%80%93Conway_procedure',
+      'A method for envy-free division between three people. Maximum of five cuts.',
+    link: '/learn/13',
   },
 }
