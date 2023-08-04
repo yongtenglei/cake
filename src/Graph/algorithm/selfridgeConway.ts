@@ -76,13 +76,13 @@ export const selfridgeConway = (
     endBound: slices[0].end,
   })
 
-  const trimming = cutSlice(preferences, slices[0].start, cutLine, 4)
+  const trimming = cutSlice(preferences, slices[0].start, cutLine, 4, 'trimming')
   const trimmedPiece = cutSlice(
     preferences,
     cutLine,
     slices[0].end,
     slices[0].id,
-    'Trimmed'
+    'trimmed'
   )
   steps.push([1, `trims off part of piece ${trimmedPiece.id} to make it the same value as piece ${slices[1].id}`, [trimming]])
   slices[0] = trimmedPiece
@@ -158,9 +158,9 @@ const assignTrimmings = (
     startBound: trimming.start,
     endBound: trimming.end,
   })
-  const piece1 = cutSlice(preferences, trimming.start, cut1, 1, 'Trimming')
-  const piece2 = cutSlice(preferences, cut1, cut2, 2, 'Trimming')
-  const piece3 = cutSlice(preferences, cut2, trimming.end, 3, 'Trimming')
+  const piece1 = cutSlice(preferences, trimming.start, cut1, 1, 'trimming')
+  const piece2 = cutSlice(preferences, cut1, cut2, 2, 'trimming')
+  const piece3 = cutSlice(preferences, cut2, trimming.end, 3, 'trimming')
   const trimmings = [piece1, piece2, piece3]
 
   steps.push([

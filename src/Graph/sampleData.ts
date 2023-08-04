@@ -146,6 +146,7 @@ export const sample3PersonResults: Result = {
           "start": 0,
           "end": 0.2666666666666666,
           "values": [1.333333333333333, 2.666666666666666, 0.5333333333333332],
+          "note": "trimming",
           "id": 4
         }
       ]
@@ -170,7 +171,7 @@ export const sample3PersonResults: Result = {
           "start": 0.2666666666666666,
           "end": 0.6666666666666666,
           "values": [2, 4, 0.8],
-          "note": "Trimmed",
+          "note": "trimmed",
           "id": 1
         }
       ]
@@ -195,6 +196,7 @@ export const sample3PersonResults: Result = {
           "start": 0,
           "end": 0.2666666666666666,
           "values": [1.333333333333333, 2.666666666666666, 0.5333333333333332],
+          "note": "trimming",
           "id": 4
         }
       ]
@@ -207,21 +209,21 @@ export const sample3PersonResults: Result = {
           "start": 0,
           "end": 0.08888888888888886,
           "values": [0.4444444444444443, 0.8888888888888886, 0.17777777777777773],
-          "note": "Trimming",
+          "note": "trimming",
           "id": 1
         },
         {
           "start": 0.08888888888888886,
           "end": 0.17777777777777773,
           "values": [0.4444444444444443, 0.8888888888888886, 0.17777777777777773],
-          "note": "Trimming",
+          "note": "trimming",
           "id": 2
         },
         {
           "start": 0.17777777777777773,
           "end": 0.2666666666666666,
           "values": [0.4444444444444444, 0.8888888888888888, 0.17777777777777776],
-          "note": "Trimming",
+          "note": "trimming",
           "id": 3
         }
       ]
@@ -234,7 +236,7 @@ export const sample3PersonResults: Result = {
           "start": 0.17777777777777773,
           "end": 0.2666666666666666,
           "values": [0.4444444444444444, 0.8888888888888888, 0.17777777777777776],
-          "note": "Trimming",
+          "note": "trimming",
           "id": 3
         }
       ]
@@ -247,7 +249,7 @@ export const sample3PersonResults: Result = {
           "start": 0,
           "end": 0.08888888888888886,
           "values": [0.4444444444444443, 0.8888888888888886, 0.17777777777777773],
-          "note": "Trimming",
+          "note": "trimming",
           "id": 1
         }
       ]
@@ -260,7 +262,7 @@ export const sample3PersonResults: Result = {
           "start": 0.08888888888888886,
           "end": 0.17777777777777773,
           "values": [0.4444444444444443, 0.8888888888888886, 0.17777777777777773],
-          "note": "Trimming",
+          "note": "trimming",
           "id": 2
         }
       ]
