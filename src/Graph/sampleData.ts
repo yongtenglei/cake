@@ -140,7 +140,7 @@ export const sample3PersonResults: Result = {
     ],
     [
       1,
-      "trims off part of piece 1 to make it the same value as piece 2",
+      "trims off part of piece 1 to make it the same value as piece 2. The trimmings are set aside",
       [
         {
           "start": 0,
@@ -148,6 +148,13 @@ export const sample3PersonResults: Result = {
           "values": [1.333333333333333, 2.666666666666666, 0.5333333333333332],
           "note": "trimming",
           "id": 4
+        },
+        {
+          "start": 0.2666666666666666,
+          "end": 0.6666666666666666,
+          "values": [1.333333333333333, 2.666666666666666, 0.5333333333333332],
+          "note": "trimmed",
+          "id": 1
         }
       ]
     ],
@@ -161,7 +168,7 @@ export const sample3PersonResults: Result = {
           "values": [3.333333333333334, 1.3333333333333335, 6.666666666666668],
           "id": 3
         }
-      ]
+      ],true
     ],
     [
       1,
@@ -174,7 +181,7 @@ export const sample3PersonResults: Result = {
           "note": "trimmed",
           "id": 1
         }
-      ]
+      ],true
     ],
     [
       0,
@@ -186,7 +193,7 @@ export const sample3PersonResults: Result = {
           "values": [3.333333333333333, 4, 3.999999999999999],
           "id": 2
         }
-      ]
+      ],true
     ],
     [
       2,
@@ -239,7 +246,7 @@ export const sample3PersonResults: Result = {
           "note": "trimming",
           "id": 3
         }
-      ]
+      ],true
     ],
     [
       0,
@@ -252,7 +259,7 @@ export const sample3PersonResults: Result = {
           "note": "trimming",
           "id": 1
         }
-      ]
+      ],true
     ],
     [
       2,
@@ -265,7 +272,7 @@ export const sample3PersonResults: Result = {
           "note": "trimming",
           "id": 2
         }
-      ]
+      ],true
     ]
   ]
 }

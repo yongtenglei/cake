@@ -45,7 +45,7 @@ export const ResultsSteps = ({ algoUsed, result }: ResultsStepsProps) => {
         </AccordionSummary>
         <AccordionDetails>
           <ol style={{ fontSize: 18, margin: 0 }}>
-            {result.steps.map(([person, action, pieces]) => (
+            {result.steps.map(([person, action, pieces, assigned]) => (
               <li key={action}>
                 <div>
                   <strong>{names?.[person] ?? `Person ${person + 1}`}:</strong> {action}.
@@ -64,7 +64,7 @@ export const ResultsSteps = ({ algoUsed, result }: ResultsStepsProps) => {
                             width={width}
                             y={0}
                             height={height}
-                            fill={getAgentColor(person)}
+                            fill={assigned ? getAgentColor(person): '#ddd'}
                             strokeWidth={1}
                             stroke="#555"
                           />
