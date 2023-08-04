@@ -43,11 +43,16 @@ const getPortionSize = (result: Portion, cakeSize: number) => {
   return totalArea / cakeSize
 }
 
-export const ResultsGraphs = ({
-  solution,
-  preferences,
-}: ResultsGraphsProps) => {
-  const { labels, cakeSize, width, height, xScale, names = [], namesPossessive = [] } = useContext(GraphContext)
+export const ResultsGraphs = ({ solution, preferences }: ResultsGraphsProps) => {
+  const {
+    labels,
+    cakeSize,
+    width,
+    height,
+    xScale,
+    names = [],
+    namesPossessive = [],
+  } = useContext(GraphContext)
 
   const [showFullLabels, setShowFullLabels] = useState(false)
   const [showAllPreferences, setShowAllPreferences] = useState(false)
@@ -204,53 +209,54 @@ export const ResultsGraphs = ({
           </text> */}
         </g>
       </Box>
-
-      <Accordion sx={{ maxWidth: totalWidth }}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="details-panel"
-          id="details-panel-header"
-        >
-          Exact Numbers
-        </AccordionSummary>
-        <AccordionDetails>
-          <TableContainer>
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell sx={{ fontWeight: 'bold' }}>Portion Owner</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold' }}>Start - End Point</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold' }}>Percent of Total</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {solution.map((result) => (
-                  <TableRow key={result.owner}>
-                    <TableCell>
-                      {names[result.owner] ?? 'Person ' + (result.owner + 1)}
-                    </TableCell>
-                    <TableCell sx={{ whiteSpace: 'pre' }}>
-                      {result.edges
-                        .map(
-                          (range) =>
-                            '[' +
-                            range
-                              .map((edge) => makePercentage(edge / cakeSize))
-                              .join(' - ') +
-                            ']'
-                        )
-                        .join('\n')}
-                    </TableCell>
-                    <TableCell>
-                      {makePercentage(getPortionSize(result, cakeSize))}
-                    </TableCell>
+      <div>
+        <Accordion sx={{ maxWidth: totalWidth }}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="details-panel"
+            id="details-panel-header"
+          >
+            Exact Numbers
+          </AccordionSummary>
+          <AccordionDetails>
+            <TableContainer>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell sx={{ fontWeight: 'bold' }}>Portion Owner</TableCell>
+                    <TableCell sx={{ fontWeight: 'bold' }}>Start - End Point</TableCell>
+                    <TableCell sx={{ fontWeight: 'bold' }}>Percent of Total</TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </AccordionDetails>
-      </Accordion>
+                </TableHead>
+                <TableBody>
+                  {solution.map((result) => (
+                    <TableRow key={result.owner}>
+                      <TableCell>
+                        {names[result.owner] ?? 'Person ' + (result.owner + 1)}
+                      </TableCell>
+                      <TableCell sx={{ whiteSpace: 'pre' }}>
+                        {result.edges
+                          .map(
+                            (range) =>
+                              '[' +
+                              range
+                                .map((edge) => makePercentage(edge / cakeSize))
+                                .join(' - ') +
+                              ']'
+                          )
+                          .join('\n')}
+                      </TableCell>
+                      <TableCell>
+                        {makePercentage(getPortionSize(result, cakeSize))}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </AccordionDetails>
+        </Accordion>
+      </div>
     </section>
   )
 }
