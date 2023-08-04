@@ -1,6 +1,6 @@
 /* Bar for horizontal resizing */
 .ResizeHorizontalHandle {
-  stroke-width: 8px;
+  stroke-width: 10px;
   stroke: #333;
   cursor: ew-resize;
   outline: none;

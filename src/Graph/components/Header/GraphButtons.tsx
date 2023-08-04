@@ -111,9 +111,9 @@ export const CompareHeaderButtons = ({
         Edit
       </MenuButton>
 
-      <MenuButton onClick={onClickDone} disabled={totalAgents < 2}>
+      <MenuButton disabled={totalAgents < 2} onClick={onClickDone}>
         <CheckIcon />
-        Done
+        Split
       </MenuButton>
 
       <ExtraOptions uploadInput={uploadInput} preferences={preferences} resetInput={resetInput}/>
