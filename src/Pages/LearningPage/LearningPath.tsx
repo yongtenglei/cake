@@ -204,7 +204,7 @@ const Info = ({ children }) => {
 const WhatLearn = () => (
   <>
     <h2>Fair Division Interactive Course</h2>
-    <p>Time: about 15 minutes</p>
+    <p>Time: about 10 minutes</p>
 
     <Stack direction={{ xs: 'column', md: 'row' }} alignItems="flex-start">
       <div>
@@ -496,7 +496,7 @@ const Clarification = () => {
   )
 }
 
-// The Measuring step would be here but it's complex enough to warrant its own file './MeasuringStep.tsx'
+// The Measuring step is here order-wise but it's complex enough to warrant its own file './MeasuringStep.tsx'
 
 const Recap1 = () => {
   return (
@@ -510,7 +510,7 @@ const Recap1 = () => {
 
         <dt>Proportionally fair</dt>
         <dd>
-          A definition of fairness. For every n people, each person gets <sup>1</sup>
+          A definition of fairness. For every <em>n</em> people, each person gets <sup>1</sup>
           &frasl;
           <sub>n</sub> of the resource value or more.
         </dd>
@@ -931,8 +931,7 @@ const Ending = () => {
 
       <p>Give it a try, experiment!</p>
       <p>
-        Split a 10-flavor cake! See if you can find better solutions than the algorithm
-        can!
+        Split a 10-flavor cake! See if you can follow the algorithms!
       </p>
       <p>
         The tool uses <strong>Cut and Choose</strong> for 2 people and{' '}
