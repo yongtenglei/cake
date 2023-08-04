@@ -4,7 +4,7 @@ import './Footer.css'
 
 export const Footer = () => {
   return (
-    <footer className="Footer">
+    <footer className="Footer non-print">
       <LayoutContainer sx={{color: 'white'}}>
  
         <ol className="Footer__links">

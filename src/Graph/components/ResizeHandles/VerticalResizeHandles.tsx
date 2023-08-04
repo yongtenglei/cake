@@ -26,14 +26,12 @@ interface VerticalResizeHandlesProps {
   segments: DrawnSegment[]
   setCornerMovingId: (corner: [number, number]) => void
   setYMovingId: (id: number) => void
-  isDrawing: boolean
 }
 
 export const VerticalResizeBubbles = ({
   segments,
   setCornerMovingId,
   setYMovingId,
-  isDrawing,
 }: VerticalResizeHandlesProps) => {
   return (
     <>

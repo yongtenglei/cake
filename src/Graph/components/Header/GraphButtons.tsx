@@ -2,6 +2,7 @@ import CheckIcon from '@mui/icons-material/Check'
 import CompareIcon from '@mui/icons-material/Compare'
 import EditIcon from '@mui/icons-material/Edit'
 import LoopIcon from '@mui/icons-material/Loop'
+import ControlCameraIcon from '@mui/icons-material/ControlCamera'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import { Box, Tooltip } from '@mui/material'
 import { ComponentProps } from 'react'
@@ -30,6 +31,7 @@ type SharedProps = ExtraOptionsProps & {
 type DrawingHeaderButtonsProps = SharedProps & {
   onClickCreateAgent: VoidFunction
   onClickCompare: VoidFunction
+  onClickShowHandles: VoidFunction
   currentAgent: number
   cakeSize: number
 }
@@ -39,6 +41,7 @@ export const DrawingHeaderButtons = ({
   onClickDone,
   onClickCreateAgent,
   onClickCompare,
+  onClickShowHandles,
   preferences,
   uploadInput,
   currentAgent,
@@ -52,16 +55,22 @@ export const DrawingHeaderButtons = ({
   const allComplete = isAllInputComplete(preferences, cakeSize)
   return (
     <>
+      <MenuButton
+        onClick={onClickShowHandles}
+        disabled={preferences[currentAgent].length === 0}
+      >
+        <ControlCameraIcon />
+        Show Handles
+      </MenuButton>
+
       <MenuButton onClick={onClickSetLabels}>
         <SectionIcon />
         Set Sections
       </MenuButton>
       <Tooltip
-        title={
-          cantAddMoreAgents ? `Cannot add more than ${maxAgents} people` : null
-        }
+        title={cantAddMoreAgents ? `Cannot add more than ${maxAgents} people` : null}
       >
-        <span>
+        <div>
           <MenuButton
             disabled={!drawingComplete || cantAddMoreAgents}
             onClick={onClickCreateAgent}
@@ -69,9 +78,8 @@ export const DrawingHeaderButtons = ({
             <PersonAddIcon />
             Add Person
           </MenuButton>
-        </span>
+        </div>
       </Tooltip>
-
       <MenuButton disabled={!allComplete || totalAgents < 2} onClick={onClickCompare}>
         <CompareIcon />
         Compare
@@ -82,7 +90,11 @@ export const DrawingHeaderButtons = ({
         Split
       </MenuButton>
 
-      <ExtraOptions uploadInput={uploadInput} preferences={preferences} resetInput={resetInput}/>
+      <ExtraOptions
+        uploadInput={uploadInput}
+        preferences={preferences}
+        resetInput={resetInput}
+      />
     </>
   )
 }
@@ -103,7 +115,7 @@ export const CompareHeaderButtons = ({
   return (
     <>
       <MenuButton onClick={onClickSetLabels}>
-      <SectionIcon />
+        <SectionIcon />
         Set Labels
       </MenuButton>
       <MenuButton onClick={() => onClickEdit()}>
@@ -116,7 +128,11 @@ export const CompareHeaderButtons = ({
         Split
       </MenuButton>
 
-      <ExtraOptions uploadInput={uploadInput} preferences={preferences} resetInput={resetInput}/>
+      <ExtraOptions
+        uploadInput={uploadInput}
+        preferences={preferences}
+        resetInput={resetInput}
+      />
     </>
   )
 }
@@ -142,7 +158,11 @@ export const ResultsButtons = ({
         Reset
       </MenuButton>
 
-      <ExtraOptions uploadInput={uploadInput} preferences={preferences} resetInput={resetInput} />
+      <ExtraOptions
+        uploadInput={uploadInput}
+        preferences={preferences}
+        resetInput={resetInput}
+      />
     </>
   )
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Box } from '@mui/material'
 import { C_PRIMARY_LIGHT, getAgentColor } from '../colors'
@@ -42,6 +42,7 @@ export const Graph = ({ v1 }: { v1?: boolean }) => {
   // Agents are zero-index in the code, but 1-indexed when displaying to users
   const [currentAgent, setCurrentAgent] = useState<number>(0)
   const [algoModalOpen, setAlgoModalOpen] = useState<boolean>(false)
+  const [highlightedHandle, setHighlightedHandle] = useState<number | null>(null)
   const [viewMode, setViewMode] = useState<'setup' | 'edit' | 'compare' | 'results'>(
     'setup'
   )
@@ -91,11 +92,28 @@ export const Graph = ({ v1 }: { v1?: boolean }) => {
     setViewMode('edit')
   }
 
-  const onClickSetLabels = () => {
-    setViewMode('setup')
-  }
+  const onClickSetLabels = () => setViewMode('setup')
 
   const onClickCompare = () => setViewMode('compare')
+
+  useEffect(() => {
+    if(highlightedHandle == null) {
+      return
+    }
+    const id = setTimeout(() => {
+      const next = highlightedHandle + 1
+      if(next >= preferences[currentAgent].length * 4) {
+        setHighlightedHandle(null)
+      } else {
+        setHighlightedHandle(next)
+      }
+    }, 1000)
+    return () => clearTimeout(id)
+  }, [setHighlightedHandle, highlightedHandle, preferences, currentAgent])
+  
+  const onClickShowHandles = () => {
+    setHighlightedHandle(0)
+  }
 
   const setCurrentAgentPrefs = (segs: Segment[]) => {
     const prefs = [...preferences]
@@ -223,6 +241,7 @@ export const Graph = ({ v1 }: { v1?: boolean }) => {
                 onClickCreateAgent={onClickCreateAgent}
                 onClickCompare={onClickCompare}
                 onClickDone={onClickDone}
+                onClickShowHandles={onClickShowHandles}
                 preferences={preferences}
                 uploadInput={uploadInput}
                 currentAgent={currentAgent}
@@ -232,12 +251,13 @@ export const Graph = ({ v1 }: { v1?: boolean }) => {
             }
           />
         </Box>
-        <Box sx={{ position: 'relative', zIndex: 1, top: -10 }}>
+        <Box sx={{ position: 'relative', top: -10 }}>
           <DrawingLayer
             segments={currentAgentPrefs}
             setSegments={setCurrentAgentPrefs}
             currentAgent={currentAgent}
             isComplete={isComplete}
+            highlightedHandle={highlightedHandle}
           />
         </Box>
       </>

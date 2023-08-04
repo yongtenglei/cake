@@ -35,6 +35,6 @@
   opacity: 1;
 }
 
-.ResizeCornerHandle.visible {
+.ResizeCornerHandle.visible, .ResizeHorizontalHandle.visible {
   opacity: 1;
 }

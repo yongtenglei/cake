@@ -75,3 +75,9 @@ kbd {
   padding: 2px 4px;
   white-space: nowrap;
 }
+
+@media print {
+  .non-print {
+    display: none !important;
+  }
+}

@@ -4,22 +4,22 @@ import { Graph } from '../Graph/Graph'
 import { TextContainer } from '../Layouts'
 import { Link } from '../components/Link'
 import { SectionErrorDisplay } from '../components/SectionErrorDisplay'
-import cake from '../images/cake/cake divided.png'
 import toolAdjust from '../images/intro/corner.png'
 
 export const GraphPage = (props) => {
   return (
     <>
-      <h1>Resource Splitting Tool</h1>
+      <div className="non-print">
+        <h1>Resource Splitting Tool</h1>
 
-      <Box
+        <Box
           component="img"
           src={toolAdjust}
           alt="The fair division tool. A graph shows two rectangular segments and the mouse moving the corner of an angled segment."
           maxWidth={550}
           width={'100%'}
-          sx={{float: {xs:'none', lg: 'right'}}}
-          marginLeft={{xs: 0, lg: 4}}
+          sx={{ float: { xs: 'none', lg: 'right' } }}
+          marginLeft={{ xs: 0, lg: 4 }}
           marginY={2}
         />
         <TextContainer>
@@ -52,20 +52,21 @@ export const GraphPage = (props) => {
             to learn how fair division works.
           </p>
         </TextContainer>
-
-
+      </div>
       <Box marginTop={10} marginBottom={10} id="graph-content">
         <ErrorBoundary FallbackComponent={SectionErrorDisplay}>
           <Graph {...props} />
         </ErrorBoundary>
       </Box>
 
-      <h3>Feeling Lost?</h3>
-      <p>
-        See the <Link href="/learn">Interactive Course</Link> for an introduction to fair
-        division or the <Link href="/help">Help Page</Link> for clarification on how this
-        tool works.
-      </p>
+      <div className="non-print">
+        <h3>Feeling Lost?</h3>
+        <p>
+          See the <Link href="/learn">Interactive Course</Link> for an introduction to
+          fair division or the <Link href="/help">Help Page</Link> for clarification on
+          how this tool works.
+        </p>
+      </div>
     </>
   )
 }

@@ -15,6 +15,7 @@ import {
   changeSegmentWidth,
   changeSegmentWithKeyboard,
 } from './adjustSegments'
+import { Highlight } from './Highlight'
 
 // Simple unique ids. Increment the number on each use.
 let id = 0
@@ -24,6 +25,7 @@ interface DrawingLayerProps {
   setSegments: (segment: Segment[]) => void
   currentAgent: number
   isComplete: boolean
+  highlightedHandle?: null | number
 }
 
 export const DrawingLayer = ({
@@ -31,6 +33,7 @@ export const DrawingLayer = ({
   setSegments,
   currentAgent,
   isComplete,
+  highlightedHandle,
 }: DrawingLayerProps) => {
   const convertToPixels = useConvertSegToPixels()
   const convertFromPixels = useConvertSegFromPixels()
@@ -172,8 +175,9 @@ export const DrawingLayer = ({
               segments={pixelSegs}
               setCornerMovingId={setCornerMovingId}
               setYMovingId={setYMovingId}
-              isDrawing={isDrawing}
             />
+
+            <Highlight handle={highlightedHandle} segments={pixelSegs} />
           </g>
         </svg>
       </div>

@@ -7,8 +7,14 @@ import cake from '../../images/happy with cake.png'
 export const LearningPage = () => {
   return (
     <article>
-      <Box component="h1">Learn About Fair Division</Box>
-      <Stack direction={{ xs: 'column-reverse', md: 'row' }} spacing={4}>
+      <Box component="h1" className="non-print">
+        Learn About Fair Division
+      </Box>
+      <Stack
+        direction={{ xs: 'column-reverse', md: 'row' }}
+        spacing={4}
+        className="non-print"
+      >
         <TextContainer sx={{ marginBottom: 8 }}>
           <p>
             Fair division means dividing resources in a way that's{' '}
@@ -20,8 +26,8 @@ export const LearningPage = () => {
           <p>
             Most of these methods are math theories, but a few are quite useful for
             everyday things as well. For example, they can help settle inheritance
-            disputes, decide fair rent between roommates, or split up chores. Some methods are
-            even used to settle resource disputes between countries!
+            disputes, decide fair rent between roommates, or split up chores. Some methods
+            are even used to settle resource disputes between countries!
           </p>
           <h3>Should I be using these methods?</h3>
           <p>Maybe! Here are a few tools that use fair division methods:</p>
@@ -40,7 +46,8 @@ export const LearningPage = () => {
           <p>
             In everyday activities, it's probably best to talk things through and reach a
             mutual agreement with others. Fair division methods are most suited for
-            situations where people can't agree but we still want everyone gets a <em>fair share</em>.
+            situations where people can't agree but we still want everyone gets a{' '}
+            <em>fair share</em>.
           </p>
           <p>
             If you are curious to learn the logic behind provably fair solutions, I've
