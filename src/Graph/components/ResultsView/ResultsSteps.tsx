@@ -35,7 +35,7 @@ export const ResultsSteps = ({ algoUsed, result }: ResultsStepsProps) => {
                     height={height}
                     fill={getAgentColor(person)}
                     strokeWidth={1}
-                    stroke="#666"
+                    stroke="#555"
                   />
                 ))}
                 <rect
@@ -43,7 +43,7 @@ export const ResultsSteps = ({ algoUsed, result }: ResultsStepsProps) => {
                   y={0.5}
                   width={width-1}
                   height={height-1}
-                  stroke="#666"
+                  stroke="#555"
                   fill="none"
                   strokeWidth={1}
                 />

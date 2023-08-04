@@ -170,7 +170,7 @@ export const ResultsGraphs = ({
                   y1={0}
                   y2={innerHeight + offset}
                   strokeDasharray={6}
-                  stroke="#666"
+                  stroke="#555"
                   strokeWidth={1.5}
                 />
                 <text
@@ -306,7 +306,7 @@ const TinyGraph = ({
       ))}
 
       {/* Border for the whole graph */}
-      <rect width={width} height={height} stroke="#666" fill="none" strokeWidth={1} />
+      <rect width={width} height={height} stroke="#555" fill="none" strokeWidth={1} />
     </>
   )
 }

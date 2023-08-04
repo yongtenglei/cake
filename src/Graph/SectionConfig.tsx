@@ -135,6 +135,8 @@ export const SectionConfig = ({
                       value={sectionLabels[i].name}
                       placeholder={`Section ${i + 1}`}
                       onChange={(e) => changeField(i, 'name', e.target.value)}
+                      // only autofocus when newly created
+                      autoFocus={!sectionLabels[i].name}
                     />
                     {/* Needs accessibility work. The focus indicator on the color is imperceptible */}
                     <MuiColorInput

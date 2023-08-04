@@ -78,7 +78,6 @@ export const LearningPath = () => {
     [EnvyFree, 'Envy Free'],
     [SelfridgeConway, 'The Selfridge-Conway Method'],
     [ThreeWayDivision, '3-Way Division'],
-    [ParetoOptimal, 'Pareto-Optimal Solutions'],
     [Recap2, 'Final Recap'],
     [Ending, 'End'],
   ]
@@ -105,7 +104,7 @@ export const LearningPath = () => {
         alignItems="center"
         justifyItems="center"
       >
-        {/* Put the buttons next to each other for better accessibility, then the dots */}
+        {/* The buttons are physically next to each other for better accessibility, but switched using CSS */}
         <Box order={1}>
           {stepNum <= 1 ? null : (
             <ButtonLink
@@ -185,7 +184,15 @@ export const LearningPath = () => {
 // side-note info box
 const Info = ({ children }) => {
   return (
-    <Stack direction="row" marginY={4} spacing={2} color="#666">
+    <Stack
+      direction="row"
+      marginY={4}
+      spacing={2}
+      color="#555"
+      padding={2}
+      border="2px solid"
+      borderRadius="8px"
+    >
       <InfoIcon fontSize="large" />
       <Box component="p" flexGrow={1} marginTop={0}>
         {children}
@@ -377,8 +384,10 @@ const TwoFlavorCake = ({ preferredFlavor, setPreferredFlavor }: CommonProps) => 
             <sub>2</sub> the cake to her and you get a piece worth <sup>1</sup>&frasl;
             <sub>2</sub> the cake to you.
           </p>
-          <p>But actually, your share might be worth more than <sup>1</sup>&frasl;
-            <sub>2</sub>.</p>
+          <p>
+            But actually, your share might be worth more than <sup>1</sup>&frasl;
+            <sub>2</sub>.
+          </p>
         </>
       )}
     </>
@@ -515,6 +524,7 @@ const Recap1 = () => {
   )
 }
 
+// styles need work on mobile
 const threePreferences = (
   <Box
     marginX="auto"
@@ -526,19 +536,19 @@ const threePreferences = (
     sx={{ gridRowGap: { xs: '40px', md: '16px' }, gridColumnGap: '16px' }}
   >
     <img src={cake3PrefAki} style={{ maxHeight: 200 }} />
-    <Stack alignItems="center">
+    <Stack alignItems="center" marginBottom={2}>
       <CharacterImage character="Aki" hideName />
       Aki likes both vanilla and chocolate
     </Stack>
 
     <img src={cake3PrefBruno} style={{ maxHeight: 200 }} />
-    <Stack alignItems="center">
+    <Stack alignItems="center" marginBottom={2}>
       <CharacterImage character="Bruno" hideName />
       Bruno prefers vanilla
     </Stack>
 
     <img src={cake3PrefChloe} style={{ maxHeight: 200 }} />
-    <Stack alignItems="center">
+    <Stack alignItems="center" marginBottom={2}>
       <CharacterImage character="Chloe" hideName />
       Chloe prefers chocolate
     </Stack>
@@ -634,7 +644,7 @@ const EnterPlayer3 = () => {
 
       <p>
         <em>However,</em> this solution doesn't seem fair to Bruno. From his perspective,
-        Aki's piece is worth much more than his own.
+        Aki's all-vanilla piece is worth much more than his own.
       </p>
       <p>
         He <strong>envies</strong> her share and feels cheated.
@@ -682,19 +692,24 @@ const SelfridgeConway = () => {
         discovered a way of dividing a resource between 3 people in a way that's{' '}
         <strong>guaranteed to be envy-free</strong>.
       </p>
+
       <p>
         This method is now called the <strong>Selfridge-Conway Method.</strong>
       </p>
-      <p>
+
+      <p>Let's try it out!</p>
+
+      {/* <p>
         The steps are more complex than Cut and Choose, you can read them below if you are
         curious.
       </p>
+      
       <p>
         The important thing to know is that when using this method each person may get two
         pieces from different parts of the cake.
-      </p>
+      </p> */}
 
-      <Accordion sx={{ marginY: 4 }}>
+      {/* <Accordion sx={{ marginY: 4 }}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="selfridge-panel"
@@ -729,14 +744,8 @@ const SelfridgeConway = () => {
             <li>The last person chooses a piece.</li>
           </ol>
         </AccordionDetails>
-      </Accordion>
+      </Accordion> */}
 
-      <p>
-        For an explanation as to why this is guaranteed to be envy-free, see{' '}
-        <Link href={Algorithms.selfridgeConway.link}>
-          the wikipedia page for the Selfridge-Conway Method.
-        </Link>
-      </p>
       <p></p>
     </>
   )
@@ -746,7 +755,7 @@ const ThreeWayDivision = () => {
   return (
     <>
       <h2>Division with the Selfridge-Conway Method</h2>
-      <p>Let's see how the Selfridge-Conway Method leads to a envy-free outcome.</p>
+      <p>Let's see how to create an envy-free outcome.</p>
       <p>Here is the problem again:</p>
 
       {threePreferences}
@@ -817,7 +826,7 @@ const ThreeWayDivision = () => {
             and this piece
           </OverlayText>
           <OverlayText justifySelf="flex-end" character="Bruno" gridArea="b">
-            Bruno gets this piece
+            Bruno gets these pieces
           </OverlayText>
           <OverlayText justifySelf="flex-start" character="Chloe" gridArea="c1">
             Chloe gets this piece
@@ -829,18 +838,23 @@ const ThreeWayDivision = () => {
       </Box>
 
       <p>
-        Together, the pieces a person receives is called their <strong>portion</strong> or{' '}
-        <strong>share</strong> of the cake.{' '}
-      </p>
-      <p>
         Although a bit more involved than before, this solution is{' '}
         <strong>both proportional and envy-free!</strong>
       </p>
-      <p>But could there be an even better solution?</p>
+
+      <Info>
+        For an explanation as to why this is guaranteed to be envy-free, see{' '}
+        <Link href={Algorithms.selfridgeConway.link}>
+          the wikipedia page for the Selfridge-Conway Method.
+        </Link>
+      </Info>
+
+      {/* <p>Could there be an even better solution?</p> */}
     </>
   )
 }
 
+// Removing this part as it confuses people and the example can no longer be Pareto-Optimized
 const ParetoOptimal = () => {
   return (
     <>
@@ -860,8 +874,8 @@ const ParetoOptimal = () => {
       <p>
         Pareto-optimal solutions aren't necessarily envy-free, but a solution that
         achieves both is a bit closer to ideal. Unfortunately, such solutions can be
-        difficult to calculate. For this reason, finding an envy-free solution is a
-        more realistic goal.
+        difficult to calculate. For this reason, finding an envy-free solution is a more
+        realistic goal.
       </p>
       <p>
         For more info,{' '}
@@ -886,12 +900,12 @@ const Recap2 = () => {
 
         <dt>Selfridge-Conway Method</dt>
         <dd>A 3-person, envy-free method for fair division.</dd>
-
+        {/* 
         <dt>Pareto-Optimal Solution</dt>
         <dd>
           A solution to a fair division problem where no change can increase the value for
           someone without taking value away from someone else.
-        </dd>
+        </dd> */}
       </dl>
     </>
   )
