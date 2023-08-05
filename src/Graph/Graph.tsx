@@ -102,7 +102,7 @@ export const Graph = ({ v1 }: { v1?: boolean }) => {
     }
     const id = setTimeout(() => {
       const next = highlightedHandle + 1
-      if(next >= preferences[currentAgent].length * 4) {
+      if(next > 2) {
         setHighlightedHandle(null)
       } else {
         setHighlightedHandle(next)
