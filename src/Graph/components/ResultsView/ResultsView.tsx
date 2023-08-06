@@ -1,8 +1,6 @@
 import { Button, Stack } from '@mui/material'
 import { useState } from 'react'
-import { ErrorBoundary } from 'react-error-boundary'
 import { LoadingModal } from '../../../components/LoadingModal'
-import { SectionErrorDisplay } from '../../../components/SectionErrorDisplay'
 import { Portion, Preferences, SectionLabel } from '../../../types'
 import { downloadScreenshot } from '../../../utils/export'
 import { GraphContext } from '../../GraphContext'
@@ -46,48 +44,42 @@ export const ResultsView = ({
   return (
     <>
       <LoadingModal open={loading} title="Exporting Image" />
-      <Stack spacing={8} marginTop={2} id="results">
-        <ErrorBoundary FallbackComponent={SectionErrorDisplay}>
-          <GraphContext.Provider
-            value={{
-              ...createScales({
-                innerWidth: stepWidth,
-                innerHeight: stepHeight,
-                cakeSize,
-              }),
-              width: stepWidth,
-              height: stepHeight,
-              labels: sectionLabels,
+      <Stack spacing={6} marginTop={2} id="results">
+        <GraphContext.Provider
+          value={{
+            ...createScales({
+              innerWidth: graphWidth,
+              innerHeight: graphHeight,
               cakeSize,
-            }}
-          >
-            <ResultsSteps algoUsed={algoUsed} result={result} />
-          </GraphContext.Provider>
-        </ErrorBoundary>
-        <ErrorBoundary FallbackComponent={SectionErrorDisplay}>
-          <GraphContext.Provider
-            value={{
-              ...createScales({
-                innerWidth: graphWidth,
-                innerHeight: graphHeight,
-                cakeSize,
-              }),
-              width: graphWidth,
-              height: graphHeight,
-              labels: sectionLabels,
-              cakeSize,
-            }}
-          >
-            <ResultsGraphs solution={result.solution} preferences={preferences} />
-          </GraphContext.Provider>
-        </ErrorBoundary>
+            }),
+            width: graphWidth,
+            height: graphHeight,
+            labels: sectionLabels,
+            cakeSize,
+          }}
+        >
+          <ResultsGraphs solution={result.solution} preferences={preferences} />
+        </GraphContext.Provider>
 
-        <ErrorBoundary FallbackComponent={SectionErrorDisplay}>
-          <ResultsTable solution={result.solution} preferences={preferences} />
-        </ErrorBoundary>
-        <ErrorBoundary FallbackComponent={SectionErrorDisplay}>
-          <SolutionInfo algoUsed={algoUsed} solution={result.solution} />
-        </ErrorBoundary>
+        <GraphContext.Provider
+          value={{
+            ...createScales({
+              innerWidth: stepWidth,
+              innerHeight: stepHeight,
+              cakeSize,
+            }),
+            width: stepWidth,
+            height: stepHeight,
+            labels: sectionLabels,
+            cakeSize,
+          }}
+        >
+          <ResultsSteps algoUsed={algoUsed} result={result} />
+        </GraphContext.Provider>
+
+        <ResultsTable solution={result.solution} preferences={preferences} />
+
+        <SolutionInfo algoUsed={algoUsed} solution={result.solution} />
       </Stack>
       <Stack alignItems="center" marginTop={6}>
         <Button onClick={onClickExportImage} variant="outlined">

@@ -22,6 +22,7 @@ import { GraphContext } from '../../GraphContext'
 import { useConvertSegToPixels } from '../../graphUtils'
 import { TinySectionLabels } from '../SectionLabels'
 import { TextContainer } from '../../../Layouts'
+import { ResultsContainer } from './ResultsContainer'
 
 const spaceBetween = 20
 const cuttingLineExtension = 10
@@ -70,8 +71,7 @@ export const ResultsGraphs = ({ solution, preferences }: ResultsGraphsProps) => 
   allCutlines.shift()
 
   return (
-    <section>
-      <h2>Resource Split</h2>
+    <ResultsContainer title="Resource Split" id="split">
       <TextContainer>
         <p>
           This shows where to divide the resource, the portion each person receives, and
@@ -257,7 +257,7 @@ export const ResultsGraphs = ({ solution, preferences }: ResultsGraphsProps) => 
           </AccordionDetails>
         </Accordion>
       </div>
-    </section>
+    </ResultsContainer>
   )
 }
 

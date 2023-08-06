@@ -13,6 +13,7 @@ import { getAgentColor } from '../../../colors'
 import { Portion, Preferences } from '../../../types'
 import { GraphContext } from '../../GraphContext'
 import { formatNumber } from '../../../utils/formatUtils'
+import { ResultsContainer } from './ResultsContainer'
 
 interface ResultsTableProps {
   preferences: Preferences
@@ -23,9 +24,8 @@ export const ResultsTable = ({ preferences, solution }: ResultsTableProps) => {
   const numPeople = preferences.length
 
   return (
-    <section>
-      <h2>Portion Values</h2>
-      <TableContainer sx={{marginTop: 4}}>
+    <ResultsContainer title="Portion Values" id="values">
+      <TableContainer sx={{ marginTop: 4 }}>
         <Table
           sx={{
             maxWidth: solution.length > 3 ? 'none' : '700px',
@@ -118,7 +118,7 @@ export const ResultsTable = ({ preferences, solution }: ResultsTableProps) => {
           </TableBody>
         </Table>
       </TableContainer>
-    </section>
+    </ResultsContainer>
   )
 }
 
