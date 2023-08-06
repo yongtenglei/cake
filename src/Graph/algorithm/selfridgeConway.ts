@@ -45,8 +45,8 @@ export const selfridgeConway = (
   const p1LargestValue = slices[0].values[1]
   const p1SecondLargestValue = slices[1].values[1]
 
-  // P1 decides if two largest are equal
-  if (p1LargestValue === p1SecondLargestValue) {
+  // P1 decides if two largest are equal (allow for some tiny decimal errors)
+  if (Math.abs(p1LargestValue - p1SecondLargestValue) < 0.0000000000001) {
     // No trimming needed, easy path!
     steps.push([
       1,
