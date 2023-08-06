@@ -25,7 +25,7 @@ import {
   defaultGraphHeight,
   defaultGraphWidth,
   getInnerHeight,
-  getInnerWidth,
+  getInnerWidth
 } from './graphConstants'
 import { createScales, isDrawingComplete } from './graphUtils'
 import { sampleLabels3Flavor } from './sampleData'
@@ -97,12 +97,12 @@ export const Graph = ({ v1 }: { v1?: boolean }) => {
   const onClickCompare = () => setViewMode('compare')
 
   useEffect(() => {
-    if(highlightedHandle == null) {
+    if (highlightedHandle == null) {
       return
     }
     const id = setTimeout(() => {
       const next = highlightedHandle + 1
-      if(next > 2) {
+      if (next > 2) {
         setHighlightedHandle(null)
       } else {
         setHighlightedHandle(next)
@@ -110,7 +110,7 @@ export const Graph = ({ v1 }: { v1?: boolean }) => {
     }, 1000)
     return () => clearTimeout(id)
   }, [setHighlightedHandle, highlightedHandle, preferences, currentAgent])
-  
+
   const onClickShowHandles = () => {
     setHighlightedHandle(0)
   }
@@ -230,15 +230,15 @@ export const Graph = ({ v1 }: { v1?: boolean }) => {
             color={getAgentColor(currentAgent)}
             heading={
               <SwitchAgentHeader
-                navigationDisabled={preferences.length < 2}
+                onClickCreateAgent={onClickCreateAgent}
                 onChangeIndex={onChangeIndex}
                 currentAgent={currentAgent}
+                preferences={preferences}
               />
             }
             buttons={
               <DrawingHeaderButtons
                 onClickSetLabels={onClickSetLabels}
-                onClickCreateAgent={onClickCreateAgent}
                 onClickCompare={onClickCompare}
                 onClickDone={onClickDone}
                 onClickShowHandles={onClickShowHandles}

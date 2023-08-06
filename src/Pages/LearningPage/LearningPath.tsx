@@ -1,16 +1,7 @@
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  Stack,
-  Tooltip,
-} from '@mui/material'
+import { Box, Stack, Tooltip } from '@mui/material'
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBackIos'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForwardIos'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import InfoIcon from '@mui/icons-material/Info'
 
 import { useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
@@ -30,6 +21,7 @@ import selfridgeResults from '../../images/selfridge/selfridge results.png'
 import simple3Results from '../../images/selfridge/simple results.png'
 import { CakeFlavor, CakeImage, CharacterImage, ImageContainer } from './Images'
 import { MeasuringStep } from './MeasuringStep'
+import { Info, Action } from './Aside'
 
 interface CommonProps {
   preferredFlavor: CakeFlavor | null
@@ -181,30 +173,11 @@ export const LearningPath = () => {
   )
 }
 
-// side-note info box
-const Info = ({ children }) => {
-  return (
-    <Stack
-      direction="row"
-      marginY={4}
-      spacing={2}
-      color="#555"
-      padding={2}
-      border="2px solid"
-      borderRadius="8px"
-    >
-      <InfoIcon fontSize="large" />
-      <Box component="p" flexGrow={1} marginTop={0}>
-        {children}
-      </Box>
-    </Stack>
-  )
-}
 
 const WhatLearn = () => (
   <>
     <h2>Fair Division Interactive Course</h2>
-    <p>Time: about 10 minutes</p>
+    <p>Time: about 15 minutes</p>
 
     <Stack direction={{ xs: 'column', md: 'row' }} alignItems="flex-start">
       <div>
@@ -272,6 +245,8 @@ const SimpleCakeDivision = () => {
         pieces. Which piece do you want?
       </p>
 
+      <Action>Click a piece</Action>
+
       <ImageContainer spacing={1}>
         <CakeImage
           flavor="chocolate"
@@ -327,7 +302,7 @@ const MeaningOfFair = () => {
       </p>
       <p>
         This is simple with a <strong>homogenous</strong> cake because all the pieces are
-        identical, but this gets trickier with <strong>heterogenous</strong> cakes.
+        identical, but this gets trickier with <strong>heterogenous</strong> cakes (made of different things).
       </p>
     </>
   )
@@ -338,7 +313,7 @@ const TwoFlavorCake = ({ preferredFlavor, setPreferredFlavor }: CommonProps) => 
     <>
       <h2>2-Flavor Cake</h2>
       <p>
-        This cake is <strong>heterogenous</strong> (made of different things).
+        This cake has different parts so is <strong>heterogenous</strong>.
       </p>
       <ImageContainer>
         <CakeImage flavor="vanilla" width="200px" />
@@ -354,6 +329,7 @@ const TwoFlavorCake = ({ preferredFlavor, setPreferredFlavor }: CommonProps) => 
       <p>
         <em>Which piece do you want?</em>
       </p>
+      <Action>Click a piece</Action>
 
       <ImageContainer spacing={1}>
         <CakeImage
@@ -492,6 +468,10 @@ const Clarification = () => {
         Keep in mind that this is an economic model, part of game theory. In real life you
         make more friends by being generous, especially if you're sharing a birthday cake!
       </p>
+
+      <p>
+        Keeping this in mind, let's split another cake!
+      </p>
     </>
   )
 }
@@ -510,9 +490,12 @@ const Recap1 = () => {
 
         <dt>Proportionally fair</dt>
         <dd>
-          A definition of fairness. For every <em>n</em> people, each person gets <sup>1</sup>
+          A definition of fairness. For every <em>n</em> people, each person gets{' '}
+          <sup>1</sup>
           &frasl;
-          <sub>n</sub> of the resource value or more.
+          <sub>n</sub> of the resource value or more.<br />Example: each of 3 people get at least <sup>1</sup>
+          &frasl;
+          <sub>3</sub> of the cake's value.
         </dd>
 
         <dt>Cut and Choose </dt>
@@ -930,9 +913,7 @@ const Ending = () => {
       />
 
       <p>Give it a try, experiment!</p>
-      <p>
-        Split a 10-flavor cake! See if you can follow the algorithms!
-      </p>
+      <p>Split a 10-flavor cake! See if you can follow the algorithms!</p>
       <p>
         The tool uses <strong>Cut and Choose</strong> for 2 people and{' '}
         <strong>the Selfridge-Conway Method</strong> for 3, other algorithms may be added

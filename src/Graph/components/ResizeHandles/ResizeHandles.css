@@ -1,21 +1,36 @@
 /* Bar for horizontal resizing */
-.ResizeHorizontalHandle {
-  stroke-width: 12px;
-  stroke: #333;
+.HorizontalHandle {
   cursor: ew-resize;
-  outline: none;
   opacity: 0;
   transition: opacity 0.3s;
   transition-delay: 0.2s;
 }
+.ResizeHorizontalHandle {
+  stroke-width: 12px;
+  stroke: #333;
+  outline: none;
+}
+.ResizeHandleIndicator {
+  height: 36px;
+  width: 8px;
+  border-radius: 4px;
+  background-color: #ddd;
+  transform: translate(-4px, -18px);
+  z-index: 1;
+  position: relative;
+}
+
 .ResizeHorizontalHandle:hover,
-.ResizeHorizontalHandle:focus {
+.ResizeHorizontalHandle:focus,
+.ResizeHorizontalHandle:hover + .ResizeHandleIndicator,
+.ResizeHorizontalHandle:focus + .ResizeHandleIndicator {
   opacity: 1;
   transition-delay: 0s;
 }
 
 /* Circles for changing values. The central and corner ones share a lot of styles */
-.ResizeVerticalHandle, .ResizeCornerHandle {
+.ResizeVerticalHandle,
+.ResizeCornerHandle {
   cursor: ns-resize;
   outline: none;
   transition: opacity 0.3s, stroke-width 0.3s;
@@ -35,6 +50,7 @@
   opacity: 1;
 }
 
-.ResizeCornerHandle.visible, .ResizeHorizontalHandle.visible {
+.ResizeCornerHandle.visible,
+.ResizeHorizontalHandle.visible {
   opacity: 1;
 }

@@ -1,18 +1,26 @@
-import { Stack, Tooltip, IconButton } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBackIos'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForwardIos'
+import PersonAddIcon from '@mui/icons-material/PersonAdd'
+import { IconButton, Stack, Tooltip } from '@mui/material'
+import { MenuButton } from '../../../components/MenuButton'
+import { Preferences } from '../../../types'
+import { maxAgents } from '../../graphConstants'
 
 interface SwitchAgentHeaderProps {
-  navigationDisabled: boolean
   currentAgent: number
   onChangeIndex: (i: number) => void
+  onClickCreateAgent: VoidFunction
+  preferences: Preferences
 }
 
 export const SwitchAgentHeader = ({
-  navigationDisabled,
   currentAgent,
+  onClickCreateAgent,
   onChangeIndex,
+  preferences,
 }: SwitchAgentHeaderProps) => {
+  const navigationDisabled =  preferences.length < 2
+  const canAddAgents = preferences.length < maxAgents
   return (
     <Stack direction="column">
       <Stack
@@ -34,7 +42,7 @@ export const SwitchAgentHeader = ({
           </span>
         </Tooltip>
 
-        <h2 style={{minWidth: 100}}>{`Person ${currentAgent + 1}`}</h2>
+        <h2 style={{ minWidth: 100 }}>{`Person ${currentAgent + 1}`}</h2>
 
         <Tooltip title="Next person">
           <span>
@@ -46,6 +54,20 @@ export const SwitchAgentHeader = ({
               <ArrowForwardIcon />
             </IconButton>
           </span>
+        </Tooltip>
+
+        <Tooltip
+          title={canAddAgents ? null : `Cannot add more than ${maxAgents} people`}
+        >
+          <div>
+            <MenuButton
+              disabled={!canAddAgents}
+              onClick={onClickCreateAgent}
+            >
+              <PersonAddIcon />
+              Add Person
+            </MenuButton>
+          </div>
         </Tooltip>
       </Stack>
     </Stack>

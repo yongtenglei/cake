@@ -37,7 +37,6 @@ export const changeSegmentCornerValue = (
   })
 }
 
-
 export const changeSegmentWidth = (
   segments: Segment[],
   id: number,
@@ -46,10 +45,11 @@ export const changeSegmentWidth = (
   cakeSize: number
 ) => {
   const changingSeg = segments.find((seg) => seg.id === id)
-  if(changingSeg === undefined) {
+  if (changingSeg === undefined) {
     return segments
   }
-  const constrainedXValue = Math.max(xScale.invert(mouseX), changingSeg.start)
+  const targetX = xScale.invert(mouseX)
+  const constrainedXValue = Math.max(targetX, changingSeg.start)
   const newEndpoint = Math.round(constrainedXValue)
   return changeSegmentWidthNumerically(segments, id, newEndpoint, cakeSize)
 }
@@ -60,7 +60,7 @@ export const changeSegmentWidthNumerically = (
   cakeSize: number
 ) => {
   const changedIndex = segments.findIndex((seg) => seg.id === id)
-  if(changedIndex === undefined) {
+  if (changedIndex === undefined) {
     return segments
   }
   const newSegs = segments.map((seg, i) => {
@@ -103,7 +103,7 @@ export const changeSegmentWithKeyboard = (
     // prevent arrow keys from scrolling
     event.preventDefault()
     const seg = segments.find((seg) => seg.id === xMovingId)
-    if(seg === undefined) {
+    if (seg === undefined) {
       return segments
     }
     const newEnd = seg.end + val
@@ -137,7 +137,7 @@ export const changeSegmentWithKeyboard = (
       })
     } else {
       // corner
-      const seg = segments.find(seg => seg.id === cornerMovingId[0])
+      const seg = segments.find((seg) => seg.id === cornerMovingId[0])
       return segments.map((seg) => {
         if (seg.id === cornerMovingId[0]) {
           const corner = cornerMovingId[1] === 1 ? 'startValue' : 'endValue'

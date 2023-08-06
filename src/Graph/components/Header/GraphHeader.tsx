@@ -34,7 +34,6 @@ export const GraphHeader = ({ color, heading, buttons, fullWidth }: GraphHeaderP
       <Stack
         justifyContent="flex-end"
         alignItems="center"
-        spacing={1}
         direction="row"
       >
         {buttons}

@@ -7,7 +7,7 @@ export const SectionLabels = () => {
   const { height, width, xScale, labels } = useContext(GraphContext)
 
   return (
-    <g transform={`translate(0,-${offset})`}>
+    <g transform={`translate(0,-${offset})`} style={{ userSelect: 'none' }}>
       {labels.length === 0 ? (
         <rect x={0} y={0} width={getInnerWidth(width)} height={offset} fill="#ddd" />
       ) : (

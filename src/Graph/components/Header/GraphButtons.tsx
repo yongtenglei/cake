@@ -1,16 +1,14 @@
 import CheckIcon from '@mui/icons-material/Check'
 import CompareIcon from '@mui/icons-material/Compare'
+import ControlCameraIcon from '@mui/icons-material/ControlCamera'
 import EditIcon from '@mui/icons-material/Edit'
 import LoopIcon from '@mui/icons-material/Loop'
-import ControlCameraIcon from '@mui/icons-material/ControlCamera'
-import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import { Box, Tooltip } from '@mui/material'
 import { ComponentProps } from 'react'
 import { ReactSVG } from 'react-svg'
 
 import { MenuButton } from '../../../components/MenuButton'
 import sectionIcon from '../../../images/icons/section config.svg'
-import { maxAgents } from '../../graphConstants'
 import { isAllInputComplete, isDrawingComplete } from '../../graphUtils'
 import { ExtraOptions } from './ExtraOptions'
 
@@ -29,7 +27,6 @@ type SharedProps = ExtraOptionsProps & {
 }
 
 type DrawingHeaderButtonsProps = SharedProps & {
-  onClickCreateAgent: VoidFunction
   onClickCompare: VoidFunction
   onClickShowHandles: VoidFunction
   currentAgent: number
@@ -39,7 +36,6 @@ type DrawingHeaderButtonsProps = SharedProps & {
 export const DrawingHeaderButtons = ({
   onClickSetLabels,
   onClickDone,
-  onClickCreateAgent,
   onClickCompare,
   onClickShowHandles,
   preferences,
@@ -49,9 +45,7 @@ export const DrawingHeaderButtons = ({
   resetInput,
 }: DrawingHeaderButtonsProps) => {
   const totalAgents = preferences.length
-  const cantAddMoreAgents = totalAgents === maxAgents
 
-  const drawingComplete = isDrawingComplete(preferences[currentAgent], cakeSize)
   const allComplete = isAllInputComplete(preferences, cakeSize)
   return (
     <>
@@ -67,19 +61,7 @@ export const DrawingHeaderButtons = ({
         <SectionIcon />
         Set Sections
       </MenuButton>
-      <Tooltip
-        title={cantAddMoreAgents ? `Cannot add more than ${maxAgents} people` : null}
-      >
-        <div>
-          <MenuButton
-            disabled={!drawingComplete || cantAddMoreAgents}
-            onClick={onClickCreateAgent}
-          >
-            <PersonAddIcon />
-            Add Person
-          </MenuButton>
-        </div>
-      </Tooltip>
+
       <MenuButton disabled={!allComplete || totalAgents < 2} onClick={onClickCompare}>
         <CompareIcon />
         Compare

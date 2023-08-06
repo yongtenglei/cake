@@ -1,8 +1,4 @@
-import {
-  Box,
-  Button,
-  Stack
-} from '@mui/material'
+import { Box, Button, Stack } from '@mui/material'
 
 import ReplayIcon from '@mui/icons-material/Replay'
 
@@ -17,11 +13,12 @@ import { getInnerHeight, getInnerWidth } from '../../Graph/graphConstants'
 
 import { ResultsSteps } from '../../Graph/components/ResultsView/ResultsSteps'
 import { createScales } from '../../Graph/graphUtils'
+import { C_STRAWBERRY, C_VANILLA } from '../../colors'
 import cake2PrefAki from '../../images/aki-two-flavor.png'
 import { Portion, Segment } from '../../types'
 import { formatNumber } from '../../utils/formatUtils'
 import { CakeImage, CharacterImage, ImageContainer } from './Images'
-import { C_STRAWBERRY, C_VANILLA } from '../../colors'
+import { Action, Info } from './Aside'
 
 const akisPreferences = [
   { id: 1, start: 0, end: 1, startValue: 7, endValue: 7 },
@@ -42,7 +39,6 @@ const label1 = {
   end: 1,
   color: C_VANILLA,
 }
-
 
 export const MeasuringStep = () => {
   const drawingWidth = 300
@@ -111,10 +107,18 @@ export const MeasuringStep = () => {
       <p>This time you cut and Aki chooses.</p>
 
       {cutPoint ? null : (
-        <p>
-          First, <strong>mark</strong> how much you like each flavor on the graph below
-          with 0 meaning being "hate it" and 10 meaning "love it".
-        </p>
+        <>
+          <Action>
+            First, <strong>mark</strong> how much you like each flavor on the graph below
+            with 0 meaning being "hate it" and 10 meaning "love it".
+            <br />
+            Then, click DONE MARKING.
+          </Action>
+          <Info>
+            The two numbers are relative to each other. So a 10 and a 5 means the same as
+            a 2 and a 1.
+          </Info>
+        </>
       )}
 
       <Stack
@@ -187,20 +191,24 @@ export const MeasuringStep = () => {
       {cutPoint ? (
         <>
           <p>
-            Based on <strong>how you marked your preferences</strong>, the cake on both
-            sides of this dotted line are each worth <sup>1</sup>
+            Based on <strong>how you marked your preferences</strong>, the cake on{' '}
+            <strong>both sides</strong> of this dotted line are each worth <sup>1</sup>
             &frasl;
-            <sub>2</sub> of the total cake to you. Remember, we don't know which piece Aki
-            will choose yet.
+            <sub>2</sub> of the total cake to you.
           </p>
           <p>
-            If you wouldn't be happy receiving either the left or right piece, feel free to REDO
-            your preferences.
+            If the two pieces aren't worth the same to you, feel free to{' '}
+            <strong>REDO</strong> your preferences.
           </p>
+
+          <Action>
+            Click the dotted line to <strong>cut the cake.</strong>
+          </Action>
 
           <Box width="fit-content" marginX="auto" position="relative">
             <CakeImage flavor="strawberry" width="200px" />
             <CakeImage flavor="vanilla" width="200px" />
+
             {/* Dotted line for cutting */}
             <Box
               {...(algoResults ? {} : activeCutlineProps)}
@@ -219,18 +227,28 @@ export const MeasuringStep = () => {
             >
               <Box borderLeft="4px dashed black" height="100%" />
             </Box>
+            <div
+              style={{
+                position: 'absolute',
+                right: 100 - cutPointPercent + '%',
+                transform: 'translateX(24px)',
+                whiteSpace: 'pre',
+              }}
+            >
+              {'Cut Point -> '}
+              {cutPointPercent.toFixed(1) + '%'}
+            </div>
           </Box>
-          <p>
-            Now click the dotted line to <strong>cut the cake!</strong>
-          </p>
         </>
       ) : null}
 
       {algoResults ? (
         <>
           <Box component="p" marginTop={4}>
-            Nice! Let's see which piece Aki chooses:
+            Nice!
           </Box>
+
+          <p>Let's see which piece Aki chose.</p>
 
           <CharacterImage character="Aki" sx={{ marginY: 2, marginX: 'auto' }} />
 

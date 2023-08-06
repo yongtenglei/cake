@@ -1,4 +1,6 @@
 import { useContext } from 'react'
+import HeightIcon from '@mui/icons-material/Height'
+// import HeightIcon from '@mui/icons-material/DragHandle'
 import { DrawnSegment } from '../../../types'
 import { GraphContext } from '../../GraphContext'
 import { getInnerHeight } from '../../graphConstants'
@@ -24,17 +26,26 @@ export const HorizontalResizeHandles = ({
         } else {
           const onMouseDown = () => setXMovingId(seg.id)
           return (
-            <line
-              tabIndex={0}
-              className={'ResizeHorizontalHandle'}
-              key={seg.id}
-              x1={seg.x2}
-              x2={seg.x2}
-              y1={getInnerHeight(height)}
-              y2={0}
-              onMouseDown={onMouseDown}
-              onFocus={onMouseDown}
-            />
+            <g key={seg.id}>
+              <line
+                tabIndex={0}
+                className={'ResizeHorizontalHandle HorizontalHandle'}
+                
+                x1={seg.x2}
+                x2={seg.x2}
+                y1={getInnerHeight(height)}
+                y2={0}
+                onMouseDown={onMouseDown}
+                onFocus={onMouseDown}
+              />
+              {/* WIP, currently issues with stacking order with Vertical handles 
+                 and SVG doesn't let you set stacking order */}
+              {/* <foreignObject
+                className="ResizeHandleIndicator HorizontalHandle"
+                x={seg.x2}
+                y={getInnerHeight(height) / 2}
+              /> */}
+            </g>
           )
         }
       })}

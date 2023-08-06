@@ -24,10 +24,10 @@ export const LearningPage = () => {
             for mathematically fair sharing.
           </p>
           <p>
-            Most of these methods are math theories, but a few are quite useful for
-            everyday things as well. For example, they can help settle inheritance
-            disputes, decide fair rent between roommates, or split up chores. Some methods
-            are even used to settle resource disputes between countries!
+            Most of these methods are math theories but a few are quite useful for
+            everyday things as well. For example, settling inheritance disputes, deciding
+            fair rent between roommates, or splitting up chores. Some methods are even
+            used to settle resource disputes between countries!
           </p>
           <h3>Should I be using these methods?</h3>
           <p>Maybe! Here are a few tools that use fair division methods:</p>

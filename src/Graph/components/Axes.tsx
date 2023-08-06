@@ -20,7 +20,7 @@ export const AxisLeft = ({ simple = false }: AxisProps) => {
   const innerHeight = getInnerHeight(height)
   const innerWidth = getInnerWidth(width)
   return (
-    <>
+    <g style={{ userSelect: 'none' }}>
       <text
         className="axis-label"
         textAnchor="middle"
@@ -49,7 +49,7 @@ export const AxisLeft = ({ simple = false }: AxisProps) => {
           </text>
         </g>
       ))}
-    </>
+    </g>
   )
 }
 
@@ -73,7 +73,7 @@ export const AxisBottom = ({ simple = false }: AxisProps) => {
     ticks.push(max)
   }
   return (
-    <>
+    <g style={{ userSelect: 'none' }}>
       {/* <text
         className="axis-label"
         x={innerWidth / 2}
@@ -101,6 +101,6 @@ export const AxisBottom = ({ simple = false }: AxisProps) => {
           </text>
         </g>
       ))}
-    </>
+    </g>
   )
 }

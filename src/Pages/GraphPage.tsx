@@ -25,24 +25,22 @@ export const GraphPage = (props) => {
         <TextContainer>
           <p>
             Welcome to our visual <strong>Resource Splitting Tool</strong>, the first of
-            its kind! Using this tool you can visually express the value you assign to
-            parts of a resource, which our intelligent <strong>algorithm</strong> will
-            then split evenly among all users.
+            its kind! Using this tool you can split a resource fairly based on the
+            preferences of each person, which our intelligent <strong>algorithm</strong>{' '}
+            will then split evenly among all users.
           </p>
         </TextContainer>
 
         <TextContainer>
           <p>
-            Using this tool, you can split a resource fairly based on the preferences of
-            each person. This tool works with <strong>divisible resources</strong>,
-            allowing you to fairly divide a tasty cake, allocate time slots, or apportion
+            The tool works with <strong>divisible resources</strong> like time, cake, or
             land. Currently, our algorithms support 2-3 participants. In the future we
             plan to introduce new algorithms for indivisible items and for more
             participants.
           </p>
           <p>
-            This is primarily an <strong>educational tool</strong>, but the concepts you
-            will learn about fairness can help in real life too.
+            This is primarily an <strong>educational tool</strong>, but concepts about
+            fairness help in real life too.
           </p>
           <p>
             Explore our{' '}
