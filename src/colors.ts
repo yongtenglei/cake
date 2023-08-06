@@ -12,14 +12,14 @@ const C_PINK = '#E8A2CF'
 const C_BLUE = '#0d77b0'
 const C_RED = '#F47C7C'
 const C_LIGHT_PURPLE = '#caaaeb'
-const C_GRAY = '#676768'
-const C_ORANGE = '#676768'
+const C_GRAY = '#a7a7a7'
+const C_ORANGE = '#faa758'
 const agentColors = [
   C_GREEN,
-  C_LIGHT_PURPLE,
-  C_YELLOW,
-  C_BLUE,
   C_ORANGE,
+  C_YELLOW,
+  C_LIGHT_PURPLE,
+  C_BLUE,
   C_RED,
   C_PINK,
   C_GRAY,

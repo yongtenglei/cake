@@ -1,8 +1,8 @@
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { Accordion, AccordionDetails, AccordionSummary, Box } from '@mui/material'
+import React from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { SectionErrorDisplay } from '../../../components/SectionErrorDisplay'
-import React from 'react'
 
 interface ResultsContainerProps {
   title: string
