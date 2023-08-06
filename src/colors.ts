@@ -11,19 +11,19 @@ const C_LIGHT_BLUE = '#2497cc'
 const C_PINK = '#E8A2CF'
 const C_BLUE = '#0d77b0'
 const C_RED = '#F47C7C'
-const C_LIGHT_PURPLE = '#bc8fea'
+const C_LIGHT_PURPLE = '#caaaeb'
 const C_GRAY = '#676768'
 const C_ORANGE = '#676768'
 const agentColors = [
   C_GREEN,
+  C_LIGHT_PURPLE,
   C_YELLOW,
-  C_RED,
   C_BLUE,
+  C_ORANGE,
+  C_RED,
   C_PINK,
   C_GRAY,
-  C_ORANGE,
   C_LIGHT_BLUE,
-  C_LIGHT_PURPLE,
 ]
 export const getAgentColor = (agent: number) => agentColors[agent] ?? ''
 
@@ -31,7 +31,7 @@ export const getAgentColor = (agent: number) => agentColors[agent] ?? ''
 export const C_STRAWBERRY = '#F2CADF'
 export const C_VANILLA = '#F2F1A1'
 export const C_CHOCOLATE = '#A57C52'
-export const C_AVACADO = '#3a5a40'
+export const C_AVOCADO = '#3a5a40'
 export const C_LAVENDER = '#967aa1'
 export const C_CARROT = '#ffa200'
 export const C_RED_VELVET = '#bc4749'
@@ -39,7 +39,7 @@ export const labelColors = [
   C_STRAWBERRY,
   C_VANILLA,
   C_CHOCOLATE,
-  C_AVACADO,
+  C_AVOCADO,
   C_LAVENDER,
   C_CARROT,
   C_RED_VELVET,
