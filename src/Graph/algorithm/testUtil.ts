@@ -38,7 +38,7 @@ export const genSlopedSeg = (
 const rand = (max: number) => Math.floor(Math.random() * (max + 1))
 
 /**
- * Generates a set of continous, random segments fitting a `cakeSize` cake. 
+ * Generates a set of continuous, random segments fitting a `cakeSize` cake. 
  * This can represent the preferences for one person.
  */
 export const genRandomSegs = (cakeSize: number) => {
@@ -71,7 +71,8 @@ export const testIfEnvyFree = (numPeople: number, result: AssignedSlice[]) => {
     const obtainedValue = totalValues[a]
 
     // We can't get to 100% accuracy when using floating point math
-    const fudgeFactor = 0.1
+    // but 12 decimal places is still very good
+    const fudgeFactor = 1e-12
     // Assert that all other agents slice total value
     // is worth less (to person `a`) than their own slice.
     totalValues.forEach((value, i) => {

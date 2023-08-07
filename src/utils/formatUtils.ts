@@ -4,6 +4,7 @@ export const makePercentage = (num: number, precision = 8): string =>
   formatNumber(num * 100, precision) + '%'
 
 export const formatNumber = (num: number, precision = 8): string => {
+  num = isNaN(num) || !isFinite(num) ? 0 : num
   const numLength = String(num).match(/\d/g).length
   return numLength < precision ? String(num) : num.toPrecision(precision)
 }
