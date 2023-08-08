@@ -172,7 +172,7 @@ export const sample3PersonResults: Result = {
     ],
     [
       1,
-      "must choose the trimmed piece so takes piece 1",
+      "trimmed piece 1 earlier, because it still remains they must choose it",
       [
         {
           "start": 0.2666666666666666,

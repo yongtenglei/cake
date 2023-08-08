@@ -73,7 +73,7 @@ export const ResultsGraphs = ({ solution, preferences }: ResultsGraphsProps) => 
   return (
     <ResultsContainer title="Resource Split" id="split">
       <TextContainer>
-        <p>
+        <p style={{marginTop: 0}}>
           This shows where to divide the resource, the portion each person receives, and
           the value each person marked.
         </p>

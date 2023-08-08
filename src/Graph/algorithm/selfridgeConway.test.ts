@@ -112,7 +112,7 @@ test('splits a cake containing 0 value evaluations', () => {
   testIfEnvyFree(3, result)
 })
 
-test('splits a very empty cake', () => {
+test('splits an almost valueless cake', () => {
   const person0 = [genFlatSeg(0, 5, 10), genFlatSeg(5, 90, 0)]
   const person1 = [genFlatSeg(0, 89, 0), genFlatSeg(89, 90, 10)]
   const person2 = [genFlatSeg(0, 50, 0), genFlatSeg(50, 51, 1), genFlatSeg(51, 90, 0)]

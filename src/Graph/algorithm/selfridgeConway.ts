@@ -108,7 +108,7 @@ export const selfridgeConway = (
 
     steps.push([
       1,
-      `must choose the trimmed piece so takes piece ${p1BestSlice.id}`,
+      `trimmed piece ${p1BestSlice.id} earlier, because it still remains they must choose it`,
       [p1BestSlice],
     ])
   }
