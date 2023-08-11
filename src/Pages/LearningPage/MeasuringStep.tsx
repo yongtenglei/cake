@@ -115,7 +115,7 @@ export const MeasuringStep = () => {
             Then, click DONE MARKING.
           </Action>
           <Info>
-            The two numbers are relative to each other. So a 10 and a 5 means the same as
+            Values are relative to each other, so a 10 and a 5 means the same as
             a 2 and a 1.
           </Info>
         </>
