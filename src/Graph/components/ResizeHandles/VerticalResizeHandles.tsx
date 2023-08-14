@@ -26,12 +26,14 @@ interface VerticalResizeHandlesProps {
   segments: DrawnSegment[]
   setCornerMovingId: (corner: [number, number]) => void
   setYMovingId: (id: number) => void
+  highlight?: boolean
 }
 
 export const VerticalResizeBubbles = ({
   segments,
   setCornerMovingId,
   setYMovingId,
+  highlight,
 }: VerticalResizeHandlesProps) => {
   return (
     <>
@@ -43,7 +45,7 @@ export const VerticalResizeBubbles = ({
         }
         
         const sloped = y1 !== y2
-        const cornerClass = 'ResizeCornerHandle' + (sloped ? ' visible' : '')
+        const cornerClass = 'ResizeCornerHandle' + (sloped || highlight ? ' visible' : '')
         return (
           <React.Fragment key={id}>
             {/* little circle to aid in discovery of corner handles. */}

@@ -25,7 +25,7 @@ interface DrawingLayerProps {
   setSegments: (segment: Segment[]) => void
   currentAgent: number
   isComplete: boolean
-  highlightedHandle?: null | number
+  highlightedHandle?: boolean
 }
 
 export const DrawingLayer = ({
@@ -169,15 +169,15 @@ export const DrawingLayer = ({
               segments={pixelSegs}
               setXMovingId={setXMovingId}
               isDrawing={isDrawing}
+              highlight={highlightedHandle}
             />
 
             <VerticalResizeBubbles
               segments={pixelSegs}
               setCornerMovingId={setCornerMovingId}
               setYMovingId={setYMovingId}
+              highlight={highlightedHandle}
             />
-
-            <Highlight handle={highlightedHandle} segments={pixelSegs} />
           </g>
         </svg>
       </div>

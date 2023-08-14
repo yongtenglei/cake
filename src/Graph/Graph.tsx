@@ -42,7 +42,7 @@ export const Graph = ({ v1 }: { v1?: boolean }) => {
   // Agents are zero-index in the code, but 1-indexed when displaying to users
   const [currentAgent, setCurrentAgent] = useState<number>(0)
   const [algoModalOpen, setAlgoModalOpen] = useState<boolean>(false)
-  const [highlightedHandle, setHighlightedHandle] = useState<number | null>(null)
+  const [highlightedHandle, setHighlightedHandle] = useState<boolean>(false)
   const [viewMode, setViewMode] = useState<'setup' | 'edit' | 'compare' | 'results'>(
     'setup'
   )
@@ -96,24 +96,7 @@ export const Graph = ({ v1 }: { v1?: boolean }) => {
 
   const onClickCompare = () => setViewMode('compare')
 
-  useEffect(() => {
-    if (highlightedHandle == null) {
-      return
-    }
-    const id = setTimeout(() => {
-      const next = highlightedHandle + 1
-      if (next > 2) {
-        setHighlightedHandle(null)
-      } else {
-        setHighlightedHandle(next)
-      }
-    }, 1000)
-    return () => clearTimeout(id)
-  }, [setHighlightedHandle, highlightedHandle, preferences, currentAgent])
-
-  const onClickShowHandles = () => {
-    setHighlightedHandle(0)
-  }
+  const onClickShowHandles = () => setHighlightedHandle(!highlightedHandle)
 
   const setCurrentAgentPrefs = (segs: Segment[]) => {
     const prefs = [...preferences]
@@ -242,6 +225,7 @@ export const Graph = ({ v1 }: { v1?: boolean }) => {
                 onClickCompare={onClickCompare}
                 onClickDone={onClickDone}
                 onClickShowHandles={onClickShowHandles}
+                highlightedHandle={highlightedHandle}
                 preferences={preferences}
                 uploadInput={uploadInput}
                 currentAgent={currentAgent}

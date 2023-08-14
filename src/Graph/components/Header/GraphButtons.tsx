@@ -31,6 +31,7 @@ type DrawingHeaderButtonsProps = SharedProps & {
   onClickShowHandles: VoidFunction
   currentAgent: number
   cakeSize: number
+  highlightedHandle: boolean
 }
 
 export const DrawingHeaderButtons = ({
@@ -38,6 +39,7 @@ export const DrawingHeaderButtons = ({
   onClickDone,
   onClickCompare,
   onClickShowHandles,
+  highlightedHandle,
   preferences,
   uploadInput,
   currentAgent,
@@ -54,7 +56,7 @@ export const DrawingHeaderButtons = ({
         disabled={preferences[currentAgent].length === 0}
       >
         <ControlCameraIcon />
-        Show Handles
+        {highlightedHandle ? 'Hide Handles' : 'Show Handles'}
       </MenuButton>
 
       <MenuButton onClick={onClickSetLabels}>

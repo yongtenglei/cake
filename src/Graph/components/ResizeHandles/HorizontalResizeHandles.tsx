@@ -10,12 +10,14 @@ interface HorizontalResizeHandlesProps {
   segments: DrawnSegment[]
   setXMovingId: (id: number) => void
   isDrawing: boolean
+  highlight: boolean
 }
 
 export const HorizontalResizeHandles = ({
   segments,
   setXMovingId,
   isDrawing,
+  highlight,
 }: HorizontalResizeHandlesProps) => {
   const { height } = useContext(GraphContext)
   return (
@@ -29,8 +31,7 @@ export const HorizontalResizeHandles = ({
             <g key={seg.id}>
               <line
                 tabIndex={0}
-                className={'ResizeHorizontalHandle HorizontalHandle'}
-                
+                className={'HorizontalHandle' + (highlight ? ' visible' : '')}
                 x1={seg.x2}
                 x2={seg.x2}
                 y1={getInnerHeight(height)}
