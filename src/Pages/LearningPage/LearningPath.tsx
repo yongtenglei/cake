@@ -827,7 +827,7 @@ const ThreeWayDivision = () => {
 
       <Info>
         For an explanation as to why this is guaranteed to be envy-free, see{' '}
-        <Link href={Algorithms.selfridgeConway.link}>
+        <Link href={'https://en.wikipedia.org/wiki/Selfridge%E2%80%93Conway_procedure'}>
           the wikipedia page for the Selfridge-Conway Method.
         </Link>
       </Info>
