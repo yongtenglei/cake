@@ -4,6 +4,7 @@ import { LayoutContainer, PageLayout } from '../Layouts'
 import { ButtonLink } from '../components/Link'
 import edgeImage from '../images/edge.svg'
 import title from '../images/title.svg'
+import splashImg from '../images/splash/splash.png'
 
 // Needs more work to be pretty on small screen sizes
 export const LandingPage = () => {
@@ -22,7 +23,7 @@ export const LandingPage = () => {
             right: 0,
             display: {
               xs: 'none',
-              sm: 'block',
+              md: 'block',
             },
           }}
         >
@@ -47,8 +48,8 @@ export const LandingPage = () => {
             backgroundColor: 'transparent',
           }}
         >
-          <Stack direction={{ xs: 'column', sm: 'row' }}>
-            <Stack maxWidth="500px" marginY={12}>
+          <Stack direction={{ xs: 'column', md: 'row' }}>
+            <Stack maxWidth={{md: "500px"}} marginY={12}>
               <Box component="h1" sx={{ maxWidth: '250px' }}>
                 <ReactSVG
                   src={title}
@@ -75,13 +76,7 @@ export const LandingPage = () => {
 
             <Stack
               sx={{
-                backgroundColor: { xs: 'white', sm: 'transparent' },
-                paddingY: 6,
-                paddingRight: {
-                  xs: 4,
-                  sm: 2,
-                  md: 6,
-                },
+                paddingY: {xs: 0, md: 6},
                 paddingLeft: {
                   xs: 4,
                   sm: 8,
@@ -93,20 +88,10 @@ export const LandingPage = () => {
               direction="column"
             >
               <img
-                src="https://creazilla-store.fra1.digitaloceanspaces.com/emojis/53176/birthday-cake-emoji-clipart-md.png"
-                style={{ width: '100%', maxWidth: 500 }}
+                src={splashImg}
+                style={{ width: '100%', maxWidth: 600 }}
                 alt=""
               />
-              <div
-                style={{
-                  position: 'relative',
-                  top: '-200px',
-                  textAlign: 'center',
-                  fontSize: 40,
-                }}
-              >
-                PLACEHOLDER
-              </div>
             </Stack>
           </Stack>
         </LayoutContainer>
