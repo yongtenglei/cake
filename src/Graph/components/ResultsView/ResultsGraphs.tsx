@@ -276,19 +276,6 @@ const TinyGraph = ({
   agent,
   showAllPreferences,
 }: TinyGraphProps) => {
-  result = {
-    "owner": 0,
-    "percentValues": [
-      0.5,
-      0.07245762711864406
-    ],
-    "edges": [
-      [
-        0,
-        2
-      ]
-    ]
-  }
   const { width, xScale } = useContext(GraphContext)
   const convertToPixels = useConvertSegToPixels()
   const maskId = `resultMask${agent}`
