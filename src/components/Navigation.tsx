@@ -3,6 +3,7 @@ import { Button } from '@mui/material'
 import { Link, NavLink } from './Link'
 import title from '../images/title.svg'
 import { LayoutContainer } from '../Layouts'
+import cakeLogo from '../images/cake logo.png'
 import './Navigation.css'
 
 export const Navigation = () => {
@@ -12,8 +13,9 @@ export const Navigation = () => {
         <div className="Navigation__body">
           <Link className="Navigation__homeIcon" href={'/'} aria-label={'home'}>
             <img
-              src="https://creazilla-store.fra1.digitaloceanspaces.com/emojis/53176/birthday-cake-emoji-clipart-md.png"
+              src={cakeLogo}
               style={{ width: '40px' }}
+              alt=""
             />
             <img src={title} alt="Fair Slice" />
           </Link>

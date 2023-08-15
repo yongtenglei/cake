@@ -76,7 +76,8 @@ export const LandingPage = () => {
 
             <Stack
               sx={{
-                paddingY: {xs: 0, md: 6},
+                paddingBottom: 6,
+                paddingTop: {xs: 0, md: 6},
                 paddingLeft: {
                   xs: 4,
                   sm: 8,
