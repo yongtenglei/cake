@@ -6,7 +6,6 @@ import { LoadingModal } from '../components/LoadingModal'
 import { Preferences, SectionLabel, Segment } from '../types'
 import { GraphContext } from './GraphContext'
 import { SectionConfig } from './SectionConfig'
-import { Setup } from './Setup'
 import { runDivisionAlgorithm } from './algorithm/run'
 import { AlgoName, Result } from './algorithm/types'
 import { CompareViewGraph } from './components/CompareViewGraph'
@@ -25,7 +24,7 @@ import {
   defaultGraphHeight,
   defaultGraphWidth,
   getInnerHeight,
-  getInnerWidth
+  getInnerWidth,
 } from './graphConstants'
 import { createScales, isDrawingComplete } from './graphUtils'
 import { sampleLabels3Flavor } from './sampleData'
@@ -150,9 +149,7 @@ export const Graph = ({ v1 }: { v1?: boolean }) => {
 
   let body = null
   if (viewMode === 'setup') {
-    body = v1 ? (
-      <Setup onCompleteSetup={onCompleteSetup} setNewData={resetInput} />
-    ) : (
+    body = (
       <SectionConfig
         onCompleteSetup={onCompleteSetup}
         initialSections={sectionLabels}

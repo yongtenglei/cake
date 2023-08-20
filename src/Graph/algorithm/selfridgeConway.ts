@@ -84,7 +84,7 @@ export const selfridgeConway = (
     slices[0].id,
     'trimmed'
   )
-  steps.push([1, `trims off part of piece ${trimmedPiece.id} to make it the same value as piece ${slices[1].id}. The trimmings are set aside.`, [trimming, trimmedPiece]])
+  steps.push([1, `trims off part of piece ${trimmedPiece.id} to make it the same value as piece ${slices[1].id}. The trimmings are set aside`, [trimming, trimmedPiece]])
   slices[0] = trimmedPiece
 
   console.log('Picking slices')

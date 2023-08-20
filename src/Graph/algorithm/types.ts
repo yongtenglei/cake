@@ -16,6 +16,13 @@ export type Result = { solution: Portion[], steps: Step[]}
 
 // The form of a step is [agent number (0-indexed), action taken]
 export type Step  = [number, string] | [number, string, Slice[]] | [number, string, Slice[], boolean]
+interface s {
+  actor: number
+  action: string
+  object: Slice[]
+  assign: boolean
+}
+
 
 export const Algorithms: Record<AlgoName, Algorithm> = {
   cutAndChoose: {
