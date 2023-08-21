@@ -15,13 +15,18 @@ export interface Algorithm {
 export type Result = { solution: Portion[], steps: Step[]}
 
 // The form of a step is [agent number (0-indexed), action taken]
-export type Step  = [number, string] | [number, string, Slice[]] | [number, string, Slice[], boolean]
-interface s {
+export interface Step {
   actor: number
   action: string
-  object: Slice[]
+  pieces: Slice[]
   assign: boolean
 }
+export const makeStep = (actor: number, action: string, pieces: Slice[] = [], assign = false): Step => ({
+  actor,
+  action,
+  pieces,
+  assign,
+})
 
 
 export const Algorithms: Record<AlgoName, Algorithm> = {

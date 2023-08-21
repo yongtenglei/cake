@@ -20,18 +20,15 @@ const getText = (piece: Slice) => {
 
 export const ResultsSteps = ({ algoUsed, result }: ResultsStepsProps) => {
   const { width, height, xScale, names = [] } = useContext(GraphContext)
-
+console.log('results',result)
   return (
-    <ResultsContainer
-      title="Algorithm Steps"
-      id="steps"
-    >
+    <ResultsContainer title="Algorithm Steps" id="steps">
       <h3>{Algorithms[algoUsed].name + ' Steps'}</h3>
       <ol style={{ fontSize: 18, margin: 0 }}>
-        {result.steps.map(([person, action, pieces, assigned]) => (
+        {result.steps.map(({ actor, action, pieces, assign }) => (
           <li key={action}>
             <div>
-              <strong>{names?.[person] ?? `Person ${person + 1}`}:</strong> {action}.
+              <strong>{names?.[actor] ?? `Person ${actor + 1}`}:</strong> {action}.
             </div>
 
             {pieces ? (
@@ -47,7 +44,7 @@ export const ResultsSteps = ({ algoUsed, result }: ResultsStepsProps) => {
                         width={width}
                         y={0}
                         height={height}
-                        fill={assigned ? getAgentColor(person) : '#ddd'}
+                        fill={assign ? getAgentColor(actor) : '#ddd'}
                         strokeWidth={1}
                         stroke="#555"
                       />
