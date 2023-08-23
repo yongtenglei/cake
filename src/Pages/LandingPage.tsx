@@ -4,7 +4,13 @@ import { LayoutContainer, PageLayout } from '../Layouts'
 import { ButtonLink } from '../components/Link'
 import edgeImage from '../images/edge.svg'
 import title from '../images/title.svg'
-import splashImg from '../images/splash/splash.png'
+import cakeL from '../images/splash/splash_cakeL.png'
+import cakeR from '../images/splash/splash_cakeR.png'
+import clockL from '../images/splash/splash_clockL.png'
+import clockR from '../images/splash/splash_clockR.png'
+import landL from '../images/splash/splash_landL.png'
+import landR from '../images/splash/splash_landR.png'
+import './LandingPage.css'
 
 // Needs more work to be pretty on small screen sizes
 export const LandingPage = () => {
@@ -46,10 +52,14 @@ export const LandingPage = () => {
             display: 'flex',
             color: 'white',
             backgroundColor: 'transparent',
+            overflowX: 'hidden'
           }}
         >
-          <Stack direction={{ xs: 'column', md: 'row' }}>
-            <Stack maxWidth={{md: "500px"}} marginY={12}>
+          <Stack
+            direction={{ xs: 'column', md: 'row' }}
+            width="100%"
+          >
+            <Stack maxWidth={{ md: '500px' }} marginY={12}>
               <Box component="h1" sx={{ maxWidth: '250px' }}>
                 <ReactSVG
                   src={title}
@@ -77,22 +87,32 @@ export const LandingPage = () => {
             <Stack
               sx={{
                 paddingBottom: 6,
-                paddingTop: {xs: 0, md: 6},
+                paddingTop: { xs: 0, md: 6 },
                 paddingLeft: {
                   xs: 4,
-                  sm: 8,
-                  md: 20,
+                  sm: 9,
+                  md: 22,
                 },
               }}
               alignItems="center"
               justifyContent="center"
               direction="column"
             >
-              <img
-                src={splashImg}
-                style={{ width: '100%', maxWidth: 600 }}
-                alt=""
-              />
+              <div className="graphicContainer">
+              <div className="land container">
+                  <img src={landL} alt="" className="splashImg left" />
+                  <img src={landR} alt="" className="splashImg right" />
+                </div>
+                <div className="clock container">
+                  <img src={clockL} alt="" className="splashImg left" />
+                  <img src={clockR} alt="" className="splashImg right" />
+                </div>
+     
+                <div className="cake container">
+                  <img src={cakeL} alt="" className="splashImg left" />
+                  <img src={cakeR} alt="" className="splashImg right" />
+                </div>
+              </div>
             </Stack>
           </Stack>
         </LayoutContainer>
