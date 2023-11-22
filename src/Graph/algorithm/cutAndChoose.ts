@@ -27,7 +27,7 @@ export const cutAndChoose = (
   steps.push(
     makeStep(
       0,
-      `cut the resource into two pieces at ${makePercentage(cutPoint / cakeSize, 3)}`
+      `cut the resource into two pieces at ${makePercentage(cutPoint / cakeSize, 3)}`, [slice1, slice2]
     )
   )
 
