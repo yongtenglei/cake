@@ -6,7 +6,6 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForwardIos'
 import { useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 import { GraphContext } from '../../Graph/GraphContext'
-import { Algorithms } from '../../Graph/algorithm/types'
 import { ResultsSteps } from '../../Graph/components/ResultsView/ResultsSteps'
 import { createScales } from '../../Graph/graphUtils'
 import { sample3PersonResults, sampleLabels3Flavor } from '../../Graph/sampleData'
@@ -518,19 +517,19 @@ const threePreferences = (
     gridTemplateColumns={{ xs: 'auto', md: 'auto auto' }}
     sx={{ gridRowGap: { xs: '40px', md: '16px' }, gridColumnGap: '16px' }}
   >
-    <img src={cake3PrefAki} style={{ maxHeight: 200 }} />
+    <img src={cake3PrefAki} style={{ maxHeight: 200 }} alt="" />
     <Stack alignItems="center" marginBottom={2}>
       <CharacterImage character="Aki" hideName />
       Aki likes both vanilla and chocolate
     </Stack>
 
-    <img src={cake3PrefBruno} style={{ maxHeight: 200 }} />
+    <img src={cake3PrefBruno} style={{ maxHeight: 200 }} alt=""/>
     <Stack alignItems="center" marginBottom={2}>
       <CharacterImage character="Bruno" hideName />
       Bruno prefers vanilla
     </Stack>
 
-    <img src={cake3PrefChloe} style={{ maxHeight: 200 }} />
+    <img src={cake3PrefChloe} style={{ maxHeight: 200 }} alt=""/>
     <Stack alignItems="center" marginBottom={2}>
       <CharacterImage character="Chloe" hideName />
       Chloe prefers chocolate
@@ -843,37 +842,38 @@ const ThreeWayDivision = () => {
 }
 
 // Removing this part as it confuses people and the example can no longer be Pareto-Optimized
-const ParetoOptimal = () => {
-  return (
-    <>
-      <h2>Pareto-Optimal Solutions</h2>
-      <p>
-        Usually, being envy-free is <em>fair enough</em> to avoid hurt feelings. But what
-        about <em>optimal</em> fairness?
-      </p>
-      <p>
-        Although this solution to the last problem is fair by the envy-free definition,
-        with a slight adjustment to the portions more value could be extracted.
-      </p>
-      <p>
-        A solution where no change would give someone more value without taking value away
-        from someone else is called <strong>Pareto-optimal</strong>.
-      </p>
-      <p>
-        Pareto-optimal solutions aren't necessarily envy-free, but a solution that
-        achieves both is a bit closer to ideal. Unfortunately, such solutions can be
-        difficult to calculate. For this reason, finding an envy-free solution is a more
-        realistic goal.
-      </p>
-      <p>
-        For more info,{' '}
-        <Link href={'https://en.wikipedia.org/wiki/Pareto_efficiency'}>
-          read about Pareto-optimality.
-        </Link>
-      </p>
-    </>
-  )
-}
+// const ParetoOptimal = () => {
+//   return (
+//     <>
+//       <h2>Pareto-Optimal Solutions</h2>
+//       <p>
+//         Usually, being envy-free is <em>fair enough</em> to avoid hurt feelings. But what
+//         about <em>optimal</em> fairness?
+//       </p>
+//       <p>
+//         Although this solution to the last problem is fair by the envy-free definition,
+//         with a slight adjustment to the portions more value could be extracted.
+//       </p>
+//       <p>
+//         A solution where no change would give someone more value without taking value away
+//         from someone else is called <strong>Pareto-optimal</strong>.
+//       </p>
+//       <p>
+//         Pareto-optimal solutions aren't necessarily envy-free, but a solution that
+//         achieves both is a bit closer to ideal. Unfortunately, such solutions can be
+//         difficult to calculate. For this reason, finding an envy-free solution is a more
+//         realistic goal.
+//       </p>
+//       <p>
+//         For more info,{' '}
+//         <Link href={'https://en.wikipedia.org/wiki/Pareto_efficiency'}>
+//           read about Pareto-optimality.
+//         </Link>
+//       </p>
+//     </>
+//   )
+// }
+
 const Recap2 = () => {
   return (
     <>

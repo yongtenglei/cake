@@ -3,13 +3,13 @@ import CompareIcon from '@mui/icons-material/Compare'
 import ControlCameraIcon from '@mui/icons-material/ControlCamera'
 import EditIcon from '@mui/icons-material/Edit'
 import LoopIcon from '@mui/icons-material/Loop'
-import { Box, Tooltip } from '@mui/material'
+import { Box } from '@mui/material'
 import { ComponentProps } from 'react'
 import { ReactSVG } from 'react-svg'
 
 import { MenuButton } from '../../../components/MenuButton'
 import sectionIcon from '../../../images/icons/section config.svg'
-import { isAllInputComplete, isDrawingComplete } from '../../graphUtils'
+import { isAllInputComplete } from '../../graphUtils'
 import { ExtraOptions } from './ExtraOptions'
 
 const SectionIcon = () => (

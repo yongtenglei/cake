@@ -22,6 +22,7 @@ export const getOrdinalEnding = (num: number) => {
   }
 }
 
+// stub data for prototyping quickly
 const testPreferences: Preferences = [
   [
     {

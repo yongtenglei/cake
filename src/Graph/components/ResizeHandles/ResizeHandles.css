@@ -19,14 +19,6 @@
   position: relative;
 }
 
-/* .HorizontalHandle:hover,
-.HorizontalHandle:focus,
-.HorizontalHandle:hover + .ResizeHandleIndicator,
-.HorizontalHandle:focus + .ResizeHandleIndicator {
-  opacity: 1;
-  transition-delay: 0s;
-} */
-
 /* Circles for changing values. The central and corner ones share a lot of styles */
 .ResizeVerticalHandle,
 .ResizeCornerHandle {

@@ -9,7 +9,7 @@ export const cutAndChoose = (
   cakeSize: number
 ): { solution: AssignedSlice[]; steps: Step[] } => {
   if (preferences.length !== 2) {
-    throw 'Cut and choose only works with two agents'
+    throw new Error('Cut and choose only works with two agents')
   }
   const steps: Step[] = []
 

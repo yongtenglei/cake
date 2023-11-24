@@ -10,7 +10,7 @@ interface BracketProps {
  */
 export const Bracket = ({ width }: BracketProps) => {
   if (width < 40) {
-    // too small for a brack so render a line
+    // too small a space to show a bracket so render a line instead
     return (
       <div className="bracketContainer" style={{ width }}>
         <div className="bracketLine" />

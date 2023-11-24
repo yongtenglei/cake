@@ -56,7 +56,7 @@ interface SelectAlgoModalGutsProps {
   openAlgoExplainModal: VoidFunction
 }
 
-// separate wrapper from guts so "best algo" func only runs when it first opens
+// separate wrapper from guts so "best option" function only runs when it first opens
 const SelectAlgoModalGuts = ({
   totalAgents,
   onCancel,
@@ -89,7 +89,7 @@ const SelectAlgoModalGuts = ({
               control={
                 <Radio onChange={(e) => setSelectedAlgo(e.target.value as AlgoName)} />
               }
-              label={algo.name + ' - ' + algo.numAgentsText}
+              label={`${algo.name} - ${algo.numAgentsText}`}
               checked={algo.key === selectedAlgo}
               disabled={!algoIsSelectable(algo)}
             />

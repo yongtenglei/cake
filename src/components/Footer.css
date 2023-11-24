@@ -4,12 +4,6 @@
   background-color: var(--cDark);
   padding: 8px 0;
 }
-/* 
-.Footer__Body {
-  color: white;
-  flex-direction: column;
-  padding: 8px;
-} */
 
 .Footer__copyright {
   text-align: center;

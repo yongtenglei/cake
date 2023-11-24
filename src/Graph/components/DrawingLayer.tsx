@@ -15,7 +15,6 @@ import {
   changeSegmentWidth,
   changeSegmentWithKeyboard,
 } from './adjustSegments'
-import { Highlight } from './Highlight'
 
 // Simple unique ids. Increment the number on each use.
 let id = 0

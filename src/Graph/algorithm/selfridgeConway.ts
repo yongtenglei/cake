@@ -12,7 +12,7 @@ export const selfridgeConway = (
   cakeSize: number
 ): { solution: AssignedSlice[]; steps: Step[] } => {
   if (preferences.length !== 3) {
-    throw 'Selfridge-Conway only works with three agents'
+    throw new Error('Selfridge-Conway only works with three agents')
   }
   const steps: Step[] = []
   let p0BestSlice = null
