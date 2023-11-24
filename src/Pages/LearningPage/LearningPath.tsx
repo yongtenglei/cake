@@ -682,7 +682,14 @@ const SelfridgeConway = () => {
 
       <p>Let's try it out!</p>
 
-      {/* <p>
+      <p></p>
+    </>
+  )
+}
+// At one point there was an incomplete explanation of Selfridge Conway in the above step (see below) but I removed it to avoid confusion
+
+ {/* <div>
+      <p>
         The steps are more complex than Cut and Choose, you can read them below if you are
         curious.
       </p>
@@ -690,9 +697,9 @@ const SelfridgeConway = () => {
       <p>
         The important thing to know is that when using this method each person may get two
         pieces from different parts of the cake.
-      </p> */}
+      </p> 
 
-      {/* <Accordion sx={{ marginY: 4 }}>
+       <Accordion sx={{ marginY: 4 }}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="selfridge-panel"
@@ -727,12 +734,10 @@ const SelfridgeConway = () => {
             <li>The last person chooses a piece.</li>
           </ol>
         </AccordionDetails>
-      </Accordion> */}
+    </Accordion> 
+  </div>*/}
 
-      <p></p>
-    </>
-  )
-}
+
 // should add an interactive part here.
 const ThreeWayDivision = () => {
   return (
@@ -883,12 +888,6 @@ const Recap2 = () => {
 
         <dt>Selfridge-Conway Method</dt>
         <dd>A 3-person, envy-free method for fair division.</dd>
-        {/* 
-        <dt>Pareto-Optimal Solution</dt>
-        <dd>
-          A solution to a fair division problem where no change can increase the value for
-          someone without taking value away from someone else.
-        </dd> */}
       </dl>
     </>
   )

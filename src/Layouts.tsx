@@ -61,6 +61,10 @@ export const TextContainer = ({ children, sx }: LayoutProps) => {
   return <Box sx={{ maxWidth: 600, ...sx }}>{children}</Box>
 }
 
+/**
+ * InteractionContainer provides a "frame" for interactive elements like the learning course 
+ * or the tool itself.
+ */
 export const InteractionContainer = ({ sx, ...props }: ComponentProps<typeof Box>) => {
   return (
     <Box

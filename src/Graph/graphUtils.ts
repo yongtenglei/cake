@@ -1,7 +1,6 @@
 import { useContext } from 'react'
 import { GraphContext } from './GraphContext'
 import { Segment, DrawnSegment, Preferences } from '../types'
-import { defaultCakeSize, getInnerHeight, getInnerWidth } from './graphConstants'
 import { scaleLinear } from 'd3'
 
 interface createScalesParams {

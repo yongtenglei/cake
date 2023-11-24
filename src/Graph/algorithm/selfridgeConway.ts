@@ -26,6 +26,7 @@ export const selfridgeConway = (
   const firstCut = findCutLineByPercent(p0Prefs, 1 / 3)
   const secondCut = findCutLineByPercent(p0Prefs, 2 / 3)
 
+  // These slices are not final, they may get trimmed
   const tempSlices = [
     cutSlice(preferences, 0, firstCut, 1),
     cutSlice(preferences, firstCut, secondCut, 2),
@@ -43,14 +44,15 @@ export const selfridgeConway = (
   )
   console.log('Slices are ', tempSlices)
 
-  // P1 assesses the two largest slices
+  // First, sort the slices from largest to smallest based on P1's preferences
   slices = sortSlicesDescending(1, tempSlices)
+  // Then, find the values of the two largest (the first two in the array)
   const p1LargestValue = slices[0].values[1]
   const p1SecondLargestValue = slices[1].values[1]
 
-  // P1 decides if two largest are equal (allow for some tiny decimal errors)
+  // Then, P1 decides if the two largest are equal (allowing for tiny floating point differences)
   if (Math.abs(p1LargestValue - p1SecondLargestValue) < 0.0000000000001) {
-    // No trimming needed, easy path!
+    // The two are equal, no trimming needed. Easy path!
     steps.push(
       makeStep(1, `decides the two largest pieces are equal so doesn't trim them`, [
         slices[0],

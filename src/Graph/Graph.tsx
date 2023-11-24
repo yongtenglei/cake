@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { Box } from '@mui/material'
 import { C_PRIMARY_LIGHT, getAgentColor } from '../colors'
@@ -61,7 +61,8 @@ export const Graph = ({ v1 }: { v1?: boolean }) => {
     } else {
       setCakeSize(defaultCakeSize)
     }
-    // truncate any segments outside the cake
+    // truncate any segments ending outside the cake
+    // and remove any that end up with 0 width.
     const prefsScopeToCakeSize = preferences.map((segments) =>
       segments
         .map((seg) => ({ ...seg, end: Math.min(seg.end, cakeSize) }))
@@ -125,7 +126,6 @@ export const Graph = ({ v1 }: { v1?: boolean }) => {
   const onClickRunAlgo = async (algo: AlgoName) => {
     setLoading(true)
     setAlgoModalOpen(false)
-
     setAlgoUsed(algo)
 
     try {
