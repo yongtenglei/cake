@@ -98,15 +98,6 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: '/graph2',
-        element: (
-          <Page title="Resource Splitting Tool">
-            {/* old version */}
-            <GraphPage v1 />
-          </Page>
-        ),
-      },
-      {
         path: '/learn/:step?',
         element: (
           <Page title="Learning Course" scroll={false}>

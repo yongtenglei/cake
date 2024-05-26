@@ -29,7 +29,7 @@ import {
 import { createScales, isDrawingComplete } from './graphUtils'
 import { sampleLabels3Flavor } from './sampleData'
 
-export const Graph = ({ v1 }: { v1?: boolean }) => {
+export const Graph = () => {
   const [cakeSize, setCakeSize] = useState<number>(defaultCakeSize)
   const [sectionLabels, setSectionLabels] = useState<SectionLabel[]>([
     sampleLabels3Flavor[0],
