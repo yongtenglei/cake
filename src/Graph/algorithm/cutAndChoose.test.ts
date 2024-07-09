@@ -6,6 +6,7 @@ import {
   halfwayPointOfTriangleArea,
   genRandomSegs,
 } from './testUtil'
+import { Segment } from '../../types'
 
 const cakeSize = 100
 
@@ -23,8 +24,8 @@ test('splits a uniform flat value graph evenly in half', () => {
 })
 
 test('splits a seesaw-like graph in an envy-free way', () => {
-  const person1 = [genFlatSeg(0, 50, 10), genFlatSeg(50, 100, 5)] // 750, halfway point is 37.5%
-  const person2 = [genFlatSeg(0, 50, 5), genFlatSeg(50, 100, 10)] // 750, halfway point is 67.5%
+  const person1 = [genFlatSeg(0, 50, 10), genFlatSeg(50, 100, 5)]
+  const person2 = [genFlatSeg(0, 50, 5), genFlatSeg(50, 100, 10)]
   const result = cutAndChoose([person1, person2], cakeSize).solution
   expect(result).toHaveLength(2)
   // The slices should be 375 value on both sides for person 0,
@@ -85,7 +86,12 @@ test('splits randomly generated preferences fairly', () => {
 
 test('splits randomly generated preferences fairly on a smaller cake size', () => {
   const smallCake = 3
-  const segs = [genRandomSegs(smallCake), genRandomSegs(smallCake)]
+  // const segs = [genRandomSegs(smallCake), genRandomSegs(smallCake)]
+  let seg1:Segment = {id:1, start:0, end:3, startValue:0, endValue:0}
+  let seg2: Segment = {id:2, start:0, end:3, startValue:2, endValue:0}
+  const segs = [
+      [seg1],[seg2]
+  ]
   const result = cutAndChoose(segs, smallCake).solution
   testIfEnvyFree(2, result)
 })

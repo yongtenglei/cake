@@ -1,6 +1,6 @@
-import { Portion, Slice } from "../../types";
+import {Portion, Slice} from "../../types";
 
-export type AlgoName = 'cutAndChoose' | 'selfridgeConway';
+export type AlgoName = 'cutAndChoose' | 'selfridgeConway' | 'alexAviad';
 
 export interface Algorithm {
   key: AlgoName
@@ -12,7 +12,7 @@ export interface Algorithm {
   link: string
 }
 
-export type Result = { solution: Portion[], steps: Step[]}
+export type Result = { solution: Portion[], steps: Step[] }
 
 // The form of a step is [agent number (0-indexed), action taken]
 export interface Step {
@@ -21,6 +21,7 @@ export interface Step {
   pieces: Slice[]
   assign: boolean
 }
+
 export const makeStep = (actor: number, action: string, pieces: Slice[] = [], assign = false): Step => ({
   actor,
   action,
@@ -48,6 +49,17 @@ export const Algorithms: Record<AlgoName, Algorithm> = {
     maxAgents: 3,
     shortDescription:
       'A method for envy-free division between three people. Maximum of five cuts.',
+    link: '/learn/13',
+  },
+  alexAviad: {
+    key: 'alexAviad',
+    name: 'Alex-Aviad',
+    numAgentsText: '4 people',
+    minAgents: 4,
+    maxAgents: 4,
+    shortDescription:
+      'A method for envy-free division for four agents. Yield 4  continuous pieces in manageable time.',
+    // TODO: fixme later
     link: '/learn/13',
   },
 }

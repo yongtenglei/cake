@@ -1,10 +1,10 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBackIos'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForwardIos'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
-import { IconButton, Stack, Tooltip } from '@mui/material'
-import { MenuButton } from '../../../components/MenuButton'
-import { Preferences } from '../../../types'
-import { maxAgents } from '../../graphConstants'
+import {IconButton, Stack, Tooltip} from '@mui/material'
+import {MenuButton} from '../../../components/MenuButton'
+import {Preferences} from '../../../types'
+import {maxAgents} from '../../graphConstants'
 
 interface SwitchAgentHeaderProps {
   currentAgent: number
@@ -14,12 +14,12 @@ interface SwitchAgentHeaderProps {
 }
 
 export const SwitchAgentHeader = ({
-  currentAgent,
-  onClickCreateAgent,
-  onChangeIndex,
-  preferences,
-}: SwitchAgentHeaderProps) => {
-  const navigationDisabled =  preferences.length < 2
+                                    currentAgent,
+                                    onClickCreateAgent,
+                                    onChangeIndex,
+                                    preferences,
+                                  }: SwitchAgentHeaderProps) => {
+  const navigationDisabled = preferences.length < 2
   const canAddAgents = preferences.length < maxAgents
   return (
     <Stack direction="column">
@@ -37,12 +37,12 @@ export const SwitchAgentHeader = ({
               onClick={() => onChangeIndex(-1)}
               disabled={navigationDisabled}
             >
-              <ArrowBackIcon />
+              <ArrowBackIcon/>
             </IconButton>
           </span>
         </Tooltip>
 
-        <h2 style={{ minWidth: 100 }}>{`Person ${currentAgent + 1}`}</h2>
+        <h2 style={{minWidth: 100}}>{`Person ${currentAgent + 1}`}</h2>
 
         <Tooltip title="Next person">
           <span>
@@ -51,7 +51,7 @@ export const SwitchAgentHeader = ({
               onClick={() => onChangeIndex(1)}
               disabled={navigationDisabled}
             >
-              <ArrowForwardIcon />
+              <ArrowForwardIcon/>
             </IconButton>
           </span>
         </Tooltip>
@@ -64,7 +64,7 @@ export const SwitchAgentHeader = ({
               disabled={!canAddAgents}
               onClick={onClickCreateAgent}
             >
-              <PersonAddIcon />
+              <PersonAddIcon/>
               Add Person
             </MenuButton>
           </div>

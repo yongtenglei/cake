@@ -4,6 +4,7 @@ import { validateSegments } from './validation'
 import { cutAndChoose } from './cutAndChoose'
 import { selfridgeConway } from './selfridgeConway'
 import { getTotalValue } from './getValue'
+import {alexAviad} from "./alexAviad";
 
 export const runDivisionAlgorithm = async (
   preferences: Preferences,
@@ -37,6 +38,9 @@ export const runDivisionAlgorithm = async (
     // case 'some server-side method':
     //   result = await method(preferences, cakeSize)
     //   break
+    case 'alexAviad':
+      result = await alexAviad(preferences, cakeSize)
+          break
     default:
       throw new Error(`Algorithm not implemented: ${algo}`)
   }
