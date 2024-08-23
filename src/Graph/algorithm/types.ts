@@ -53,13 +53,12 @@ export const Algorithms: Record<AlgoName, Algorithm> = {
   },
   alexAviad: {
     key: 'alexAviad',
-    name: 'Alex-Aviad',
+    name: 'Hollender-Rubinstein Algorithm',
     numAgentsText: '4 people',
     minAgents: 4,
     maxAgents: 4,
     shortDescription:
-      'A method for envy-free division for four agents. Yield 4  continuous pieces in manageable time.',
-    // TODO: fixme later
-    link: '/learn/13',
+      'A method for envy-free division for four agents. Yield 4 continuous pieces in manageable time.',
+    link: '/learn/16',
   },
 }

@@ -51,8 +51,7 @@ export type AssignedSlice = Slice & {
 
 // This represents all slices assigned to a certain person.
 // This is more useful for presenting info than `Slice`s.
-export type Portion = {
-  owner: number
+export type Portion = { owner: number
   percentValues: number[]
   edges: [number, number][]
 }

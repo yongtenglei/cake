@@ -23,7 +23,9 @@ export const runDivisionAlgorithm = async (
   // The UI validates enough but if people upload their own data,
   // who knows what could happen...
 
-  let result: null | { solution: AssignedSlice[]; steps: Step[] } = null
+  type ResultType = null | { solution: AssignedSlice[]; steps: Step[] } | { solution: Portion[]; steps: Step[] };
+  let result: ResultType = null;
+  // let result: null | { solution: AssignedSlice[]; steps: Step[] } = null
   switch (algo) {
     case 'cutAndChoose':
       result = cutAndChoose(preferences, cakeSize)
@@ -40,7 +42,8 @@ export const runDivisionAlgorithm = async (
     //   break
     case 'alexAviad':
       result = await alexAviad(preferences, cakeSize)
-          break
+      console.log("OK, I am here", result)
+      return result
     default:
       throw new Error(`Algorithm not implemented: ${algo}`)
   }
